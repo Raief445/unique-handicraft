@@ -244,4 +244,30 @@
     flex-direction: column;
     gap: 1rem;
   }
+  
+  /* 2-column grid for mobile */
+  .categoriesGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .categoryCard {
+    padding: 0.5rem;
+  }
+
+  .catInfo h3 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  /* Keep it 2-column even on very small screens, just smaller padding */
+  .categoriesGrid, .productsGrid {
+    gap: 0.5rem;
+  }
 }

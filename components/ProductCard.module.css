@@ -128,3 +128,20 @@
   background: transparent;
   color: var(--color-text);
 }
+
+@media (max-width: 768px) {
+  .card {
+    padding: 0.5rem;
+  }
+  .title {
+    font-size: 0.95rem;
+  }
+  .specs {
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .viewBtn, .addBtn {
+    padding: 0.5rem;
+    font-size: 0.65rem;
+  }
+}
