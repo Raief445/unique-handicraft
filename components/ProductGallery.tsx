@@ -37,7 +37,8 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
   };
 
   return (
-    <div className={styles.gallery}>
+    <>
+      <div className={styles.gallery}>
       <div className={styles.mainImageWrapper}>
         <Image 
           src={allImages[currentIndex].imageUrl} 
@@ -85,24 +86,25 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
           ))}
         </div>
       )}
-
-      {/* Lightbox Modal */}
-      {isLightboxOpen && (
-        <div className={styles.lightbox} onClick={() => setIsLightboxOpen(false)}>
-          <button className={styles.lightboxClose} onClick={() => setIsLightboxOpen(false)} aria-label="Close Lightbox">
-            <X size={32} />
-          </button>
-          <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
-            <Image 
-              src={allImages[currentIndex].imageUrl} 
-              alt={productName} 
-              fill 
-              sizes="100vw"
-              style={{ objectFit: 'contain' }} 
-            />
-          </div>
-        </div>
-      )}
     </div>
+
+    {/* Lightbox Modal */}
+    {isLightboxOpen && (
+      <div className={styles.lightbox} onClick={() => setIsLightboxOpen(false)}>
+        <button className={styles.lightboxClose} onClick={() => setIsLightboxOpen(false)} aria-label="Close Lightbox">
+          <X size={32} />
+        </button>
+        <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+          <Image 
+            src={allImages[currentIndex].imageUrl} 
+            alt={productName} 
+            fill 
+            sizes="100vw"
+            style={{ objectFit: 'contain' }} 
+          />
+        </div>
+      </div>
+    )}
+    </>
   );
 }
