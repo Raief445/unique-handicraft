@@ -120,3 +120,15 @@ model EnquiryFile {
   fileType   String?
   uploadedAt DateTime @default(now())
 }
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  company   String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    String   @default("UNREAD") // "UNREAD", "READ"
+  createdAt DateTime @default(now())
+}

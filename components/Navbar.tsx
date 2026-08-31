@@ -2,12 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Search, ShoppingBag, ChevronDown } from "lucide-react";
 import { useEnquiryCart } from "./EnquiryCartContext";
 import styles from "./Navbar.module.css";
 import { useState } from "react";
 
-export default function Navbar({ isAdmin = false, categories = [] }: { isAdmin?: boolean, categories?: { id: string, name: string }[] }) {
+export default function Navbar({ categories = [] }: { categories?: { id: string, name: string }[] }) {
+  const { data: session } = useSession();
+  const isAdmin = (session?.user as any)?.role === "ADMIN";
   const { itemCount, openCart } = useEnquiryCart();
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);

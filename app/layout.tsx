@@ -4,8 +4,7 @@ import "./globals.css";
 import { EnquiryCartProvider } from "@/components/EnquiryCartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import AuthProvider from "@/components/AuthProvider";
 import EnquiryCartDrawer from "@/components/EnquiryCartDrawer";
 import prisma from "@/lib/db";
 
@@ -19,8 +18,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
-  const isAdmin = (session?.user as any)?.role === "ADMIN";
   const categories = await prisma.category.findMany({
     orderBy: { name: 'asc' },
     select: { id: true, name: true }
@@ -29,14 +26,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <EnquiryCartProvider>
-          <Navbar isAdmin={isAdmin} categories={categories} />
-          <EnquiryCartDrawer />
-          <main style={{ minHeight: 'calc(100vh - 80px - 300px)' }}>
-            {children}
-          </main>
-          <Footer />
-        </EnquiryCartProvider>
+        <AuthProvider>
+          <EnquiryCartProvider>
+            <Navbar categories={categories} />
+            <EnquiryCartDrawer />
+            <main style={{ minHeight: 'calc(100vh - 80px - 300px)' }}>
+              {children}
+            </main>
+            <Footer />
+          </EnquiryCartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

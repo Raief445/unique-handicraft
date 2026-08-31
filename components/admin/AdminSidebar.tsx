@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import styles from "./AdminSidebar.module.css";
-import { LayoutDashboard, Armchair, Folders, ClipboardList, Users } from "lucide-react";
+import { LayoutDashboard, Armchair, Folders, ClipboardList, Users, MessageSquare } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
   { href: "/admin/products", label: "Products", icon: <Armchair size={20} /> },
   { href: "/admin/categories", label: "Categories", icon: <Folders size={20} /> },
   { href: "/admin/enquiries", label: "Enquiries", icon: <ClipboardList size={20} /> },
+  { href: "/admin/messages", label: "Messages", icon: <MessageSquare size={20} /> },
   { href: "/admin/customers", label: "Customers", icon: <Users size={20} /> },
 ];
 
