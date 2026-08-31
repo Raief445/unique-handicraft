@@ -18,7 +18,11 @@ async function main() {
   fs.copyFileSync(sourceFile, destFile);
   console.log("Image copied to:", destFile);
 
-  const productId = "cmtd5vzc40001l0g3v6m2q8jy"; // Round Fluted Base Marble Top Coffee Table
+  const product = await prisma.product.findUnique({
+    where: { productCode: "CT-MRB-FLT-001" }
+  });
+  if (!product) return;
+  const productId = product.id;
 
   // Delete existing images for this product to prevent duplicates
   await prisma.productImage.deleteMany({
