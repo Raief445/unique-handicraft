@@ -23,8 +23,8 @@ export default async function ProductsPage({
 
   if (search) {
     whereClause.OR = [
-      { name: { contains: search } }, // Case insensitive in SQLite via PRAGMA, but Prisma contains is CS in SQLite unless tweaked, so we keep it simple
-      { productCode: { contains: search } },
+      { name: { contains: search, mode: "insensitive" } },
+      { productCode: { contains: search, mode: "insensitive" } },
     ];
   }
 
