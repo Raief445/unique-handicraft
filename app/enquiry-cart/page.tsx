@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useEnquiryCart } from "@/components/EnquiryCartContext";
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function EnquiryCartPage() {
@@ -41,9 +42,11 @@ export default function EnquiryCartPage() {
           {items.map((item) => (
             <div key={item.productId} className={styles.cartItem}>
               <div className={styles.productInfo}>
-                <img
+                <Image
                   src={item.image || "https://placehold.co/120x90/F0EEE9/3A2F28?text=No+Image"}
                   alt={item.name}
+                  width={80}
+                  height={70}
                   className={styles.productImage}
                 />
                 <div>

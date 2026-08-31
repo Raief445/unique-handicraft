@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import styles from "../app/products/[id]/product.module.css";
 
 type ProductGalleryProps = {
@@ -24,7 +25,14 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
   return (
     <div className={styles.gallery}>
       <div className={styles.mainImageWrapper}>
-        <img src={allImages[currentIndex].imageUrl} alt={productName} className={styles.mainImage} />
+        <Image 
+          src={allImages[currentIndex].imageUrl} 
+          alt={productName} 
+          fill 
+          priority 
+          sizes="(max-width: 1024px) 100vw, 50vw" 
+          className={styles.mainImage} 
+        />
         {allImages.length > 1 && (
           <>
             <button className={`${styles.navButton} ${styles.prevButton}`} onClick={handlePrev}>
@@ -39,10 +47,12 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
       {galleryImages.length > 0 && (
         <div className={styles.thumbnails}>
           {allImages.map((img, index) => (
-            <img
+            <Image
               key={img.id}
               src={img.imageUrl}
               alt={productName}
+              width={80}
+              height={80}
               className={`${styles.thumb} ${currentIndex === index ? styles.activeThumb : ""}`}
               onClick={() => setCurrentIndex(index)}
             />

@@ -44,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className={styles.card}>
       <Link href={`/products/${product.id}`} className={styles.cardLink}>
         <div className={styles.imageContainer}>
-          <img src={product.mainImage} alt={product.name} className={styles.image} />
+          <Image src={product.mainImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={styles.image} />
         </div>
         <div className={styles.content}>
           <h3 className={styles.title}>{product.name}</h3>

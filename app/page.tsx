@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import prisma from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -59,7 +60,7 @@ export default async function Home() {
     <div>
       <section className={styles.hero}>
         <div className={styles.heroBackground}>
-          <img src={mainHeroImage} alt="Unique Timber & Handicraft" className={styles.heroImgFitted} />
+          <Image src={mainHeroImage} alt="Unique Timber & Handicraft" fill priority sizes="100vw" className={styles.heroImgFitted} />
         </div>
         <div className={`container ${styles.heroContent}`}>
           <ScrollReveal direction="up" delay={0}>
@@ -112,9 +113,11 @@ export default async function Home() {
                 <ScrollReveal key={cat.id} delay={index * 100} direction="up">
                   <Link href={`/products?category=${cat.id}`} className={styles.categoryCard}>
                     <div className={styles.catImageWrapper}>
-                      <img
+                      <Image
                         src={cat.image || fallbackSvg}
                         alt={cat.name}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                         className={styles.catImgFitted}
                       />
                     </div>
