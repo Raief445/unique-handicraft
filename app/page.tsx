@@ -145,7 +145,7 @@ export default async function Home() {
             <div className={styles.productsGrid}>
               {formattedProducts.map((product, index) => (
                 <ScrollReveal key={product.id} delay={index * 100} direction="up">
-                  <ProductCard product={product} />
+                  <ProductCard product={product} priority={index < 4} />
                 </ScrollReveal>
               ))}
             </div>

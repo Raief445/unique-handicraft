@@ -18,9 +18,10 @@ type ProductCardProps = {
     dimensionUnit: string | null;
     material: string | null;
   };
+  priority?: boolean;
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, priority = false }: ProductCardProps) {
   const { addItem } = useEnquiryCart();
 
   const handleAddToEnquiry = (e: React.MouseEvent) => {
@@ -44,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className={styles.card}>
       <Link href={`/products/${product.id}`} className={styles.cardLink}>
         <div className={styles.imageContainer}>
-          <Image src={product.mainImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={styles.image} />
+          <Image src={product.mainImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority={priority} className={styles.image} />
         </div>
         <div className={styles.content}>
           <h3 className={styles.title}>{product.name}</h3>

@@ -122,8 +122,8 @@ export default async function ProductsPage({
             </div>
           ) : (
             <div className={styles.productsGrid}>
-              {formattedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {formattedProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} priority={index < 4} />
               ))}
             </div>
           )}

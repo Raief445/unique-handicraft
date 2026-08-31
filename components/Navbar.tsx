@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Search, ShoppingBag, ChevronDown, Menu, X } from "lucide-react";
 import { useEnquiryCart } from "./EnquiryCartContext";
@@ -21,7 +22,7 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
       <div className={styles.navbar}>
         <div className={styles.logo}>
           <Link href="/">
-            <img src="https://i.postimg.cc/Vs46MpNq/logo.png" alt="Unique Timber & Handicraft Logo" className={styles.logoImage} />
+            <Image src="https://i.postimg.cc/Vs46MpNq/logo.png" alt="Unique Timber & Handicraft Logo" width={250} height={50} priority className={styles.logoImage} />
           </Link>
         </div>
         <nav className={styles.navLinks}>
