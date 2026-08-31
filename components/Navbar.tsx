@@ -49,6 +49,7 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
           <Link href="/about">About</Link>
           <Link href="/capabilities">Capabilities</Link>
           <Link href="/custom-manufacturing">Custom Manufacturing</Link>
+          <Link href="/track-enquiry">Track Enquiry</Link>
           <Link href="/contact">Contact</Link>
           {isAdmin && <Link href="/admin" className={styles.adminLink}>Admin Panel</Link>}
         </nav>
@@ -89,6 +90,7 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
             <Link href="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
             <Link href="/capabilities" onClick={() => setMobileMenuOpen(false)}>Capabilities</Link>
             <Link href="/custom-manufacturing" onClick={() => setMobileMenuOpen(false)}>Custom Manufacturing</Link>
+            <Link href="/track-enquiry" onClick={() => setMobileMenuOpen(false)}>Track Enquiry</Link>
             <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
             {isAdmin && <Link href="/admin" className={styles.adminLink} onClick={() => setMobileMenuOpen(false)}>Admin Panel</Link>}
           </nav>

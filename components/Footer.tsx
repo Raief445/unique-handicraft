@@ -28,6 +28,7 @@ export default function Footer() {
               <li><Link href="/products">Products</Link></li>
               <li><Link href="/capabilities">Capabilities</Link></li>
               <li><Link href="/custom-manufacturing">Custom Manufacturing</Link></li>
+              <li><Link href="/track-enquiry">Track Enquiry</Link></li>
             </ul>
           </div>
         </div>
