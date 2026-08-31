@@ -1,0 +1,130 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  padding: 1rem;
+  overflow: hidden;
+  text-decoration: none;
+  position: relative;
+  background: var(--color-surface);
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardLink:hover {
+  color: inherit;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #F0EEE9;
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  flex-grow: 1;
+}
+
+.title {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.code {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  margin-top: auto;
+}
+
+.specs {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  margin-bottom: 1.5rem;
+}
+
+.specs p {
+  margin-bottom: 0.2rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.viewBtn, .addBtn {
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.viewBtn {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.viewBtn:hover {
+  border-color: var(--color-primary);
+}
+
+.addBtn {
+  background: var(--color-text);
+  color: white;
+  border: 1px solid var(--color-text);
+}
+
+.addBtn:hover {
+  background: transparent;
+  color: var(--color-text);
+}

@@ -1,0 +1,111 @@
+.actionsContainer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.quantityWrapper {
+  margin-bottom: var(--spacing-md);
+}
+
+.quantityWrapper label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-light);
+  margin-bottom: 0.75rem;
+}
+
+.qtyControl {
+  display: flex;
+  align-items: center;
+  max-width: 150px;
+  background: transparent;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.qtyControl button {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  transition: color var(--transition-fast);
+  border: none;
+  cursor: pointer;
+}
+
+.qtyControl button:hover {
+  color: var(--color-primary);
+}
+
+.qtyControl input {
+  flex-grow: 1;
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.qtyControl input:focus {
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.primaryBtn, .secondaryBtn {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  border: 1px solid var(--color-text);
+}
+
+.primaryBtn {
+  background-color: var(--color-text);
+  color: white;
+}
+
+.primaryBtn:hover {
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.secondaryBtn {
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.secondaryBtn:hover {
+  border-color: var(--color-primary);
+}
+
+.successMsg {
+  margin-top: var(--spacing-md);
+  color: var(--color-success);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.successMsg a {
+  text-decoration: underline;
+  margin-left: var(--spacing-xs);
+}

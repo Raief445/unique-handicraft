@@ -1,0 +1,116 @@
+.pageWrapper {
+  padding: var(--spacing-xl) 0;
+}
+
+.header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.header h1 {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.layout {
+  display: flex;
+  gap: var(--spacing-xxl);
+}
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.filterGroup {
+  margin-bottom: 3rem;
+}
+
+.filterGroup h3 {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-light);
+  margin-bottom: 1rem;
+}
+
+.searchForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.searchInput {
+  padding: 0.75rem 0;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.categoryList {
+  list-style: none;
+  padding: 0;
+}
+
+.categoryList li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.categoryList a {
+  display: block;
+  color: var(--color-text);
+  padding: 0.25rem 0;
+  font-size: 0.95rem;
+  transition: color var(--transition-fast);
+}
+
+.categoryList a:hover, .categoryList a.active {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-xxl) 0;
+  background: var(--color-surface);
+  border-radius: var(--border-radius-md);
+  border: 1px dashed var(--color-border);
+}
+
+@media (max-width: 992px) {
+  .layout {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  .sidebar {
+    width: 100%;
+  }
+}
