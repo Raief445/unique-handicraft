@@ -34,11 +34,27 @@
 .navItem {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  justify-content: space-between;
   padding: 0.75rem var(--spacing-lg);
   color: #D5CEC4;
   font-size: 0.9rem;
   transition: all var(--transition-fast);
+}
+
+.navItemContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.badge {
+  background-color: #E53935;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  line-height: 1;
 }
 
 .navItem:hover {
