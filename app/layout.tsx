@@ -7,6 +7,18 @@ import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
 import EnquiryCartDrawer from "@/components/EnquiryCartDrawer";
 import prisma from "@/lib/db";
+import { unstable_cache } from "next/cache";
+
+const getCachedCategories = unstable_cache(
+  async () => {
+    return await prisma.category.findMany({
+      orderBy: { name: 'asc' },
+      select: { id: true, name: true }
+    });
+  },
+  ['layout-categories'],
+  { revalidate: 600 }
+);
 
 export const metadata: Metadata = {
   title: "Unique Timber & Handicraft | Furniture & Handicrafts Jodhpur",
@@ -18,10 +30,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const categories = await prisma.category.findMany({
-    orderBy: { name: 'asc' },
-    select: { id: true, name: true }
-  });
+  const categories = await getCachedCategories();
 
   return (
     <html lang="en">

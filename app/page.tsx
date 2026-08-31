@@ -6,8 +6,8 @@ import ScrollReveal from "@/components/ScrollReveal";
 import styles from "./page.module.css";
 import { ArrowRight } from "lucide-react";
 
-// Force dynamic rendering since we want products to update live when admin adds them
-export const dynamic = "force-dynamic";
+// Cache the page and revalidate every 60 seconds (ISR) for instant loading
+export const revalidate = 60;
 
 export default async function Home() {
   // Fetch categories
