@@ -45,11 +45,16 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
           fill 
           priority 
           sizes="(max-width: 1024px) 100vw, 50vw" 
-          className={styles.mainImage} 
+          className={styles.mainImage}
+          onClick={() => setIsLightboxOpen(true)}
+          style={{ cursor: 'zoom-in' }}
         />
         <button 
           className={styles.zoomBtn} 
-          onClick={() => setIsLightboxOpen(true)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsLightboxOpen(true);
+          }}
           aria-label="Zoom Image"
         >
           <ZoomIn size={20} strokeWidth={2} />
