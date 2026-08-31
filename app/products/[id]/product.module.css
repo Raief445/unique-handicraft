@@ -97,6 +97,7 @@
   border: 1px solid transparent;
   cursor: pointer;
   transition: border-color var(--transition-fast);
+  background-color: #F8F6F3;
 }
 
 .thumb:hover {
