@@ -19,6 +19,11 @@ export default function EnquiryCartPage() {
           <h2>Your Enquiry Cart is Empty</h2>
           <p>Browse our product catalogue and add items to your enquiry.</p>
           <Link href="/products" className="btn-primary mt-3">Browse Products</Link>
+          <div style={{ marginTop: '1.5rem' }}>
+            <Link href="/track-enquiry" style={{ color: 'var(--color-primary)', textDecoration: 'underline', fontSize: '0.9rem' }}>
+              Already submitted an enquiry? Track it here.
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -115,6 +120,11 @@ export default function EnquiryCartPage() {
             >
               Clear All
             </button>
+            <div style={{ marginTop: '1.5rem', textAlign: 'center', paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>
+              <Link href="/track-enquiry" style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', textDecoration: 'underline' }}>
+                Track an existing enquiry
+              </Link>
+            </div>
           </div>
         </div>
       </div>
