@@ -7,11 +7,11 @@ async function main() {
   console.log("Starting seed...");
 
   // 1. Create Admin User
-  const adminEmail = "admin@uniquetimber.com";
+  const adminEmail = "raiefbelim450@gmail.com";
   const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
 
   if (!existingAdmin) {
-    const hashedPassword = await bcrypt.hash("Admin@123", 10);
+    const hashedPassword = await bcrypt.hash("heyraief@123", 10);
     await prisma.user.create({
       data: {
         name: "Admin",
@@ -20,7 +20,7 @@ async function main() {
         role: "ADMIN",
       },
     });
-    console.log("Admin user created (admin@uniquetimber.com / Admin@123)");
+    console.log("Admin user created (raiefbelim450@gmail.com / heyraief@123)");
   } else {
     console.log("Admin user already exists.");
   }
