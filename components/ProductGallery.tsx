@@ -91,10 +91,10 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
     {/* Lightbox Modal */}
     {isLightboxOpen && (
       <div className={styles.lightbox} onClick={() => setIsLightboxOpen(false)}>
-        <button className={styles.lightboxClose} onClick={() => setIsLightboxOpen(false)} aria-label="Close Lightbox">
-          <X size={32} />
-        </button>
         <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+          <button className={styles.lightboxClose} onClick={() => setIsLightboxOpen(false)} aria-label="Close Lightbox">
+            <X size={24} />
+          </button>
           <Image 
             src={allImages[currentIndex].imageUrl} 
             alt={productName} 
