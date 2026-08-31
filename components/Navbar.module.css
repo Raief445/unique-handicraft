@@ -161,8 +161,88 @@
   color: var(--color-primary);
 }
 
+.hamburgerBtn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  padding: 0;
+  margin-left: 0.5rem;
+}
+
+.mobileMenu {
+  display: none;
+}
+
 @media (max-width: 992px) {
+  .header {
+    position: relative; /* Make it non-sticky on mobile */
+  }
+
   .navLinks {
     display: none;
   }
+  
+  .hamburgerBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cartText {
+    display: none; /* Hide "Enquiry Cart" text on mobile, keep icon */
+  }
+
+  .mobileMenu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+  }
+
+  .mobileNavLinks {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+  }
+
+  .mobileNavLinks > a,
+  .mobileDropdownTitle {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .mobileNavLinks > a:last-child {
+    border-bottom: none;
+  }
+
+  .mobileDropdownList {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background);
+  }
+
+  .mobileDropdownList a {
+    padding: 0.75rem 2rem 0.75rem 3rem;
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobileDropdownList a:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
 }
+

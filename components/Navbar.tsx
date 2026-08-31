@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Search, ShoppingBag, ChevronDown } from "lucide-react";
+import { Search, ShoppingBag, ChevronDown, Menu, X } from "lucide-react";
 import { useEnquiryCart } from "./EnquiryCartContext";
 import styles from "./Navbar.module.css";
 import { useState } from "react";
@@ -14,6 +14,7 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
   const { itemCount, openCart } = useEnquiryCart();
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className={styles.header}>
@@ -59,11 +60,39 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
           )}
           <button onClick={openCart} className={styles.cartIcon} aria-label="Enquiry Cart">
             <ShoppingBag size={18} strokeWidth={1.5} />
-            <span>Enquiry Cart</span>
+            <span className={styles.cartText}>Enquiry Cart</span>
             {itemCount > 0 && <span className={styles.badge}>{itemCount}</span>}
+          </button>
+          <button className={styles.hamburgerBtn} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle Menu">
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className={styles.mobileMenu}>
+          <nav className={styles.mobileNavLinks}>
+            <Link href="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <div className={styles.mobileDropdown}>
+              <div className={styles.mobileDropdownTitle}>Products</div>
+              <div className={styles.mobileDropdownList}>
+                <Link href="/products" onClick={() => setMobileMenuOpen(false)}>All Products</Link>
+                {categories.map(cat => (
+                  <Link key={cat.id} href={`/products?category=${cat.id}`} onClick={() => setMobileMenuOpen(false)}>
+                    - {cat.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
+            <Link href="/capabilities" onClick={() => setMobileMenuOpen(false)}>Capabilities</Link>
+            <Link href="/custom-manufacturing" onClick={() => setMobileMenuOpen(false)}>Custom Manufacturing</Link>
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+            {isAdmin && <Link href="/admin" className={styles.adminLink} onClick={() => setMobileMenuOpen(false)}>Admin Panel</Link>}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
