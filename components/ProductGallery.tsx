@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { ZoomIn, X } from "lucide-react";
 import styles from "../app/products/[id]/product.module.css";
 
 type ProductGalleryProps = {
@@ -13,6 +14,19 @@ type ProductGalleryProps = {
 export default function ProductGallery({ mainImage, productName, galleryImages }: ProductGalleryProps) {
   const allImages = [{ id: "main-thumb", imageUrl: mainImage }, ...galleryImages];
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  // Prevent body scroll when lightbox is open
+  useEffect(() => {
+    if (isLightboxOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isLightboxOpen]);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
@@ -33,6 +47,13 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
           sizes="(max-width: 1024px) 100vw, 50vw" 
           className={styles.mainImage} 
         />
+        <button 
+          className={styles.zoomBtn} 
+          onClick={() => setIsLightboxOpen(true)}
+          aria-label="Zoom Image"
+        >
+          <ZoomIn size={20} strokeWidth={2} />
+        </button>
         {allImages.length > 1 && (
           <>
             <button className={`${styles.navButton} ${styles.prevButton}`} onClick={handlePrev}>
@@ -57,6 +78,24 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
               onClick={() => setCurrentIndex(index)}
             />
           ))}
+        </div>
+      )}
+
+      {/* Lightbox Modal */}
+      {isLightboxOpen && (
+        <div className={styles.lightbox} onClick={() => setIsLightboxOpen(false)}>
+          <button className={styles.lightboxClose} onClick={() => setIsLightboxOpen(false)} aria-label="Close Lightbox">
+            <X size={32} />
+          </button>
+          <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+            <Image 
+              src={allImages[currentIndex].imageUrl} 
+              alt={productName} 
+              fill 
+              sizes="100vw"
+              style={{ objectFit: 'contain' }} 
+            />
+          </div>
         </div>
       )}
     </div>
