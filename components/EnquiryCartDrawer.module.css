@@ -24,7 +24,8 @@
   right: -450px;
   width: 100%;
   max-width: 450px;
-  height: 100vh;
+  height: 100%;
+  height: 100dvh;
   background-color: var(--color-surface);
   z-index: 1001;
   box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
