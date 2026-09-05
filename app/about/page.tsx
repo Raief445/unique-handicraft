@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata = {
   title: "About Us | Unique Timber & Handicraft",
-  description: "Learn about Unique Timber & Handicraft, a Jodhpur-based handicraft and furniture manufacturer working since 2019.",
+  description: "Learn about Unique Timber & Handicraft, a Jodhpur-based handicraft and furniture manufacturer working since 2015.",
 };
 
 export default function AboutPage() {
@@ -13,7 +13,7 @@ export default function AboutPage() {
       <div className={styles.hero}>
         <div className={`container ${styles.heroContent}`}>
           <h1>About Unique Timber & Handicraft</h1>
-          <p>Jodhpur, Rajasthan, India · Working Since 2019</p>
+          <p>Jodhpur, Rajasthan, India · Working Since 2015</p>
         </div>
       </div>
 
@@ -24,7 +24,7 @@ export default function AboutPage() {
             <div className={styles.textContent}>
               <h2>Our Story</h2>
               <p>
-                Unique Timber & Handicraft was established in 2019 in Jodhpur, Rajasthan — a city
+                Unique Timber & Handicraft was established in 2015 in Jodhpur, Rajasthan — a city
                 historically renowned for its exceptional woodcraft and artisanal traditions.
               </p>
               <p>
@@ -39,7 +39,7 @@ export default function AboutPage() {
             </div>
             <div className={styles.highlightBox}>
               <div className={styles.stat}>
-                <strong>2019</strong>
+                <strong>2015</strong>
                 <span>Established</span>
               </div>
               <div className={styles.stat}>

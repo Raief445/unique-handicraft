@@ -8,7 +8,7 @@ export default function Footer() {
         <div className={styles.footerBrand}>
           <h3>Unique Timber & Handicraft</h3>
           <p>Jodhpur, Rajasthan, India</p>
-          <p>Working Since: 2019</p>
+          <p>Working Since: 2015</p>
           <a href="mailto:uniquetimberhandicraftjodhpur@gmail.com" className={styles.footerEmail}>
             uniquetimberhandicraftjodhpur@gmail.com
           </a>

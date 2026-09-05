@@ -22,7 +22,7 @@ const getCachedCategories = unstable_cache(
 
 export const metadata: Metadata = {
   title: "Unique Timber & Handicraft | Furniture & Handicrafts Jodhpur",
-  description: "Jodhpur-based furniture and handicraft manufacturing since 2019, providing premium furniture and handicrafts.",
+  description: "Jodhpur-based furniture and handicraft manufacturing since 2015, providing premium furniture and handicrafts.",
 };
 
 export default async function RootLayout({
