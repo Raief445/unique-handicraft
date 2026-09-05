@@ -11,8 +11,8 @@ interface StatItemProps {
   prefersReducedMotion: boolean;
 }
 
-const easeOutExpo = (t: number): number => {
-  return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const easeOutCubic = (t: number): number => {
+  return 1 - Math.pow(1 - t, 3);
 };
 
 const StatCard = ({ endValue, suffix, label, inView, prefersReducedMotion }: StatItemProps) => {
@@ -27,13 +27,13 @@ const StatCard = ({ endValue, suffix, label, inView, prefersReducedMotion }: Sta
     }
 
     let startTime: number | null = null;
-    const duration = 1500; // 1.5 seconds
+    const duration = 1200; // 1.2 seconds for snappier finish
     
     const animate = (currentTime: number) => {
       if (!startTime) startTime = currentTime;
       const progress = Math.min((currentTime - startTime) / duration, 1);
       
-      const currentCount = Math.floor(easeOutExpo(progress) * endValue);
+      const currentCount = Math.floor(easeOutCubic(progress) * endValue);
       setCount(currentCount);
 
       if (progress < 1) {
