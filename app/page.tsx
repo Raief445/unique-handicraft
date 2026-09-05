@@ -3,6 +3,7 @@ import Image from "next/image";
 import prisma from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
 import ScrollReveal from "@/components/ScrollReveal";
+import PremiumStats from "@/components/PremiumStats";
 import styles from "./page.module.css";
 import { ArrowRight } from "lucide-react";
 
@@ -98,6 +99,8 @@ export default async function Home() {
           </ScrollReveal>
         </div>
       </section>
+
+      <PremiumStats />
 
       {categories.length > 0 && (
         <section className={styles.categoriesSection}>
