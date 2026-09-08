@@ -40,16 +40,25 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
     <>
       <div className={styles.gallery}>
       <div className={styles.mainImageWrapper}>
-        <Image 
-          src={allImages[currentIndex].imageUrl} 
-          alt={productName} 
-          fill 
-          priority 
-          sizes="(max-width: 1024px) 100vw, 50vw" 
-          className={styles.mainImage}
-          onClick={() => setIsLightboxOpen(true)}
-          style={{ cursor: 'zoom-in' }}
-        />
+        {allImages.map((img, index) => (
+          <Image 
+            key={img.id}
+            src={img.imageUrl} 
+            alt={`${productName} - Image ${index + 1}`} 
+            fill 
+            priority={index === 0} 
+            sizes="(max-width: 1024px) 100vw, 50vw" 
+            className={styles.mainImage}
+            onClick={() => setIsLightboxOpen(true)}
+            style={{ 
+              cursor: 'zoom-in',
+              opacity: currentIndex === index ? 1 : 0,
+              visibility: currentIndex === index ? 'visible' : 'hidden',
+              transition: 'opacity 0.3s ease-in-out, visibility 0.3s',
+              zIndex: currentIndex === index ? 1 : 0
+            }}
+          />
+        ))}
         <button 
           className={styles.zoomBtn} 
           onClick={(e) => {
