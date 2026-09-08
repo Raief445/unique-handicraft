@@ -11,11 +11,11 @@ import { ArrowRight } from "lucide-react";
 export const revalidate = 60;
 
 export default async function Home() {
-  // Fetch categories, excluding Stools from the home page
+  // Fetch categories, excluding Mirror Frames from the home page
   const categories = await prisma.category.findMany({
     where: { 
       status: "ACTIVE",
-      name: { not: "Stools" }
+      name: { not: "Mirror Frames" }
     },
     orderBy: { displayOrder: "asc" },
   });
@@ -70,7 +70,7 @@ export default async function Home() {
           <ScrollReveal direction="up" delay={0}>
             <h1>The Heritage of Jodhpur. Handcrafted for the World.</h1>
           </ScrollReveal>
-          
+
           <ScrollReveal direction="up" delay={150}>
             <div className={styles.heroTags}>
               <span>Jodhpur, Rajasthan</span>
@@ -129,7 +129,7 @@ export default async function Home() {
                     </div>
                     <div className={styles.catInfo}>
                       <h3>{cat.name}</h3>
-                      <span className={styles.exploreLink} style={{display: 'flex', alignItems: 'center', gap: '4px'}}>Explore Collection <ArrowRight size={14} /></span>
+                      <span className={styles.exploreLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>Explore Collection <ArrowRight size={14} /></span>
                     </div>
                   </Link>
                 </ScrollReveal>
