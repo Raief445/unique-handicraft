@@ -47,14 +47,14 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
             alt={`${productName} - Image ${index + 1}`} 
             fill 
             priority={index === 0} 
+            loading={index === 0 ? undefined : "eager"}
             sizes="(max-width: 1024px) 100vw, 50vw" 
             className={styles.mainImage}
             onClick={() => setIsLightboxOpen(true)}
             style={{ 
               cursor: 'zoom-in',
               opacity: currentIndex === index ? 1 : 0,
-              visibility: currentIndex === index ? 'visible' : 'hidden',
-              transition: 'opacity 0.3s ease-in-out, visibility 0.3s',
+              transition: 'opacity 0.3s ease-in-out',
               zIndex: currentIndex === index ? 1 : 0
             }}
           />
