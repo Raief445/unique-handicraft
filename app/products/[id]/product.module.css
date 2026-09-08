@@ -81,6 +81,7 @@
   height: 100% !important;
   object-fit: contain !important;
   display: block;
+  mix-blend-mode: darken;
 }
 
 .thumbnails {
@@ -93,11 +94,12 @@
 .thumb {
   width: 80px;
   height: 80px;
-  object-fit: cover;
+  object-fit: contain;
   border: 1px solid transparent;
   cursor: pointer;
   transition: border-color var(--transition-fast);
   background-color: #F8F6F3;
+  mix-blend-mode: darken;
 }
 
 .thumb:hover {
