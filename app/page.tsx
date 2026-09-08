@@ -11,11 +11,10 @@ import { ArrowRight } from "lucide-react";
 export const revalidate = 60;
 
 export default async function Home() {
-  // Fetch categories, excluding Mirror Frames from the home page
+  // Fetch categories
   const categories = await prisma.category.findMany({
     where: { 
-      status: "ACTIVE",
-      name: { not: "Mirror Frames" }
+      status: "ACTIVE"
     },
     orderBy: { displayOrder: "asc" },
   });
