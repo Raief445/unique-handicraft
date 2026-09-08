@@ -47,7 +47,6 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
             alt={`${productName} - Image ${index + 1}`} 
             fill 
             priority={index === 0} 
-            loading={index === 0 ? undefined : "eager"}
             sizes="(max-width: 1024px) 100vw, 50vw" 
             className={styles.mainImage}
             onClick={() => setIsLightboxOpen(true)}
@@ -118,6 +117,7 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
           alt={productName} 
           fill 
           sizes="100vw"
+          unoptimized={true}
           style={{ objectFit: 'contain' }} 
         />
       </div>
