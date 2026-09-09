@@ -31,6 +31,7 @@ model Category {
   description  String?
   image        String?
   status       String    @default("ACTIVE") // "ACTIVE", "ARCHIVED"
+  showOnHome   Boolean   @default(true)
   displayOrder Int       @default(0)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

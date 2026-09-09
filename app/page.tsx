@@ -14,7 +14,8 @@ export default async function Home() {
   // Fetch categories
   const categories = await prisma.category.findMany({
     where: { 
-      status: "ACTIVE"
+      status: "ACTIVE",
+      showOnHome: true
     },
     orderBy: { displayOrder: "asc" },
   });

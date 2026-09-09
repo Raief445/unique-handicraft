@@ -11,6 +11,7 @@ type Category = {
   description: string | null;
   displayOrder: number;
   status: string;
+  showOnHome: boolean;
   image: string | null;
 };
 
@@ -24,6 +25,7 @@ export default function CategoryForm({ category }: { category: Category | null }
     description: category?.description || "",
     displayOrder: category?.displayOrder?.toString() || "0",
     status: category?.status || "ACTIVE",
+    showOnHome: category?.showOnHome ?? true,
   });
 
   const [imageUrl, setImageUrl] = useState<string>(category?.image || "");
@@ -31,8 +33,9 @@ export default function CategoryForm({ category }: { category: Category | null }
   const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const target = e.target as HTMLInputElement;
+    const { name, value, type, checked } = target;
+    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
   const generateSlug = () => {
@@ -114,6 +117,18 @@ export default function CategoryForm({ category }: { category: Category | null }
                 <option value="INACTIVE">Inactive</option>
               </select>
             </div>
+          </div>
+          <div className={styles.field}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+              <input 
+                type="checkbox" 
+                name="showOnHome" 
+                checked={form.showOnHome} 
+                onChange={handleChange} 
+                style={{ width: 'auto' }}
+              />
+              Show on Home Page
+            </label>
           </div>
           <div className={styles.field}>
             <label>Category Image URL</label>

@@ -19,6 +19,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     const displayOrder = formData.get("displayOrder") as string;
     const status = formData.get("status") as string;
     const imageUrl = formData.get("imageUrl") as string | null;
+    const showOnHome = formData.get("showOnHome") === "true";
 
     const dataToUpdate: any = {
       name,
@@ -26,6 +27,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       description: description || null,
       displayOrder: parseInt(displayOrder) || 0,
       status: status || "ACTIVE",
+      showOnHome,
       image: imageUrl && imageUrl.trim() !== "" ? imageUrl.trim() : null,
     };
 

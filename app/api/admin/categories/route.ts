@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     const displayOrder = formData.get("displayOrder") as string;
     const status = formData.get("status") as string;
     const imageUrl = formData.get("imageUrl") as string | null;
+    const showOnHome = formData.get("showOnHome") === "true";
 
     if (!name || !slug) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -31,6 +32,7 @@ export async function POST(req: NextRequest) {
         description: description || null,
         displayOrder: parseInt(displayOrder) || 0,
         status: status || "ACTIVE",
+        showOnHome,
         image: imageUrl,
       },
     });
