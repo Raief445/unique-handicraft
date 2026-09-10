@@ -117,7 +117,7 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
           alt={productName} 
           fill 
           sizes="100vw"
-          unoptimized={true}
+          priority={true}
           style={{ objectFit: 'contain' }} 
         />
       </div>
