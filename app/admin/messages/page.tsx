@@ -1,4 +1,5 @@
 import prisma from "@/lib/db";
+import MessageDeleteButton from "@/components/admin/MessageDeleteButton";
 
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,7 @@ export default async function AdminMessagesPage() {
                 <th style={{ padding: "1rem", color: "var(--text-secondary)", fontWeight: 500 }}>Company</th>
                 <th style={{ padding: "1rem", color: "var(--text-secondary)", fontWeight: 500 }}>Subject</th>
                 <th style={{ padding: "1rem", color: "var(--text-secondary)", fontWeight: 500 }}>Contact Info</th>
+                <th style={{ padding: "1rem", color: "var(--text-secondary)", fontWeight: 500 }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -46,6 +48,9 @@ export default async function AdminMessagesPage() {
                   <td style={{ padding: "1rem" }}>
                     <div style={{ fontSize: "0.9rem" }}><a href={`mailto:${msg.email}`}>{msg.email}</a></div>
                     {msg.phone && <div style={{ fontSize: "0.9rem", marginTop: "0.25rem" }}>{msg.phone}</div>}
+                  </td>
+                  <td style={{ padding: "1rem" }}>
+                    <MessageDeleteButton messageId={msg.id} />
                   </td>
                 </tr>
               ))}
