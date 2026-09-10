@@ -113,10 +113,11 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
           <X size={24} />
         </button>
         <Image 
+          key={allImages[currentIndex].id}
           src={allImages[currentIndex].imageUrl} 
           alt={productName} 
           fill 
-          sizes="100vw"
+          sizes="(max-width: 1024px) 100vw, 50vw"
           priority={true}
           style={{ objectFit: 'contain' }} 
         />
