@@ -169,6 +169,12 @@
   }
 }
 
+@media (max-width: 992px) {
+  .navLinks {
+    display: none;
+  }
+}
+
 .mobileMenu {
   position: fixed;
   top: 73px;

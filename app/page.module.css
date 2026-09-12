@@ -252,6 +252,10 @@
 }
 
 @media (max-width: 768px) {
+  .heroContent {
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
   .hero h1 {
     font-size: 2.25rem;
   }
