@@ -222,8 +222,7 @@
   }
   
   .cartText {
-    font-size: 1rem;
-    border-bottom: 1px solid var(--color-border);
+    display: none;
   }
 
   .mobileDropdownList a:last-child {
