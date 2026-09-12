@@ -103,8 +103,9 @@
     bottom: 5%;
     left: 25px;
     right: auto;
-    width: 1px;
+    width: 2px;
     height: 90%;
+    background: linear-gradient(180deg, rgba(74,53,37,0) 0%, rgba(74,53,37,0.8) 20%, rgba(74,53,37,0.8) 80%, rgba(74,53,37,0) 100%);
   }
   
   .step {

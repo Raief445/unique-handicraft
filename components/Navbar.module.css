@@ -211,6 +211,10 @@
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0 1.5rem;
+  }
+  
   .cartText {
     font-size: 1rem;
     border-bottom: 1px solid var(--color-border);
