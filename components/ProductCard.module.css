@@ -34,8 +34,9 @@
   left: 0;
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 1rem;
 }
 
 .card:hover .image {
