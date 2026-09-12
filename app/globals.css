@@ -19,9 +19,9 @@
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
-  --spacing-lg: 2.5rem;
-  --spacing-xl: 4rem;
-  --spacing-xxl: 6rem; /* Increased spacing for editorial feel */
+  --spacing-lg: 3rem;
+  --spacing-xl: 5rem;
+  --spacing-xxl: 8rem; /* Increased spacing for editorial feel */
 
   --border-radius-sm: 0px; /* Sharp corners for premium look */
   --border-radius-md: 2px;

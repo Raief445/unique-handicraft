@@ -25,11 +25,11 @@
 .processContainer::before {
   content: "";
   position: absolute;
-  top: 15px;
+  top: 6px; /* align with 12px dot */
   left: 5%;
   right: 5%;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(74,53,37,0) 0%, rgba(74,53,37,0.8) 20%, rgba(74,53,37,0.8) 80%, rgba(74,53,37,0) 100%);
+  height: 1px;
+  background: var(--color-border);
   z-index: 0;
 }
 
@@ -45,35 +45,22 @@
 }
 
 .dot {
-  width: 32px;
-  height: 32px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background-color: var(--color-surface);
-  border: 2px solid #4A3525; /* Dark Brown Accent */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: var(--color-primary);
   margin-bottom: var(--spacing-md);
   transition: all var(--transition-normal);
-  box-shadow: 0 0 0 4px var(--color-surface);
+  position: relative;
 }
 
 .step:hover .dot {
-  background-color: #4A3525;
-  transform: scale(1.1);
-  box-shadow: 0 0 15px rgba(74, 53, 37, 0.4);
+  transform: scale(1.5);
+  background-color: var(--color-secondary);
 }
 
 .dotInner {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #4A3525;
-  transition: all var(--transition-normal);
-}
-
-.step:hover .dotInner {
-  background-color: var(--color-surface);
+  display: none;
 }
 
 .stepNumber {

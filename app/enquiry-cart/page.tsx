@@ -16,9 +16,9 @@ export default function EnquiryCartPage() {
           <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <h2>Your Enquiry Cart is Empty</h2>
-          <p>Browse our product catalogue and add items to your enquiry.</p>
-          <Link href="/products" className="btn-primary mt-3">Browse Products</Link>
+          <h2>Your Project List is Empty</h2>
+          <p>Browse our catalogue and add items to your project requirements.</p>
+          <Link href="/products" className="btn-primary mt-3">Explore Collection</Link>
           <div style={{ marginTop: '1.5rem' }}>
             <Link href="/track-enquiry" style={{ color: 'var(--color-primary)', textDecoration: 'underline', fontSize: '0.9rem' }}>
               Already submitted an enquiry? Track it here.
@@ -32,8 +32,8 @@ export default function EnquiryCartPage() {
   return (
     <div className={`container ${styles.wrapper}`}>
       <div className={styles.header}>
-        <h1>Your Enquiry Cart</h1>
-        <p>{items.length} product{items.length !== 1 ? "s" : ""} selected for enquiry</p>
+        <h1>Project Requirements</h1>
+        <p>{items.length} product{items.length !== 1 ? "s" : ""} selected for your project.</p>
       </div>
 
       <div className={styles.layout}>
