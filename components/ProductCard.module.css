@@ -134,4 +134,21 @@
   .image {
     padding: 1rem;
   }
+  
+  .title {
+    font-size: 1rem;
+  }
+  
+  .code {
+    font-size: 0.65rem;
+  }
+  
+  .specs {
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .content {
+    padding: 1rem 0 0.5rem 0;
+  }
 }

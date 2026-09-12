@@ -57,13 +57,23 @@
 
 @media (max-width: 600px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-md);
   }
   .card {
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-sm) 0;
   }
   .title {
     font-size: 2rem;
+  }
+  .cardTitle {
+    font-size: 1rem;
+  }
+  .description {
+    font-size: 0.8rem;
+  }
+  .number {
+    font-size: 0.75rem;
+    margin-bottom: var(--spacing-sm);
   }
 }

@@ -264,6 +264,14 @@
     gap: 1rem;
   }
   
+  .aboutSnippetText h2 {
+    font-size: 1.75rem; /* Downscaled from 3rem */
+  }
+
+  .aboutSnippetText p {
+    font-size: 1rem; /* Downscaled slightly */
+  }
+  
   /* 2-column grid for mobile */
   .categoriesGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -271,8 +279,8 @@
   }
   
   .productsGrid {
-    grid-template-columns: 1fr; /* Premium large view for products on mobile */
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr); /* Reverted to proper grid */
+    gap: 0.75rem;
   }
 
   .categoryCard {
