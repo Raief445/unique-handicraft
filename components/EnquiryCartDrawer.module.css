@@ -21,14 +21,14 @@
 .drawer {
   position: fixed;
   top: 0;
-  right: -450px;
+  right: -500px;
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
   height: 100%;
   height: 100dvh;
   background-color: var(--color-surface);
   z-index: 1001;
-  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -39,42 +39,44 @@
 }
 
 .header {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-md);
   border-bottom: 1px solid var(--color-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
 }
 
 .header h2 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--color-text);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-primary);
 }
 
 .closeBtn {
-  font-size: 2rem;
+  font-size: 2.5rem;
   line-height: 1;
   color: var(--color-text-light);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0 0.5rem;
+  padding: 0;
+  font-weight: 300;
   transition: color var(--transition-fast);
 }
 
 .closeBtn:hover {
-  color: var(--color-error);
+  color: var(--color-primary);
 }
 
 .content {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-xl);
   display: flex;
   flex-direction: column;
 }
@@ -93,29 +95,29 @@
 .cartItems {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-xl);
 }
 
 .cartItem {
   display: flex;
-  gap: var(--spacing-md);
-  padding-bottom: var(--spacing-md);
+  gap: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
   border-bottom: 1px solid var(--color-border);
 }
 
 .itemImageWrapper {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   flex-shrink: 0;
-  background-color: var(--color-background);
-  border-radius: var(--border-radius-sm);
+  background-color: #F7F5F2;
   overflow: hidden;
 }
 
 .itemImage {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  mix-blend-mode: darken;
 }
 
 .itemDetails {
@@ -125,13 +127,17 @@
 }
 
 .itemDetails h3 {
-  font-size: 1.1rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
   margin: 0 0 0.25rem 0;
   color: var(--color-primary);
+  font-weight: 500;
 }
 
 .itemCode {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
   color: var(--color-text-light);
   margin-bottom: auto;
 }
@@ -140,50 +146,50 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .quantityControls {
   display: flex;
   align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .quantityControls button {
-  background: var(--color-background);
+  background: transparent;
   border: none;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 0.5rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: var(--color-primary);
-  transition: background var(--transition-fast);
+  transition: color var(--transition-fast);
 }
 
 .quantityControls button:hover:not(:disabled) {
-  background: var(--color-border);
+  color: var(--color-secondary);
 }
 
 .quantityControls button:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
 .quantityControls span {
-  padding: 0 0.5rem;
-  font-size: 0.9rem;
+  padding: 0 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  min-width: 2.5rem;
+  min-width: 3rem;
   text-align: center;
 }
 
 .removeBtn {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--color-text-light);
   background: none;
   border: none;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
   padding: 0;
   transition: color var(--transition-fast);
@@ -194,43 +200,46 @@
 }
 
 .footer {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-xl);
   border-top: 1px solid var(--color-border);
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
 }
 
 .emptyBtn {
   margin-top: 1rem;
   background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 1rem 2.5rem;
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   cursor: pointer;
-  transition: border-color var(--transition-fast);
+  transition: all var(--transition-normal);
 }
 
 .emptyBtn:hover {
-  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: white;
 }
 
 .proceedBtn {
   display: block;
   width: 100%;
   text-align: center;
-  background: var(--color-text);
+  background: var(--color-primary);
   color: white;
-  padding: 1rem;
+  padding: 1.25rem;
   font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   font-weight: 500;
   text-decoration: none;
-  transition: opacity var(--transition-fast);
+  border: 1px solid var(--color-primary);
+  transition: all var(--transition-normal);
 }
 
 .proceedBtn:hover {
-  opacity: 0.9;
+  background: transparent;
+  color: var(--color-primary);
 }

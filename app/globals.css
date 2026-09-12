@@ -1,41 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
 
 :root {
-  --color-primary: #3A2F28;
-  --color-primary-light: #5A4A40;
-  --color-secondary: #C1A27A;
-  --color-secondary-hover: #A88A62;
-  --color-background: #FCFCFC;
-  /* Cleaner off-white */
+  --color-primary: #2C2825; /* Deeper, richer charcoal brown */
+  --color-primary-light: #4A443E;
+  --color-secondary: #B89B72; /* Refined gold/beige */
+  --color-secondary-hover: #9E835B;
+  --color-background: #FDFCFB; /* Very soft warm white */
   --color-surface: #FFFFFF;
-  --color-text: #333333;
-  /* Softer dark charcoal */
-  --color-text-light: #6B6B6B;
-  --color-border: rgba(0, 0, 0, 0.08);
-  /* Softer borders */
-  --color-error: #D32F2F;
+  --color-text: #2A2A2A; /* Softer than pure black */
+  --color-text-light: #737373; /* Elegant grey */
+  --color-border: rgba(0, 0, 0, 0.06); /* Extremely subtle borders */
+  --color-error: #C62828;
   --color-success: #2E7D32;
 
-  --font-serif: 'Cormorant Garamond', serif;
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', serif;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-xxl: 4rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2.5rem;
+  --spacing-xl: 4rem;
+  --spacing-xxl: 6rem; /* Increased spacing for editorial feel */
 
-  --border-radius-sm: 2px;
-  --border-radius-md: 4px;
-  --border-radius-lg: 8px;
+  --border-radius-sm: 0px; /* Sharp corners for premium look */
+  --border-radius-md: 2px;
+  --border-radius-lg: 4px;
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.07);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.06);
 
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s ease;
+  --transition-fast: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -48,8 +45,9 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  line-height: 1.7; /* Increased for breathability */
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1,
@@ -60,22 +58,23 @@ h5,
 h6 {
   font-family: var(--font-serif);
   color: var(--color-primary);
-  margin-bottom: var(--spacing-md);
-  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500; /* Less bold for elegance */
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
+  letter-spacing: -0.01em;
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
 }
 
 a {
@@ -102,9 +101,9 @@ img {
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 1400px; /* Wider for editorial layouts */
   margin: 0 auto;
-  padding: 0 var(--spacing-xl);
+  padding: 0 var(--spacing-lg);
 }
 
 /* Premium Primary Button */
@@ -114,20 +113,19 @@ img {
   justify-content: center;
   background-color: var(--color-primary);
   color: white;
-  padding: 0.85rem 1.75rem;
+  padding: 1rem 2.5rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   border-radius: var(--border-radius-sm);
   transition: all var(--transition-normal);
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--color-primary);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-primary-light);
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background-color: transparent;
+  color: var(--color-primary);
 }
 
 /* Secondary Button */
@@ -137,20 +135,19 @@ img {
   justify-content: center;
   background-color: transparent;
   color: var(--color-primary);
-  border: 1px solid var(--color-border);
-  padding: 0.85rem 1.75rem;
+  border: 1px solid var(--color-primary);
+  padding: 1rem 2.5rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   border-radius: var(--border-radius-sm);
   transition: all var(--transition-normal);
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .btn-secondary:hover {
-  border-color: var(--color-primary);
-  background-color: transparent;
-  color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: white;
 }
 
 /* Accent Button */
@@ -160,18 +157,19 @@ img {
   justify-content: center;
   background-color: var(--color-secondary);
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2.5rem;
   font-weight: 500;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.15em;
   border-radius: var(--border-radius-sm);
-  transition: all var(--transition-fast);
+  transition: all var(--transition-normal);
   text-transform: uppercase;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--color-secondary);
 }
 
 .btn-accent:hover {
-  background-color: var(--color-secondary-hover);
-  color: white;
+  background-color: transparent;
+  color: var(--color-secondary);
 }
 
 /* Utility Classes */

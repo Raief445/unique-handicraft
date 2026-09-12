@@ -1,9 +1,8 @@
 .footer {
-  background-color: var(--color-background);
-  border-top: 1px solid var(--color-border);
-  color: var(--color-text);
+  background-color: var(--color-primary);
+  color: white;
   padding-top: 6rem;
-  margin-top: 6rem;
+  margin-top: 0;
 }
 
 .footerContent {
@@ -14,46 +13,53 @@
 }
 
 .footerBrand h3 {
-  color: var(--color-primary);
+  color: white;
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   margin-bottom: 1.5rem;
-  font-weight: 500;
+  font-weight: 400;
+  max-width: 400px;
+  line-height: 1.2;
 }
 
 .footerBrand p {
-  color: var(--color-text-light);
+  color: rgba(255,255,255,0.7);
   margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .footerEmail {
   display: inline-block;
-  margin-top: 1rem;
-  color: var(--color-primary);
-  font-size: 0.95rem;
-  text-decoration: underline;
-  transition: color var(--transition-normal);
+  margin-top: 2rem;
+  color: white;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: opacity var(--transition-normal);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.25rem;
 }
 
 .footerEmail:hover {
-  color: var(--color-secondary);
+  opacity: 0.8;
+  border-bottom-color: white;
 }
 
 .footerLinks {
   display: flex;
-  gap: 4rem;
+  gap: 6rem;
   justify-content: flex-end;
 }
 
 .linkColumn h4 {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-primary);
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.5);
   margin-bottom: 1.5rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .linkColumn ul {
@@ -66,20 +72,20 @@
 }
 
 .linkColumn a {
-  color: var(--color-text-light);
+  color: white;
   font-size: 0.95rem;
-  transition: color var(--transition-normal);
+  transition: opacity var(--transition-normal);
 }
 
 .linkColumn a:hover {
-  color: var(--color-secondary);
+  opacity: 0.7;
 }
 
 .copyright {
   text-align: left;
   padding: 2rem 0;
-  border-top: 1px solid var(--color-border);
-  color: var(--color-text-light);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
   font-size: 0.85rem;
 }
 
@@ -92,5 +98,10 @@
   .footerLinks {
     justify-content: flex-start;
     flex-wrap: wrap;
+    gap: 3rem;
+  }
+  
+  .footerBrand h3 {
+    font-size: 2rem;
   }
 }

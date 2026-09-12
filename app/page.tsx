@@ -4,6 +4,9 @@ import prisma from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
 import ScrollReveal from "@/components/ScrollReveal";
 import PremiumStats from "@/components/PremiumStats";
+import WhyUniqueTimber from "@/components/WhyUniqueTimber";
+import ManufacturingProcess from "@/components/ManufacturingProcess";
+import GlobalB2b from "@/components/GlobalB2b";
 import styles from "./page.module.css";
 import { ArrowRight } from "lucide-react";
 
@@ -103,6 +106,8 @@ export default async function Home() {
         </div>
       </section>
 
+      <WhyUniqueTimber />
+
       <PremiumStats />
 
       {categories.length > 0 && (
@@ -139,6 +144,8 @@ export default async function Home() {
         </section>
       )}
 
+      <ManufacturingProcess />
+
       {formattedProducts.length > 0 && (
         <section className={styles.featuredSection}>
           <div className="container">
@@ -165,6 +172,8 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      <GlobalB2b />
     </div>
   );
 }
