@@ -36,7 +36,7 @@
   object-fit: contain !important;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
   mix-blend-mode: darken;
-  padding: 2rem;
+  padding: 0.5rem; /* Reduced padding so images are much larger */
 }
 
 .card:hover .image {
@@ -125,10 +125,6 @@
   .actions {
     opacity: 1;
     flex-direction: column;
-  }
-  
-  .image {
-    padding: 1rem;
   }
   
   .title {
