@@ -179,7 +179,7 @@
   width: 100%;
   aspect-ratio: 4 / 5; /* Editorial portrait proportion */
   overflow: hidden;
-  background-color: transparent; /* Remove generic boxy background */
+  background-color: #F7F5F2; /* Soft warm grey for image background to prevent white boxes */
 }
 
 .catImgFitted {
@@ -188,10 +188,12 @@
   left: 0;
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important; /* Cover is better for categories to fill the 4/5 frame beautifully */
+  object-fit: contain !important; /* Ensure furniture is NEVER cropped */
   object-position: center !important;
   display: block !important;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  mix-blend-mode: darken; /* Blends white jpeg backgrounds into the container */
+  padding: 2rem;
 }
 
 .categoryCard:hover .catImgFitted {
