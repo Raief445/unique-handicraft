@@ -177,9 +177,10 @@
 .catImageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5; /* Editorial portrait proportion */
+  aspect-ratio: 4 / 5; 
   overflow: hidden;
-  background-color: transparent; 
+  background-color: #FFFFFF; 
+  border: 1px solid var(--color-border);
 }
 
 .catImgFitted {
@@ -188,10 +189,11 @@
   left: 0;
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important; 
+  object-fit: contain !important; 
   object-position: center !important;
   display: block !important;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 1rem;
 }
 
 .categoryCard:hover .catImgFitted {
