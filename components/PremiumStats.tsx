@@ -17,34 +17,45 @@ const easeOutCubic = (t: number): number => {
 
 const StatCard = ({ endValue, suffix, label, inView, prefersReducedMotion }: StatItemProps) => {
   const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
-    if (!inView) return;
+    // Prevent re-triggering if already animated
+    if (!inView || hasAnimated) return;
 
     if (prefersReducedMotion) {
       setCount(endValue);
+      setHasAnimated(true);
       return;
     }
 
-    let startTime: number | null = null;
-    const duration = 1200; // 1.2 seconds for snappier finish
+    let startTime: number;
+    let animationFrameId: number;
+    const duration = 1500; // 1.5 seconds as requested
     
     const animate = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
+      if (startTime === undefined) startTime = currentTime;
       const progress = Math.min((currentTime - startTime) / duration, 1);
       
       const currentCount = Math.floor(easeOutCubic(progress) * endValue);
       setCount(currentCount);
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
       } else {
         setCount(endValue);
+        setHasAnimated(true);
       }
     };
     
-    requestAnimationFrame(animate);
-  }, [inView, endValue, prefersReducedMotion]);
+    animationFrameId = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [inView, endValue, prefersReducedMotion, hasAnimated]);
 
   return (
     <div className={styles.card}>
@@ -64,23 +75,29 @@ export default function PremiumStats() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    // Safely check matchMedia on client
+    if (typeof window !== 'undefined') {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }
     
+    const currentRef = sectionRef.current;
+    if (!currentRef) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          observer.disconnect(); // Only trigger once
+          observer.disconnect(); // Only trigger once per page load
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    observer.observe(currentRef);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   const stats = [
