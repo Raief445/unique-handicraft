@@ -78,9 +78,11 @@ export default function CapabilitiesPage() {
             {capabilities.map((cap, index) => (
               <div key={cap.title}>
                 <div className={styles.sequenceItem}>
-                  <div className={styles.sequenceNumber}>{cap.number}</div>
-                  <div className={styles.sequenceContent}>
-                    <h2>{cap.title}</h2>
+                  <div className={styles.sequenceLeft}>
+                    <div className={styles.sequenceNumber}>{cap.number}</div>
+                    <h2 className={styles.sequenceTitle}>{cap.title}</h2>
+                  </div>
+                  <div className={styles.sequenceRight}>
                     <p>{cap.description}</p>
                   </div>
                 </div>
