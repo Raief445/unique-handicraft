@@ -7,12 +7,12 @@ export const metadata = {
 };
 
 const process = [
-  { step: "01", title: "Share Your Requirement", desc: "Contact us with your design, dimensions, material preferences, or any reference images you have." },
-  { step: "02", title: "Discuss Design & Specifications", desc: "Our team will review your requirement and discuss the specifications, feasibility, and available options." },
-  { step: "03", title: "Sample / Prototype", desc: "If required, we can produce a sample or prototype for your approval before proceeding to final production." },
-  { step: "04", title: "Approval", desc: "Once the sample or design is finalized, approval is provided before production begins." },
-  { step: "05", title: "Final Production", desc: "We proceed with manufacturing according to the approved specifications and agreed quantities." },
-  { step: "06", title: "Quality & Packaging", desc: "Products are checked for quality and prepared with appropriate packaging before dispatch." },
+  { step: "01", title: "Share Your Requirement", desc: "Contact us with your design, dimensions, material preferences, finish requirements, or reference images." },
+  { step: "02", title: "Discuss Design & Specifications", desc: "We review the requirement with you and discuss the specifications, feasibility, materials and finish options." },
+  { step: "03", title: "Sample / Prototype", desc: "If required, a sample or prototype can be developed for review before moving into final production." },
+  { step: "04", title: "Approval", desc: "Once the design or sample is approved, we confirm the specifications and proceed with the agreed production plan." },
+  { step: "05", title: "Final Production", desc: "We manufacture the approved pieces according to the agreed specifications and quantities." },
+  { step: "06", title: "Quality & Packaging", desc: "Finished pieces are checked for construction and finish, then packaged appropriately for dispatch." },
   { step: "07", title: "Dispatch", desc: "Products are dispatched according to the agreed timeline and delivery arrangements." },
 ];
 
@@ -23,7 +23,7 @@ export default function CustomManufacturingPage() {
         <div className={`container ${styles.heroContent}`}>
           <div className={styles.eyebrow}>CUSTOM MANUFACTURING</div>
           <h1>Have Your Own Design or Requirement?</h1>
-          <p>We manufacture furniture and handicraft products around your specific dimensions, designs and requirements.</p>
+          <p>We manufacture furniture and handicraft products around your specific designs, dimensions and requirements.</p>
           <Link href="/contact" className={styles.heroCta}>REQUEST CUSTOM MANUFACTURING</Link>
         </div>
       </div>
@@ -33,10 +33,10 @@ export default function CustomManufacturingPage() {
           <h2>Custom Manufacturing</h2>
           <div className={styles.introContent}>
             <p>
-              If you have specific dimensions, a custom design, your own drawings, or requirements that are not covered by our standard collection, we can discuss manufacturing those pieces for you.
+              Have a specific design, dimension, drawing or reference that is not covered by our standard collection? We can discuss manufacturing the piece around your requirements.
             </p>
             <p>
-              Our process is flexible and collaborative. The steps below describe a typical custom manufacturing workflow, while the actual process may vary depending on the nature and complexity of the project.
+              Our custom manufacturing process is flexible and collaborative. The stages below describe a typical workflow, while the actual process may vary depending on the nature and complexity of the project.
             </p>
           </div>
         </section>
@@ -70,7 +70,7 @@ export default function CustomManufacturingPage() {
         <section className={styles.ctaSection}>
           <h2>Ready to Discuss Your Requirement?</h2>
           <p>
-            Send us your requirement, reference images, or design files. We'll review the details and discuss the next steps with you.
+            Send us your requirement, reference images or design files. Our team will review the details and discuss the next steps with you.
           </p>
           <div className={styles.ctaActions}>
             <Link href="/contact" className="btn-primary">CONTACT US NOW</Link>
