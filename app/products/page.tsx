@@ -63,8 +63,8 @@ export default async function ProductsPage({
   return (
     <div className={styles.pageWrapper}>
       <div className={`container ${styles.header}`}>
-        <h1>Product Catalogue</h1>
-        <p>Explore our premium handcrafted products.</p>
+        <h1>The Collection</h1>
+        <p>Explore our premium handcrafted pieces.</p>
       </div>
 
       <div className={`container ${styles.layout}`}>

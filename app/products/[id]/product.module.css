@@ -171,7 +171,7 @@
 
 .specsTable td {
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(0,0,0,0.03); /* Extremely subtle border */
+  border-bottom: none;
   font-size: 0.95rem;
 }
 

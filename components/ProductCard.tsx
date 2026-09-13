@@ -57,7 +57,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       </Link>
       <div className={styles.actions}>
         <Link href={`/products/${product.id}`} className={styles.viewBtn}>
-          View Product
+          View Piece
         </Link>
         <button onClick={handleAddToEnquiry} className={styles.addBtn}>
           Add to Project Requirements
