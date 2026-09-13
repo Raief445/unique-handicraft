@@ -15,6 +15,7 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
   const allImages = [{ id: "main-thumb", imageUrl: mainImage }, ...galleryImages];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [aspectRatios, setAspectRatios] = useState<Record<number, number>>({});
 
   // Prevent body scroll when lightbox is open
   useEffect(() => {
@@ -36,27 +37,39 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
     setCurrentIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
   };
 
+  const currentRatio = aspectRatios[currentIndex];
+
   return (
     <>
       <div className={styles.gallery}>
-      <div className={styles.mainImageWrapper}>
+      <div 
+        className={styles.mainImageWrapper}
+        style={{ aspectRatio: currentRatio ? currentRatio : '4 / 5' }}
+      >
         {allImages.map((img, index) => (
-          <img 
+          <Image 
             key={img.id}
             src={img.imageUrl} 
             alt={`${productName} - Image ${index + 1}`} 
+            fill
+            priority={index === 0}
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className={styles.mainImage}
             onClick={() => setIsLightboxOpen(true)}
+            onLoad={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (target.naturalWidth && target.naturalHeight) {
+                setAspectRatios(prev => ({ 
+                  ...prev, 
+                  [index]: target.naturalWidth / target.naturalHeight 
+                }));
+              }
+            }}
             style={{ 
               cursor: 'zoom-in',
               opacity: currentIndex === index ? 1 : 0,
               transition: 'opacity 0.3s ease-in-out',
               zIndex: currentIndex === index ? 1 : 0,
-              position: currentIndex === index ? 'relative' : 'absolute',
-              top: currentIndex === index ? 'auto' : 0,
-              left: currentIndex === index ? 'auto' : 0,
-              width: '100%',
-              height: currentIndex === index ? 'auto' : '100%',
               objectFit: 'contain'
             }}
           />
