@@ -22,7 +22,7 @@ export default function CustomManufacturingPage() {
       <div className={styles.hero}>
         <div className={`container ${styles.heroContent}`}>
           <div className={styles.eyebrow}>CUSTOM MANUFACTURING</div>
-          <h1>Have Your Own Design or Requirement?</h1>
+          <h1>Made around your requirements.</h1>
           <p>We manufacture furniture and handicraft products around your specific designs, dimensions and requirements.</p>
           <Link href="/contact" className={styles.heroCta}>REQUEST CUSTOM MANUFACTURING</Link>
         </div>
@@ -30,6 +30,7 @@ export default function CustomManufacturingPage() {
 
       <div className="container">
         <section className={styles.intro}>
+          <div className={styles.eyebrow}>CUSTOM MANUFACTURING</div>
           <h2>Custom Manufacturing</h2>
           <div className={styles.introContent}>
             <p>
