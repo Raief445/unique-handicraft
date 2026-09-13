@@ -308,9 +308,10 @@
     width: calc(50% - 0.5rem);
   }
   
+  .categoryItem .catImageWrapper,
   .wideCategoryItem .catImageWrapper {
     height: auto;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
   }
 
   .catImgFitted {
@@ -327,11 +328,18 @@
   }
 
   .catInfo {
-    padding: 1rem 0 0 0;
+    padding: 0.75rem 0 0 0;
+    gap: 0.25rem;
   }
 
   .catInfo h3 {
-    font-size: 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .exploreLink {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
   }
 }
 
