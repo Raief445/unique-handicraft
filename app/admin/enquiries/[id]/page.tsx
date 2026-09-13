@@ -88,7 +88,7 @@ export default async function AdminEnquiryDetailPage({ params }: { params: { id:
               <div className={styles.filesList}>
                 <h3>Attachments</h3>
                 {enquiry.files.map((file) => (
-                  <a key={file.id} href={file.fileUrl} target="_blank" rel="noopener noreferrer" className={styles.fileLink}>
+                  <a key={file.id} href={`/api/admin/enquiries/file/${file.id}`} target="_blank" rel="noopener noreferrer" className={styles.fileLink}>
                     <span style={{display: 'flex', alignItems: 'center', gap: '4px'}}><Paperclip size={16} /> {file.fileName}</span>
                   </a>
                 ))}

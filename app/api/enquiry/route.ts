@@ -96,8 +96,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Send email notification (non-blocking)
-    sendEmailNotification(enquiry.enquiryNumber, {
+    // Send email notification (must be awaited in serverless environments)
+    await sendEmailNotification(enquiry.enquiryNumber, {
       fullName,
       companyName,
       email,
