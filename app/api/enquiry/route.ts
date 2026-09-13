@@ -110,6 +110,7 @@ export async function POST(req: NextRequest) {
       customizationRequired,
       message,
       items,
+      fileRecord,
     }).catch(console.error);
 
     return NextResponse.json({ enquiryNumber: enquiry.enquiryNumber });
@@ -197,6 +198,13 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
           </div>
         </div>
       `,
+      attachments: data.fileRecord ? [
+        {
+          filename: data.fileRecord.fileName,
+          content: data.fileRecord.fileUrl.split("base64,")[1],
+          encoding: "base64"
+        }
+      ] : []
     });
 
     // Confirm to customer
