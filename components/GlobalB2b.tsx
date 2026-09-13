@@ -23,10 +23,7 @@ export default function GlobalB2b() {
         <ScrollReveal direction="up" delay={300}>
           <div className={styles.actions}>
             <Link href="/contact" className="btn-secondary" style={{ borderColor: 'white', color: 'white' }}>
-              Start an Enquiry
-            </Link>
-            <Link href="/custom-manufacturing" className="btn-primary" style={{ backgroundColor: 'white', color: 'var(--color-primary)', border: 'none' }}>
-              Custom Requirements
+              Discuss Your Next Collection
             </Link>
           </div>
         </ScrollReveal>

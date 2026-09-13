@@ -42,7 +42,7 @@ export default function ProductDetailActions({ product }: { product: any }) {
       </div>
       <div className={styles.buttons}>
         <button onClick={handleAdd} className={styles.primaryBtn}>
-          {added ? "Added to Enquiry ✓" : "Add to Enquiry"}
+          {added ? "Added to Project Requirements ✓" : "Add to Project Requirements"}
         </button>
         <Link href="/contact" className={styles.secondaryBtn}>
           Request Customization
@@ -50,7 +50,7 @@ export default function ProductDetailActions({ product }: { product: any }) {
       </div>
       {added && (
         <p className={styles.successMsg}>
-          Product added! <Link href="/enquiry-cart">View Enquiry Cart</Link>
+          Product added! <Link href="/enquiry-cart">View Project Requirements</Link>
         </p>
       )}
     </div>

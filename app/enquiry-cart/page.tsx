@@ -109,7 +109,7 @@ export default function EnquiryCartPage() {
               <p>No payment required. We will contact you with pricing after reviewing your requirements.</p>
             </div>
             <Link href="/enquiry" className={`btn-primary ${styles.proceedBtn}`}>
-              Proceed to Enquiry
+              Submit Project Requirements
             </Link>
             <Link href="/products" className={`btn-secondary ${styles.continueBtn}`}>
               Continue Browsing

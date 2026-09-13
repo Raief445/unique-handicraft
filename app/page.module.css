@@ -54,14 +54,14 @@
 }
 
 .hero h1 {
-  font-size: 5rem;
-  font-weight: 400; /* Lighter weight for elegance */
+  font-size: 4.5rem;
+  font-weight: 400; 
   color: white;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   max-width: 900px;
-  line-height: 1.1;
-  letter-spacing: -0.02em; /* Tighter letter spacing for display serif */
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); /* Darker shadow for legibility over images */
+  line-height: 1.15;
+  letter-spacing: -0.01em; 
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); 
 }
 
 .hero p {
@@ -139,15 +139,22 @@
 .aboutSnippetText h2 {
   font-size: 3rem;
   color: var(--color-primary);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
   font-weight: 400;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.2;
 }
 
 .aboutSnippetText p {
   line-height: 1.8;
   color: var(--color-text-light);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   font-size: 1.125rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .categoriesGrid {
@@ -177,10 +184,9 @@
 .catImageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1; /* Match product cards exactly */
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  background-color: #FFFFFF; 
-  border: 1px solid var(--color-border);
+  background-color: transparent;
 }
 
 .catImgFitted {
@@ -189,11 +195,10 @@
   left: 0;
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important; 
+  object-fit: cover !important; 
   object-position: center !important;
   display: block !important;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  padding: 1rem;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .categoryCard:hover .catImgFitted {

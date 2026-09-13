@@ -19,11 +19,11 @@
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
-  --spacing-lg: 3rem;
-  --spacing-xl: 5rem;
-  --spacing-xxl: 8rem; /* Increased spacing for editorial feel */
+  --spacing-lg: 4rem; /* Increased from 3rem */
+  --spacing-xl: 6rem; /* Increased from 5rem */
+  --spacing-xxl: 10rem; /* Increased from 8rem for deep editorial rhythm */
 
-  --border-radius-sm: 0px; /* Sharp corners for premium look */
+  --border-radius-sm: 0px; 
   --border-radius-md: 2px;
   --border-radius-lg: 4px;
 
@@ -45,7 +45,7 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-sans);
-  line-height: 1.7; /* Increased for breathability */
+  line-height: 1.7; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -59,7 +59,7 @@ h6 {
   font-family: var(--font-serif);
   color: var(--color-primary);
   margin-bottom: var(--spacing-sm);
-  font-weight: 500; /* Less bold for elegance */
+  font-weight: 400; /* Dropped to 400 for elegance */
 }
 
 h1 {

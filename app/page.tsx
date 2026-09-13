@@ -98,15 +98,13 @@ export default async function Home() {
       <section className={styles.aboutSnippetSection}>
         <div className={`container ${styles.aboutSnippetContent}`}>
           <ScrollReveal direction="up" className={styles.aboutSnippetText}>
-            <h2>Your Trusted Partner in Premium Furniture Manufacturing.</h2>
+            <h2>Furniture shaped by material, craft and place.</h2>
             <p>
-              Unique Timber & Handicraft is a Jodhpur-based furniture manufacturing business operating since 2015. We specialize in providing exceptional, handcrafted solid wood products tailored for commercial spaces. From hospitality projects and retail showrooms to global wholesale distribution, our master artisans combine traditional Rajasthani craftsmanship with modern durability. We are committed to uncompromised quality, sustainable sourcing, and building long-lasting partnerships with businesses worldwide.
+              Unique Timber & Handicraft is a Jodhpur-based furniture manufacturing business operating since 2015. We specialize in providing exceptional, handcrafted solid wood products tailored for commercial spaces and global wholesale distribution. Our master artisans combine traditional Rajasthani craftsmanship with modern durability to build long-lasting partnerships worldwide.
             </p>
           </ScrollReveal>
         </div>
       </section>
-
-      <WhyUniqueTimber />
 
       <PremiumStats />
 
@@ -114,10 +112,7 @@ export default async function Home() {
         <section className={styles.categoriesSection}>
           <div className="container">
             <div className={styles.sectionHeader}>
-              <h2 className={`${styles.sectionTitle} text-center`}>Our Categories</h2>
-              <p className="text-center text-muted mt-2" style={{ maxWidth: '600px', margin: '0 auto', marginBottom: '2rem' }}>
-                Discover our curated collection of handcrafted solid wood furniture, designed to bring timeless elegance and durability to your living spaces.
-              </p>
+              <h2 className={`${styles.sectionTitle} text-center`}>Collections</h2>
             </div>
             <div className={styles.categoriesGrid}>
               {categories.map((cat, index) => (
@@ -144,16 +139,11 @@ export default async function Home() {
         </section>
       )}
 
-      <ManufacturingProcess />
-
       {formattedProducts.length > 0 && (
         <section className={styles.featuredSection}>
           <div className="container">
             <div className={styles.sectionHeader}>
-              <h2 className={`${styles.sectionTitle} text-center`}>Featured Products</h2>
-              <p className="text-center text-muted mt-2" style={{ maxWidth: '600px', margin: '0 auto', marginBottom: '2rem' }}>
-                Explore our most sought-after pieces, showcasing exceptional craftsmanship, rich wood grains, and uncompromising quality.
-              </p>
+              <h2 className={`${styles.sectionTitle} text-center`}>Featured Pieces</h2>
             </div>
             <div className={styles.productsGrid}>
               {formattedProducts.map((product, index) => (
@@ -164,14 +154,20 @@ export default async function Home() {
             </div>
             <ScrollReveal delay={200}>
               <div className="text-center mt-4">
-                <Link href="/products" className="btn-primary">
-                  View All Products
+                <Link href="/products" className="btn-secondary">
+                  View Catalogue
                 </Link>
               </div>
             </ScrollReveal>
           </div>
         </section>
       )}
+
+      <WhyUniqueTimber />
+
+      <ManufacturingProcess />
+
+
 
       <GlobalB2b />
     </div>

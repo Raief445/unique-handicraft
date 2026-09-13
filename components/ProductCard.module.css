@@ -23,8 +23,8 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background-color: transparent;
+  border: none; /* Invisible canvas */
   overflow: hidden;
 }
 
@@ -34,13 +34,12 @@
   left: 0;
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  padding: 1rem;
+  object-fit: contain !important; /* Never crop furniture */
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .card:hover .image {
-  transform: scale(1.03) !important;
+  transform: scale(1.02) !important;
 }
 
 .content {
@@ -50,35 +49,35 @@
   flex-grow: 1;
 }
 
+.title {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+  color: var(--color-primary);
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
 .code {
   font-size: 0.7rem;
   color: var(--color-text-light);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-family: var(--font-sans);
 }
 
-.title {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: var(--color-primary);
-  font-family: var(--font-serif);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
 .specs {
   font-size: 0.85rem;
   color: var(--color-text-light);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 1.5rem;
   margin-top: auto;
-  opacity: 0.8;
+  opacity: 0.7;
   transition: opacity var(--transition-normal);
 }
 
@@ -88,47 +87,44 @@
 
 .viewBtn,
 .addBtn {
-  flex: 1;
-  text-align: center;
-  padding: 0.75rem 0.5rem;
+  background: transparent;
+  border: none;
+  padding: 0;
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 500;
   transition: all var(--transition-normal);
   cursor: pointer;
-  border-radius: var(--border-radius-sm);
+  text-align: left;
 }
 
 .viewBtn {
-  background: transparent;
-  color: var(--color-primary);
-  border: 1px solid var(--color-border);
+  color: var(--color-text-light);
 }
 
 .viewBtn:hover {
-  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .addBtn {
-  background: var(--color-primary);
-  color: white;
-  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-bottom: 1px solid transparent;
 }
 
 .addBtn:hover {
-  background: transparent;
-  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
 @media (max-width: 768px) {
   .actions {
     opacity: 1;
     flex-direction: column;
+    gap: 0.75rem;
   }
   
   .title {
-    font-size: 1rem;
+    font-size: 1.15rem;
   }
   
   .code {
@@ -137,7 +133,7 @@
   
   .specs {
     font-size: 0.75rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
   
   .content {
