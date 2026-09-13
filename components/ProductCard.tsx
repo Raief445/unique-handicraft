@@ -33,7 +33,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       image: product.mainImage,
       quantity: 1,
     });
-    alert("Added to Enquiry Cart!");
+    alert("Added to Project Requirements!");
   };
 
   const dimensions =
@@ -60,7 +60,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           View Product
         </Link>
         <button onClick={handleAddToEnquiry} className={styles.addBtn}>
-          Add to Enquiry
+          Add to Project Requirements
         </button>
       </div>
     </div>
