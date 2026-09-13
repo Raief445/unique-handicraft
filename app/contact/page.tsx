@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle, MapPin, Mail, Clock } from "lucide-react";
+import { CheckCircle, MapPin, Mail, Clock, ClipboardList } from "lucide-react";
 import Link from "next/link";
 import styles from "./contact.module.css";
 
@@ -73,7 +73,7 @@ export default function ContactPage() {
           <div className={styles.infoDivider}></div>
 
           <div className={styles.infoGroup}>
-            <h2 className={styles.infoMainTitle}>FOR PRODUCT ENQUIRIES</h2>
+            <h2 className={styles.infoMainTitle}><ClipboardList size={20} strokeWidth={1.5} /> FOR PRODUCT ENQUIRIES</h2>
             <div className={styles.infoBlock}>
               <p className={styles.subtext}>Use our Enquiry Cart for product-specific enquiries.</p>
               <Link href="/products" className={styles.infoLink}>Browse Products →</Link>
