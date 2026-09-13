@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, MapPin, Mail, Clock } from "lucide-react";
 import Link from "next/link";
 import styles from "./contact.module.css";
 
@@ -53,19 +53,19 @@ export default function ContactPage() {
             <h2 className={styles.infoMainTitle}>CONTACT INFORMATION</h2>
             
             <div className={styles.infoBlock}>
-              <h3>LOCATION</h3>
+              <h3><MapPin size={15} strokeWidth={2} /> LOCATION</h3>
               <p>Jodhpur, Rajasthan, India</p>
             </div>
             
             <div className={styles.infoBlock}>
-              <h3>EMAIL</h3>
+              <h3><Mail size={15} strokeWidth={2} /> EMAIL</h3>
               <a href="mailto:uniquetimberhandicraftjodhpur@gmail.com">
                 uniquetimberhandicraftjodhpur@gmail.com
               </a>
             </div>
             
             <div className={styles.infoBlock}>
-              <h3>BUSINESS HOURS</h3>
+              <h3><Clock size={15} strokeWidth={2} /> BUSINESS HOURS</h3>
               <p>Monday – Saturday, 10 AM – 6 PM (IST)</p>
             </div>
           </div>
