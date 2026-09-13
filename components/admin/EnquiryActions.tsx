@@ -48,6 +48,30 @@ export default function EnquiryActions({
     }
   };
 
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to delete this enquiry? This action cannot be undone.")) {
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/enquiries/${enquiryId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        router.push("/admin/enquiries");
+        router.refresh();
+      } else {
+        alert("Failed to delete enquiry");
+      }
+    } catch {
+      alert("Network error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{
       background: "white",
@@ -77,14 +101,36 @@ export default function EnquiryActions({
         </select>
       </div>
 
-      <button
-        onClick={handleUpdate}
-        disabled={loading || status === currentStatus}
-        className="btn-primary"
-        style={{ width: "100%", padding: "0.75rem" }}
-      >
-        {loading ? "Updating..." : "Save Status"}
-      </button>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <button
+          onClick={handleUpdate}
+          disabled={loading || status === currentStatus}
+          className="btn-primary"
+          style={{ width: "100%", padding: "0.75rem" }}
+        >
+          {loading ? "Processing..." : "Save Status"}
+        </button>
+        
+        <button
+          onClick={handleDelete}
+          disabled={loading}
+          style={{ 
+            width: "100%", 
+            padding: "0.75rem", 
+            background: "transparent", 
+            border: "1px solid #E53E3E", 
+            color: "#E53E3E",
+            borderRadius: "var(--border-radius-sm)",
+            cursor: "pointer",
+            fontWeight: 500,
+            transition: "all 0.2s"
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.background = "#fff5f5"; }}
+          onMouseOut={(e) => { e.currentTarget.style.background = "transparent"; }}
+        >
+          Delete Enquiry
+        </button>
+      </div>
     </div>
   );
 }
