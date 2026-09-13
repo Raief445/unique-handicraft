@@ -118,8 +118,8 @@ export default async function Home() {
               {categories.map((cat, index) => {
                 const isWide = cat.name === 'Trunks' || cat.name === 'Sideboards';
                 return (
-                  <ScrollReveal key={cat.id} delay={index * 100} direction="up" className={isWide ? styles.wideCategoryItem : ''}>
-                    <Link href={`/products?category=${cat.id}`} className={`${styles.categoryCard} ${isWide ? styles.wideCategoryCard : ''}`}>
+                  <ScrollReveal key={cat.id} delay={index * 100} direction="up" className={isWide ? styles.wideCategoryItem : styles.categoryItem}>
+                    <Link href={`/products?category=${cat.id}`} className={styles.categoryCard}>
                       <div className={styles.catImageWrapper}>
                         <Image
                           src={cat.image || fallbackSvg}
