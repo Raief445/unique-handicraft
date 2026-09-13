@@ -54,7 +54,7 @@
 
 .introContent {
   max-width: 800px;
-  margin: 0 auto;
+  margin-inline: auto;
   line-height: 1.8;
   color: var(--color-text);
   font-size: 1.15rem;
@@ -133,11 +133,12 @@
   width: 100%;
 }
 
-.positioningContent {
-  max-width: 650px;
+.centeredContent {
+  max-width: 800px;
+  margin-inline: auto;
 }
 
-.positioningContent h2 {
+.centeredContent h2 {
   font-family: var(--font-serif);
   font-size: 2.5rem;
   font-weight: 400;
@@ -146,7 +147,7 @@
   margin-top: 1rem;
 }
 
-.positioningContent p {
+.centeredContent p {
   color: var(--color-text);
   font-size: 1.1rem;
   line-height: 1.8;

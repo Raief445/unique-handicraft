@@ -64,10 +64,10 @@ export default function CapabilitiesPage() {
         <section className={`${styles.section} ${styles.sectionIntro} ${styles.sectionConnectedBottom}`}>
           <div className={styles.introContent}>
             <p>
-              From material selection and finishing to customization, quality control and export-ready packaging, we work across the key stages of furniture manufacturing.
+              Every project begins with a clear understanding of the product, its specifications and the requirements behind it. We work with customers to align materials, dimensions, finishes and quantities before production begins.
             </p>
             <p>
-              Every project is discussed around its specifications, quantities and finish requirements.
+              This allows each project to move from initial requirement to production with greater clarity and consistency.
             </p>
           </div>
         </section>
@@ -94,7 +94,7 @@ export default function CapabilitiesPage() {
 
         {/* Project Positioning */}
         <section className={`${styles.section} ${styles.sectionConnectedTop} ${styles.sectionConnectedBottom}`}>
-          <div className={styles.positioningContent}>
+          <div className={styles.centeredContent}>
             <div className={styles.eyebrow}>OUR APPROACH</div>
             <h2>Built around the details that matter.</h2>
             <p>
