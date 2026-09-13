@@ -12,47 +12,80 @@ export default function AboutPage() {
       {/* Hero */}
       <div className={styles.hero}>
         <div className={`container ${styles.heroContent}`}>
-          <h1>About Unique Timber & Handicraft</h1>
-          <p>Jodhpur, Rajasthan, India · Working Since 2015</p>
+          <div className={styles.eyebrow}>ABOUT UNIQUE TIMBER & HANDICRAFT</div>
+          <h1>Rooted in Jodhpur.<br />Made for the world.</h1>
+          <div className={styles.heroFacts}>
+            <p>Jodhpur, Rajasthan, India</p>
+            <span className={styles.dot}>&middot;</span>
+            <p>Working Since 2015</p>
+          </div>
         </div>
       </div>
 
       <div className="container">
         {/* Story */}
         <section className={styles.section}>
-          <div className={styles.twoCol}>
-            <div className={styles.textContent}>
-              <h2>Our Story</h2>
-              <p>
-                Unique Timber & Handicraft was established in 2015 in Jodhpur, Rajasthan — a city
-                historically renowned for its exceptional woodcraft and artisanal traditions.
-              </p>
-              <p>
-                Our company was founded with a clear purpose: to bring the quality of
-                Jodhpur's handcrafted furniture and decor to homes and spaces
-                across India and beyond.
-              </p>
-              <p>
-                We work directly with skilled craftsmen to produce beautiful furniture and handicraft
-                items that meet the highest expectations of quality and design.
-              </p>
+          <div className={styles.editorialGrid}>
+            <div className={styles.editorialHeadline}>
+              <div className={styles.eyebrow}>OUR STORY</div>
+              <h2>Furniture shaped by material, craft and place.</h2>
             </div>
-            <div className={styles.highlightBox}>
-              <div className={styles.stat}>
-                <strong>2015</strong>
-                <span>Established</span>
+            <div className={styles.editorialContent}>
+              <div className={styles.narrowText}>
+                <p>
+                  Unique Timber & Handicraft was established in 2015 in Jodhpur, Rajasthan — a city
+                  historically renowned for its exceptional woodcraft and artisanal traditions.
+                </p>
+                <p>
+                  Our company was founded with a clear purpose: to bring the quality of
+                  Jodhpur's handcrafted furniture and decor to homes and spaces
+                  across India and beyond.
+                </p>
+                <p>
+                  We work directly with skilled craftsmen to produce beautiful furniture and handicraft
+                  items that meet the highest expectations of quality and design.
+                </p>
               </div>
-              <div className={styles.stat}>
-                <strong>Jodhpur</strong>
-                <span>Rajasthan, India</span>
+              <div className={styles.editorialStats}>
+                <div className={styles.statItem}>
+                  <strong>2015</strong>
+                  <span>Established</span>
+                </div>
+                <div className={styles.statItem}>
+                  <strong>Jodhpur</strong>
+                  <span>Rajasthan, India</span>
+                </div>
+                <div className={styles.statItem}>
+                  <strong>Premium</strong>
+                  <span>Quality</span>
+                </div>
+                <div className={styles.statItem}>
+                  <strong>Handcrafted</strong>
+                  <span>Furniture</span>
+                </div>
               </div>
-              <div className={styles.stat}>
-                <strong>Premium</strong>
-                <span>Quality</span>
-              </div>
-              <div className={styles.stat}>
-                <strong>Handcrafted</strong>
-                <span>Furniture</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Crafted in Jodhpur */}
+        <section className={styles.section}>
+          <div className={styles.editorialGrid}>
+            <div className={styles.editorialHeadline}>
+              <div className={styles.eyebrow}>CRAFTED IN JODHPUR</div>
+              <h2>Made where craftsmanship is part of the place.</h2>
+            </div>
+            <div className={styles.editorialContent}>
+              <div className={styles.narrowText}>
+                <p>
+                  Our manufacturing process is deeply connected to Jodhpur. We embrace the 
+                  established woodcraft and artisanal traditions of the city, working with 
+                  skilled craftsmen to create handcrafted furniture.
+                </p>
+                <p>
+                  Every piece reflects a material-led making approach, blending traditional 
+                  workmanship with contemporary requirements to deliver lasting quality.
+                </p>
               </div>
             </div>
           </div>
@@ -60,66 +93,82 @@ export default function AboutPage() {
 
         {/* Our Approach */}
         <section className={styles.section}>
-          <h2>Our Approach</h2>
-          <div className={styles.threeCol}>
-            <div className={styles.featureCard}>
-              <h3>Manufacturing Excellence</h3>
-              <p>
-                We control the manufacturing process from start to finish. Our focus is on the production of high-quality
-                furniture and handicraft items built to last.
-              </p>
+          <div className={styles.editorialHeadlineCentered}>
+            <div className={styles.eyebrow}>OUR APPROACH</div>
+          </div>
+          <div className={styles.verticalSequence}>
+            <div className={styles.sequenceItem}>
+              <div className={styles.sequenceNumber}>01</div>
+              <div className={styles.sequenceContent}>
+                <h3>Manufacturing Excellence</h3>
+                <p>
+                  We control the manufacturing process from start to finish. Our focus is on the production of high-quality
+                  furniture and handicraft items built to last.
+                </p>
+              </div>
             </div>
-            <div className={styles.featureCard}>
-              <h3>Handcrafted Quality</h3>
-              <p>
-                Each product is crafted by skilled artisans with attention to detail. The
-                handcrafted nature of our products gives them a unique character that machine production
-                cannot replicate.
-              </p>
+            <div className={styles.sequenceDivider} />
+            <div className={styles.sequenceItem}>
+              <div className={styles.sequenceNumber}>02</div>
+              <div className={styles.sequenceContent}>
+                <h3>Handcrafted Quality</h3>
+                <p>
+                  Each product is crafted by skilled artisans with attention to detail. The
+                  handcrafted nature of our products gives them a unique character that machine production
+                  cannot replicate.
+                </p>
+              </div>
             </div>
-            <div className={styles.featureCard}>
-              <h3>Dedicated Support</h3>
-              <p>
-                We work closely with our customers to ensure complete satisfaction. From initial enquiry
-                to final delivery, we are committed to providing an exceptional experience.
-              </p>
+            <div className={styles.sequenceDivider} />
+            <div className={styles.sequenceItem}>
+              <div className={styles.sequenceNumber}>03</div>
+              <div className={styles.sequenceContent}>
+                <h3>Dedicated Support</h3>
+                <p>
+                  We work closely with our customers to ensure complete satisfaction. From initial enquiry
+                  to final delivery, we are committed to providing an exceptional experience.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Products */}
+        {/* What We Make */}
         <section className={styles.section}>
-          <h2>What We Make</h2>
-          <p className={styles.sectionSubtext}>
-            Our current product range includes furniture and handicraft items manufactured
-            in Jodhpur. We continuously work on expanding our catalogue.
-          </p>
-          <div className={styles.productList}>
+          <div className={styles.editorialHeadlineCentered}>
+            <h2>What We Make</h2>
+            <p className={styles.sectionSubtextCentered}>
+              Our current product range includes furniture and handicraft items manufactured
+              in Jodhpur. We continuously work on expanding our catalogue.
+            </p>
+          </div>
+          <div className={styles.editorialList}>
             {[
-              "Coffee Tables",
-              "Side Tables",
-              "Round Tables",
-              "Trunks",
-              "Sideboards",
-              "...and more!",
-            ].map((product) => (
-              <div key={product} className={styles.productTag}>
-                {product}
-              </div>
+              { name: "Coffee Tables", link: "/products" },
+              { name: "Side Tables", link: "/products" },
+              { name: "Round Tables", link: "/products" },
+              { name: "Trunks", link: "/products" },
+              { name: "Sideboards", link: "/products" },
+              { name: "Stools", link: "/products" },
+              { name: "Mirror Frames", link: "/products" },
+            ].map((category) => (
+              <Link key={category.name} href={category.link} className={styles.listItem}>
+                <span>{category.name}</span>
+                <span className={styles.listArrow}>&rarr;</span>
+              </Link>
             ))}
           </div>
-          <div className="mt-4">
-            <Link href="/products" className="btn-primary">View Our Products</Link>
-          </div>
         </section>
 
-        {/* CTA */}
-        <section className={`${styles.section} ${styles.cta}`}>
-          <h2>Ready to Start an Enquiry?</h2>
-          <p>Browse our catalogue, select your favorite products, and send us an enquiry.</p>
-          <div className={styles.ctaActions}>
-            <Link href="/products" className="btn-primary">Explore Products</Link>
-            <Link href="/contact" className="btn-secondary">Contact Us</Link>
+        {/* Closing CTA */}
+        <section className={`${styles.section} ${styles.ctaSection}`}>
+          <div className={styles.ctaContent}>
+            <h2>Let's build something together.</h2>
+            <p>For collections, custom requirements and commercial projects, tell us what you're looking to create.</p>
+            <div className={styles.ctaActions}>
+              <Link href="/contact" className="btn-primary">DISCUSS YOUR REQUIREMENT</Link>
+              <Link href="/products" className="btn-secondary">VIEW THE COLLECTION</Link>
+            </div>
           </div>
         </section>
       </div>
