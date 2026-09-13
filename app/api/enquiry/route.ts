@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import path from "path";
-import fs from "fs";
 
 export async function POST(req: NextRequest) {
   try {
@@ -60,12 +58,10 @@ export async function POST(req: NextRequest) {
       }
 
       const buffer = Buffer.from(await file.arrayBuffer());
-      const ext = file.name.split(".").pop();
-      const safeFileName = `${enquiryNumber}-${Date.now()}.${ext}`;
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
-      if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-      fs.writeFileSync(path.join(uploadDir, safeFileName), buffer);
-      fileRecord = { fileName: file.name, fileUrl: `/uploads/${safeFileName}`, fileType: file.type };
+      const base64Str = buffer.toString("base64");
+      const fileUrl = `data:${file.type};base64,${base64Str}`;
+      
+      fileRecord = { fileName: file.name, fileUrl, fileType: file.type };
     }
 
     // Create Enquiry in DB
