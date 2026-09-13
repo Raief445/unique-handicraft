@@ -11,25 +11,25 @@ const capabilities = [
     number: "01",
     title: "MATERIALS",
     description:
-      "We work with wood and related materials suitable for furniture manufacturing. Material selection and availability can be discussed according to the requirements of each project.",
+      "We work primarily with wood and furniture-grade materials selected according to the requirements of each project. Material options, availability and specifications can be discussed during the planning stage.",
   },
   {
     number: "02",
     title: "FINISHING",
     description:
-      "Finishing can be developed around the required colour, tone and surface character. Options can include stains, paints and natural finishes, depending on the project specification.",
+      "Finishes can be developed around the required colour, tone and surface character. Options may include stains, paints and natural finishes, depending on the product and project specification.",
   },
   {
     number: "03",
     title: "CUSTOMIZATION",
     description:
-      "Have your own design or specification? We can work from dimensions, specifications and reference designs to manufacture pieces around your requirements.",
+      "Have your own design or specification? We can work from dimensions, technical details and reference designs to manufacture pieces around your requirements.",
   },
   {
     number: "04",
     title: "ORDER VOLUMES",
     description:
-      "Our manufacturing setup is flexible enough to accommodate varying order volumes. We discuss quantities and project requirements individually to work out a suitable production arrangement.",
+      "We work with different order quantities depending on the product and project. Quantities, specifications and production requirements are discussed individually before production begins.",
   },
   {
     number: "05",
@@ -41,7 +41,7 @@ const capabilities = [
     number: "06",
     title: "PACKAGING",
     description:
-      "Products are packaged with protection and handling in mind. Custom packaging requirements can be discussed for larger or export orders.",
+      "Products are packaged with protection and handling in mind. Packaging requirements can be discussed for larger or export-oriented orders.",
   },
 ];
 
@@ -94,7 +94,7 @@ export default function CapabilitiesPage() {
         <section className={`${styles.section} ${styles.sectionConnectedTop} ${styles.sectionConnectedBottom}`}>
           <div className={styles.positioningContent}>
             <div className={styles.eyebrow}>OUR APPROACH</div>
-            <h2>Built for considered projects.</h2>
+            <h2>Built around the details that matter.</h2>
             <p>
               Whether you are sourcing from our existing collection or developing a specific requirement, we work closely with customers to align product details, quantities, finishes and delivery requirements.
             </p>
@@ -104,7 +104,7 @@ export default function CapabilitiesPage() {
         {/* Closing CTA */}
         <section className={`${styles.section} ${styles.ctaSection} ${styles.sectionConnectedTop}`}>
           <div className={styles.ctaContent}>
-            <h2>Tell us what you're looking to make.</h2>
+            <h2>Tell us what you're looking to manufacture.</h2>
             <p>
               Share your product requirements, quantities, dimensions and finish preferences. We'll review the details and discuss the next steps with you.
             </p>
