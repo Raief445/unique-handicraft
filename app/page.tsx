@@ -98,7 +98,7 @@ export default async function Home() {
       <section className={styles.aboutSnippetSection}>
         <div className={`container ${styles.aboutSnippetContent}`}>
           <ScrollReveal direction="up" className={styles.aboutSnippetText}>
-            <h2>Furniture shaped by material, craft and place.</h2>
+            <h2>Your Trusted Partner in Premium Furniture Manufacturing.</h2>
             <p>
               Unique Timber & Handicraft is a Jodhpur-based furniture manufacturing business operating since 2015. We specialize in providing exceptional, handcrafted solid wood products tailored for commercial spaces and global wholesale distribution. Our master artisans combine traditional Rajasthani craftsmanship with modern durability to build long-lasting partnerships worldwide.
             </p>
