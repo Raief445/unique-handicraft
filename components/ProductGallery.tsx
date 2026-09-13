@@ -52,7 +52,12 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
               opacity: currentIndex === index ? 1 : 0,
               transition: 'opacity 0.3s ease-in-out',
               zIndex: currentIndex === index ? 1 : 0,
-              gridArea: '1 / 1'
+              position: currentIndex === index ? 'relative' : 'absolute',
+              top: currentIndex === index ? 'auto' : 0,
+              left: currentIndex === index ? 'auto' : 0,
+              width: '100%',
+              height: currentIndex === index ? 'auto' : '100%',
+              objectFit: 'contain'
             }}
           />
         ))}

@@ -38,7 +38,6 @@
 .mainImageWrapper {
   position: relative;
   width: 100%;
-  display: grid;
   overflow: hidden;
   background-color: #F7F5F2; /* Premium soft background */
   border-radius: 0; /* Sharp corners */
