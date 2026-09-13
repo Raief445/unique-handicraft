@@ -1,6 +1,12 @@
 .section {
-  padding: var(--spacing-xxl) 0;
+  padding: 6rem 0;
   background-color: var(--color-background);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: var(--spacing-xxl) 0;
+  }
 }
 
 .header {

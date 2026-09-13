@@ -121,8 +121,14 @@
 }
 
 .categoriesSection {
-  padding: var(--spacing-xxl) 0;
+  padding: 6rem 0;
   background-color: var(--color-surface); 
+}
+
+@media (max-width: 768px) {
+  .categoriesSection {
+    padding: var(--spacing-xxl) 0;
+  }
 }
 
 .aboutSnippetSection {
@@ -259,8 +265,14 @@
 }
 
 .featuredSection {
-  padding: var(--spacing-xxl) 0;
+  padding: 6rem 0;
   background-color: var(--color-background);
+}
+
+@media (max-width: 768px) {
+  .featuredSection {
+    padding: var(--spacing-xxl) 0;
+  }
 }
 
 .productsGrid {
