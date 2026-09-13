@@ -305,12 +305,16 @@
   }
   
   .categoryItem, .wideCategoryItem {
-    width: calc(48% - 1rem);
+    width: calc(50% - 0.5rem);
   }
   
   .wideCategoryItem .catImageWrapper {
     height: auto;
     aspect-ratio: 4 / 5;
+  }
+
+  .catImgFitted {
+    padding: 0.5rem !important;
   }
 
   .productsGrid {
@@ -322,6 +326,10 @@
     padding: 0;
   }
 
+  .catInfo {
+    padding: 1rem 0 0 0;
+  }
+
   .catInfo h3 {
     font-size: 1rem;
   }
@@ -331,5 +339,9 @@
   /* Keep it 2-column even on very small screens, just smaller padding */
   .categoriesGrid, .productsGrid {
     gap: 0.5rem;
+  }
+
+  .categoryItem, .wideCategoryItem {
+    width: calc(50% - 0.25rem);
   }
 }
