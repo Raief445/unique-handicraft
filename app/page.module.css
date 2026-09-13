@@ -126,7 +126,7 @@
 }
 
 .aboutSnippetSection {
-  padding: var(--spacing-xxl) 0;
+  padding: 5rem 0;
   background-color: var(--color-background);
   text-align: center;
 }
@@ -150,7 +150,7 @@
 .aboutSnippetText p {
   line-height: 1.8;
   color: var(--color-text-light);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 0;
   font-size: 1.125rem;
   max-width: 600px;
   margin-left: auto;
