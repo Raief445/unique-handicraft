@@ -61,6 +61,7 @@
 .code {
   font-size: 0.7rem;
   color: var(--color-text-light);
+  margin-top: auto;
   margin-bottom: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
