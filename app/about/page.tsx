@@ -24,7 +24,7 @@ export default function AboutPage() {
 
       <div className="container">
         {/* Story */}
-        <section className={styles.section}>
+        <section className={`${styles.section} ${styles.sectionConnectedBottom}`}>
           <div className={styles.editorialGrid}>
             <div className={styles.editorialHeadline}>
               <div className={styles.eyebrow}>OUR STORY</div>
@@ -69,7 +69,7 @@ export default function AboutPage() {
         </section>
 
         {/* Crafted in Jodhpur */}
-        <section className={styles.section}>
+        <section className={`${styles.section} ${styles.sectionConnectedTop}`}>
           <div className={styles.editorialGrid}>
             <div className={styles.editorialHeadline}>
               <div className={styles.eyebrow}>CRAFTED IN JODHPUR</div>
@@ -92,7 +92,7 @@ export default function AboutPage() {
         </section>
 
         {/* Our Approach */}
-        <section className={styles.section}>
+        <section className={`${styles.section} ${styles.sectionConnectedBottom}`}>
           <div className={styles.editorialHeadlineCentered}>
             <div className={styles.eyebrow}>OUR APPROACH</div>
           </div>
@@ -134,7 +134,7 @@ export default function AboutPage() {
         </section>
 
         {/* What We Make */}
-        <section className={styles.section}>
+        <section className={`${styles.section} ${styles.sectionConnectedTop}`}>
           <div className={styles.editorialHeadlineCentered}>
             <h2>What We Make</h2>
             <p className={styles.sectionSubtextCentered}>

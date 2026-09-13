@@ -48,6 +48,14 @@
   border-bottom: 1px solid var(--color-border);
 }
 
+.sectionConnectedTop {
+  padding-top: 3.5rem;
+}
+
+.sectionConnectedBottom {
+  padding-bottom: 3.5rem;
+}
+
 .section:last-child {
   border-bottom: none;
 }
@@ -108,7 +116,7 @@
 
 .editorialHeadlineCentered {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2.5rem;
 }
 
 .editorialHeadlineCentered h2 {
@@ -271,6 +279,14 @@
 
   .section {
     padding: 4rem 0;
+  }
+
+  .sectionConnectedTop {
+    padding-top: 2rem;
+  }
+
+  .sectionConnectedBottom {
+    padding-bottom: 2rem;
   }
 
   .editorialHeadline h2,
