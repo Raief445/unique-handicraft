@@ -94,7 +94,7 @@
 .productsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-xxl) var(--spacing-xl);
+  gap: var(--spacing-xl) var(--spacing-lg);
 }
 
 @media (max-width: 1200px) {
