@@ -1,17 +1,41 @@
 .hero {
   background-color: var(--color-primary);
   background-image: radial-gradient(circle at 50% 0%, #4a3d34 0%, #3a2f28 100%);
-  padding: var(--spacing-xxl) 0;
+  padding: 6rem 0; /* Reduced from 10rem to 55-65% height */
   text-align: center;
 }
-.hero h1 { color: var(--color-secondary); font-size: 2.5rem; margin-bottom: var(--spacing-sm); }
-.hero p { color: #EAE6DF; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+
+.heroEyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.hero h1 { 
+  color: white; 
+  font-size: 3.5rem; 
+  font-weight: 400;
+  margin-bottom: var(--spacing-md); 
+  letter-spacing: -0.01em;
+}
+
+.hero p { 
+  color: rgba(255, 255, 255, 0.9); 
+  font-size: 1.125rem;
+  max-width: 600px; 
+  margin: 0 auto; 
+  line-height: 1.6; 
+  font-weight: 300;
+}
 
 .wrapper {
   display: grid;
   grid-template-columns: 360px 1fr;
-  gap: var(--spacing-xxl);
-  padding: var(--spacing-xxl) var(--spacing-xl);
+  gap: var(--spacing-xl);
+  padding: 6rem var(--spacing-xl) var(--spacing-xl); /* Reduced top/bottom padding */
   align-items: start;
 }
 
@@ -19,40 +43,60 @@
 .infoSection {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-xl);
 }
 
-.infoCard {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
+.infoGroup {
   display: flex;
-  gap: var(--spacing-md);
-  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--spacing-lg);
 }
 
-.infoIcon { font-size: 1.75rem; flex-shrink: 0; }
+.infoMainTitle {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin-bottom: 0;
+}
 
-.infoCard h3 {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-secondary);
-  margin-bottom: var(--spacing-xs);
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.infoBlock h3 {
   font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-light);
+  margin-bottom: 0;
 }
 
-.infoCard p {
-  font-size: 0.9rem;
+.infoBlock p, .infoBlock a {
+  font-size: 1.05rem;
   color: var(--color-text);
   line-height: 1.6;
+  text-decoration: none;
 }
 
-.infoCard a {
-  font-size: 0.85rem;
+.infoBlock a:hover {
   color: var(--color-secondary);
-  word-break: break-all;
+}
+
+.subtext {
+  font-size: 0.95rem !important;
+  color: var(--color-text-light) !important;
+  margin-bottom: var(--spacing-xs);
+}
+
+.infoDivider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
 }
 
 .infoLink {
@@ -60,7 +104,9 @@
   margin-top: var(--spacing-xs);
   font-size: 0.875rem !important;
   color: var(--color-secondary) !important;
-  font-weight: 600;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 /* Form */
@@ -70,10 +116,11 @@
 }
 
 .form h2 {
-  font-size: 1.75rem;
-  margin-bottom: var(--spacing-xl);
-  padding-bottom: var(--spacing-md);
-  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-lg);
 }
 
 .formRow {
@@ -147,7 +194,17 @@
 @media (max-width: 1024px) {
   .wrapper {
     grid-template-columns: 1fr;
-    padding: var(--spacing-lg) var(--spacing-md);
+    padding: var(--spacing-xl) var(--spacing-md);
+    gap: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 4rem 0;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
   }
 }
 

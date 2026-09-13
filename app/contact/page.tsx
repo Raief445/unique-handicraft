@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Mail, Clock, ClipboardList, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
+import Link from "next/link";
 import styles from "./contact.module.css";
 
 export default function ContactPage() {
@@ -39,43 +40,43 @@ export default function ContactPage() {
     <div>
       <div className={styles.hero}>
         <div className="container">
-          <h1>Contact Us</h1>
-          <p>Get in touch with Unique Timber & Handicraft</p>
+          <div className={styles.heroEyebrow}>CONTACT</div>
+          <h1>Let’s discuss what you’re looking to make.</h1>
+          <p>For product enquiries, custom manufacturing and commercial requirements, get in touch with our team in Jodhpur.</p>
         </div>
       </div>
 
       <div className={`container ${styles.wrapper}`}>
         {/* Contact Info */}
         <div className={styles.infoSection}>
-          <div className={styles.infoCard}>
-            <div className={styles.infoIcon}><MapPin size={24} strokeWidth={1.5} /></div>
-            <div>
-              <h3>Location</h3>
+          <div className={styles.infoGroup}>
+            <h2 className={styles.infoMainTitle}>CONTACT INFORMATION</h2>
+            
+            <div className={styles.infoBlock}>
+              <h3>LOCATION</h3>
               <p>Jodhpur, Rajasthan, India</p>
             </div>
-          </div>
-          <div className={styles.infoCard}>
-            <div className={styles.infoIcon}><Mail size={24} strokeWidth={1.5} /></div>
-            <div>
-              <h3>Email</h3>
+            
+            <div className={styles.infoBlock}>
+              <h3>EMAIL</h3>
               <a href="mailto:uniquetimberhandicraftjodhpur@gmail.com">
                 uniquetimberhandicraftjodhpur@gmail.com
               </a>
             </div>
-          </div>
-          <div className={styles.infoCard}>
-            <div className={styles.infoIcon}><Clock size={24} strokeWidth={1.5} /></div>
-            <div>
-              <h3>Business Hours</h3>
+            
+            <div className={styles.infoBlock}>
+              <h3>BUSINESS HOURS</h3>
               <p>Monday – Saturday, 10 AM – 6 PM (IST)</p>
             </div>
           </div>
-          <div className={styles.infoCard}>
-            <div className={styles.infoIcon}><ClipboardList size={24} strokeWidth={1.5} /></div>
-            <div>
-              <h3>For Product Enquiries</h3>
-              <p>Use our Enquiry Cart for product-specific enquiries</p>
-              <a href="/products" className={styles.infoLink}>Browse Products →</a>
+          
+          <div className={styles.infoDivider}></div>
+
+          <div className={styles.infoGroup}>
+            <h2 className={styles.infoMainTitle}>FOR PRODUCT ENQUIRIES</h2>
+            <div className={styles.infoBlock}>
+              <p className={styles.subtext}>Use our Enquiry Cart for product-specific enquiries.</p>
+              <Link href="/products" className={styles.infoLink}>Browse Products →</Link>
             </div>
           </div>
         </div>
