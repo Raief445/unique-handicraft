@@ -165,11 +165,11 @@
 }
 
 .categoryItem {
-  width: calc(22% - var(--spacing-lg));
+  width: calc(23.5% - (var(--spacing-lg) * 0.75));
 }
 
 .wideCategoryItem {
-  width: calc(28% - var(--spacing-lg));
+  width: calc(29.5% - (var(--spacing-lg) * 0.75));
 }
 
 .categoryCard {
