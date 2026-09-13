@@ -38,7 +38,7 @@
 .mainImageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5; /* Taller, editorial aspect ratio */
+  display: grid;
   overflow: hidden;
   background-color: #F7F5F2; /* Premium soft background */
   border-radius: 0; /* Sharp corners */
@@ -77,12 +77,14 @@
 }
 
 .mainImage {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  object-fit: contain;
   display: block;
   mix-blend-mode: darken;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 .thumbnails {
@@ -217,7 +219,7 @@
   }
 
   .mainImageWrapper {
-    height: 400px;
+    height: auto;
     aspect-ratio: auto;
   }
 }
@@ -232,7 +234,7 @@
   }
 
   .mainImageWrapper {
-    height: 300px;
+    height: auto;
     aspect-ratio: auto;
   }
 }

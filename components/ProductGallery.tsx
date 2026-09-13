@@ -41,20 +41,18 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
       <div className={styles.gallery}>
       <div className={styles.mainImageWrapper}>
         {allImages.map((img, index) => (
-          <Image 
+          <img 
             key={img.id}
             src={img.imageUrl} 
             alt={`${productName} - Image ${index + 1}`} 
-            fill 
-            priority={index === 0} 
-            sizes="(max-width: 1024px) 100vw, 50vw" 
             className={styles.mainImage}
             onClick={() => setIsLightboxOpen(true)}
             style={{ 
               cursor: 'zoom-in',
               opacity: currentIndex === index ? 1 : 0,
               transition: 'opacity 0.3s ease-in-out',
-              zIndex: currentIndex === index ? 1 : 0
+              zIndex: currentIndex === index ? 1 : 0,
+              gridArea: '1 / 1'
             }}
           />
         ))}
