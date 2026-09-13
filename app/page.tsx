@@ -115,25 +115,28 @@ export default async function Home() {
               <h2 className={`${styles.sectionTitle} text-center`}>Collections</h2>
             </div>
             <div className={styles.categoriesGrid}>
-              {categories.map((cat, index) => (
-                <ScrollReveal key={cat.id} delay={index * 100} direction="up">
-                  <Link href={`/products?category=${cat.id}`} className={styles.categoryCard}>
-                    <div className={styles.catImageWrapper}>
-                      <Image
-                        src={cat.image || fallbackSvg}
-                        alt={cat.name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                        className={styles.catImgFitted}
-                      />
-                    </div>
-                    <div className={styles.catInfo}>
-                      <h3>{cat.name}</h3>
-                      <span className={styles.exploreLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>Explore Collection <ArrowRight size={14} /></span>
-                    </div>
-                  </Link>
-                </ScrollReveal>
-              ))}
+              {categories.map((cat, index) => {
+                const isWide = cat.name === 'Trunks' || cat.name === 'Sideboards';
+                return (
+                  <ScrollReveal key={cat.id} delay={index * 100} direction="up" className={isWide ? styles.wideCategoryItem : ''}>
+                    <Link href={`/products?category=${cat.id}`} className={`${styles.categoryCard} ${isWide ? styles.wideCategoryCard : ''}`}>
+                      <div className={styles.catImageWrapper}>
+                        <Image
+                          src={cat.image || fallbackSvg}
+                          alt={cat.name}
+                          fill
+                          sizes={isWide ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"}
+                          className={styles.catImgFitted}
+                        />
+                      </div>
+                      <div className={styles.catInfo}>
+                        <h3>{cat.name}</h3>
+                        <span className={styles.exploreLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>Explore Collection <ArrowRight size={14} /></span>
+                      </div>
+                    </Link>
+                  </ScrollReveal>
+                );
+              })}
             </div>
           </div>
         </section>
