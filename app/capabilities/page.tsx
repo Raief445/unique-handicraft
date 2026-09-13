@@ -1,6 +1,5 @@
 import styles from "./capabilities.module.css";
 import Link from "next/link";
-import { TreePine, Paintbrush, PencilRuler, Package, ShieldCheck, Mailbox } from "lucide-react";
 
 export const metadata = {
   title: "Our Capabilities | Unique Timber & Handicraft",
@@ -9,87 +8,114 @@ export const metadata = {
 
 const capabilities = [
   {
-    icon: <TreePine size={32} strokeWidth={1} />,
-    title: "Materials",
+    number: "01",
+    title: "MATERIALS",
     description:
-      "We work with wood and related materials suitable for furniture manufacturing. Specific material availability can be discussed based on your requirements.",
+      "We work with wood and related materials suitable for furniture manufacturing. Material selection and availability can be discussed according to the requirements of each project.",
   },
   {
-    icon: <Paintbrush size={32} strokeWidth={1} />,
-    title: "Finishing",
+    number: "02",
+    title: "FINISHING",
     description:
-      "Our products can be finished in a variety of styles. We can discuss finishing options — including stains, paints, and natural finishes — based on what you need.",
+      "Finishing can be developed around the required colour, tone and surface character. Options can include stains, paints and natural finishes, depending on the project specification.",
   },
   {
-    icon: <PencilRuler size={32} strokeWidth={1} />,
-    title: "Customization",
+    number: "03",
+    title: "CUSTOMIZATION",
     description:
-      "We welcome custom requirements. If you have your own design, dimensions, or specifications, our team can work with you to manufacture accordingly.",
+      "Have your own design or specification? We can work from dimensions, specifications and reference designs to manufacture pieces around your requirements.",
   },
   {
-    icon: <Package size={32} strokeWidth={1} />,
-    title: "Order Volumes",
+    number: "04",
+    title: "ORDER VOLUMES",
     description:
-      "Our manufacturing setup is flexible to accommodate varying order volumes. We can discuss your requirements and work out a suitable arrangement for your project size.",
+      "Our manufacturing setup is flexible enough to accommodate varying order volumes. We discuss quantities and project requirements individually to work out a suitable production arrangement.",
   },
   {
-    icon: <ShieldCheck size={32} strokeWidth={1} />,
-    title: "Quality",
+    number: "05",
+    title: "QUALITY",
     description:
-      "Quality is checked during production. We focus on delivering products that meet the highest standards — because our customers depend on what they receive.",
+      "Quality is checked throughout production, with attention to construction, finish and the agreed specifications of each project.",
   },
   {
-    icon: <Mailbox size={32} strokeWidth={1} />,
-    title: "Packaging",
+    number: "06",
+    title: "PACKAGING",
     description:
-      "Products are packaged to ensure they arrive in good condition. Custom packaging requirements can be discussed for larger or export orders.",
+      "Products are packaged with protection and handling in mind. Custom packaging requirements can be discussed for larger or export orders.",
   },
 ];
 
 export default function CapabilitiesPage() {
   return (
     <div>
+      {/* Hero */}
       <div className={styles.hero}>
         <div className={`container ${styles.heroContent}`}>
-          <h1>Our Capabilities</h1>
-          <p>What we can do for you</p>
+          <div className={styles.eyebrow}>MANUFACTURING CAPABILITIES</div>
+          <h1>Manufacturing built around your requirements.</h1>
+          <p className={styles.heroSubtext}>
+            From material selection and finishing to customization, quality control and packaging, we work across the key stages of furniture manufacturing.
+          </p>
         </div>
       </div>
 
       <div className="container">
-        <section className={styles.intro}>
-          <p>
-            Unique Timber & Handicraft manufactures furniture and handicraft products in
-            Jodhpur, Rajasthan. The following provides a general overview of our capabilities.
-            For specific requirements, we encourage you to send us an enquiry so our team can
-            discuss your needs in detail.
-          </p>
+        {/* Introduction */}
+        <section className={`${styles.section} ${styles.sectionIntro} ${styles.sectionConnectedBottom}`}>
+          <div className={styles.introContent}>
+            <p>
+              From material selection and finishing to customization, quality control and export-ready packaging, we work across the key stages of furniture manufacturing.
+            </p>
+            <p>
+              Every project is discussed around its specifications, quantities and finish requirements.
+            </p>
+          </div>
         </section>
 
-        <section className={styles.capabilitiesGrid}>
-          {capabilities.map((cap) => (
-            <div key={cap.title} className={styles.capCard}>
-              <div className={styles.capIcon}>{cap.icon}</div>
-              <h3>{cap.title}</h3>
-              <p>{cap.description}</p>
+        {/* Capability Sequence */}
+        <section className={`${styles.section} ${styles.sectionSequence}`}>
+          <div className={styles.verticalSequence}>
+            {capabilities.map((cap, index) => (
+              <div key={cap.title}>
+                <div className={styles.sequenceItem}>
+                  <div className={styles.sequenceNumber}>{cap.number}</div>
+                  <div className={styles.sequenceContent}>
+                    <h2>{cap.title}</h2>
+                    <p>{cap.description}</p>
+                  </div>
+                </div>
+                {index < capabilities.length - 1 && <div className={styles.sequenceDivider} />}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Project Positioning */}
+        <section className={`${styles.section} ${styles.sectionConnectedTop} ${styles.sectionConnectedBottom}`}>
+          <div className={styles.positioningContent}>
+            <div className={styles.eyebrow}>OUR APPROACH</div>
+            <h2>Built for considered projects.</h2>
+            <p>
+              Whether you are sourcing from our existing collection or developing a specific requirement, we work closely with customers to align product details, quantities, finishes and delivery requirements.
+            </p>
+          </div>
+        </section>
+
+        {/* Closing CTA */}
+        <section className={`${styles.section} ${styles.ctaSection} ${styles.sectionConnectedTop}`}>
+          <div className={styles.ctaContent}>
+            <h2>Tell us what you're looking to make.</h2>
+            <p>
+              Share your product requirements, quantities, dimensions and finish preferences. We'll review the details and discuss the next steps with you.
+            </p>
+            <div className={styles.ctaActions}>
+              <Link href="/contact" className="btn-primary">
+                DISCUSS YOUR REQUIREMENT
+              </Link>
+              <Link href="/custom-manufacturing" className="btn-secondary">
+                CUSTOM MANUFACTURING
+              </Link>
             </div>
-          ))}
-        </section>
-
-        <section className={styles.ctaSection}>
-          <h2>Have a Specific Requirement?</h2>
-          <p>
-            The best way to understand if we can meet your requirements is to start an
-            enquiry. Share your product needs, quantities, and any customization requirements,
-            and our team will respond.
-          </p>
-          <div className={styles.ctaActions}>
-            <Link href="/custom-manufacturing" className="btn-primary">
-              Custom Manufacturing
-            </Link>
-            <Link href="/contact" className="btn-secondary">
-              Contact Us
-            </Link>
           </div>
         </section>
       </div>
