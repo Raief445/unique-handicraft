@@ -26,13 +26,13 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
           </Link>
         </div>
         <nav className={styles.navLinks}>
-          <Link href="/">Home</Link>
+          <Link href="/" className={pathname === "/" ? styles.active : ""}>Home</Link>
           <div 
             className={styles.dropdownContainer}
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
-            <Link href="/products" className={styles.dropdownTrigger}>
+            <Link href="/products" className={`${styles.dropdownTrigger} ${pathname.startsWith("/products") ? styles.active : ""}`}>
               Products <ChevronDown size={14} className={styles.dropdownIcon} />
             </Link>
             {dropdownOpen && (
@@ -46,11 +46,11 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
               </div>
             )}
           </div>
-          <Link href="/about">About</Link>
-          <Link href="/capabilities">Capabilities</Link>
-          <Link href="/custom-manufacturing">Custom Manufacturing</Link>
-          <Link href="/contact">Contact</Link>
-          {isAdmin && <Link href="/admin" className={styles.adminLink}>Admin Panel</Link>}
+          <Link href="/about" className={pathname === "/about" ? styles.active : ""}>About</Link>
+          <Link href="/capabilities" className={pathname === "/capabilities" ? styles.active : ""}>Capabilities</Link>
+          <Link href="/custom-manufacturing" className={pathname === "/custom-manufacturing" ? styles.active : ""}>Custom Manufacturing</Link>
+          <Link href="/contact" className={pathname === "/contact" ? styles.active : ""}>Contact</Link>
+          {isAdmin && <Link href="/admin" className={`${styles.adminLink} ${pathname.startsWith("/admin") ? styles.active : ""}`}>Admin Panel</Link>}
         </nav>
         <div className={styles.actions}>
           {pathname === "/products" && (

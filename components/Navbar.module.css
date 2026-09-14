@@ -61,7 +61,8 @@
   transition: width var(--transition-normal);
 }
 
-.navLinks a:hover::after {
+.navLinks a:hover::after,
+.navLinks a.active::after {
   width: 100%;
 }
 
