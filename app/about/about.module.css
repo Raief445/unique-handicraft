@@ -261,11 +261,11 @@
 
 @media (max-width: 768px) {
   .hero {
-    padding: 5rem 0 3rem;
+    padding: 4rem 1rem 3rem;
   }
 
   .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 
   .heroFacts {
@@ -278,15 +278,15 @@
   }
 
   .section {
-    padding: 4rem 0;
+    padding: 3.5rem 0;
   }
 
   .sectionConnectedTop {
-    padding-top: 2rem;
+    padding-top: 1.5rem;
   }
 
   .sectionConnectedBottom {
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
   }
 
   .editorialHeadline h2,
@@ -295,10 +295,14 @@
   }
 
   .editorialStats {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
     padding-top: 2rem;
     margin-top: 2rem;
+  }
+
+  .statItem strong {
+    font-size: 1.5rem;
   }
 
   .sequenceItem {
@@ -312,12 +316,12 @@
   }
 
   .listItem {
-    font-size: 1.5rem;
-    padding: 1.5rem 0;
+    font-size: 1.25rem;
+    padding: 1.25rem 0;
   }
 
   .ctaContent h2 {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
 
   .ctaActions {
@@ -325,17 +329,35 @@
   }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 480px) {
   .hero h1 {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
   
-  .editorialHeadline h2 {
-    font-size: 1.75rem;
+  .editorialHeadline h2,
+  .editorialHeadlineCentered h2 {
+    font-size: 1.6rem;
   }
   
   .sequenceContent p,
   .narrowText p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .editorialStats {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .heroFacts {
+    font-size: 0.75rem;
+  }
+  
+  .ctaContent h2 {
+    font-size: 1.6rem;
+  }
+  
+  .ctaContent p {
+    font-size: 0.95rem;
   }
 }
