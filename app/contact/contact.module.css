@@ -207,13 +207,55 @@
 
 @media (max-width: 768px) {
   .hero {
-    padding: 4rem 0;
+    padding: 4rem 1rem;
   }
   .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+  .wrapper {
+    padding: 2rem 1rem;
+    gap: 2rem;
+  }
+  .formRow { 
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .fieldGroup {
+    margin-bottom: 1rem;
+  }
+  .form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .infoMainTitle {
+    font-size: 1.3rem;
+  }
+  .infoBlock p, .infoBlock a {
+    font-size: 0.95rem;
+  }
+  .infoGroup {
+    gap: 1.5rem;
+  }
+  .infoSection {
+    gap: 1.5rem;
   }
 }
 
-@media (max-width: 600px) {
-  .formRow { grid-template-columns: 1fr; }
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  .hero p {
+    font-size: 0.95rem;
+  }
+  .form h2 {
+    font-size: 1.6rem;
+  }
+  .infoMainTitle {
+    font-size: 1.2rem;
+  }
 }
