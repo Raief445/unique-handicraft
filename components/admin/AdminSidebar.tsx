@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import styles from "./AdminSidebar.module.css";
-import { LayoutDashboard, Armchair, Folders, ClipboardList, Users, MessageSquare } from "lucide-react";
+import { LayoutDashboard, Armchair, Folders, ClipboardList, Users, MessageSquare, Eye } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
@@ -13,6 +13,7 @@ const navItems = [
   { href: "/admin/enquiries", label: "Enquiries", icon: <ClipboardList size={20} /> },
   { href: "/admin/messages", label: "Messages", icon: <MessageSquare size={20} /> },
   { href: "/admin/customers", label: "Customers", icon: <Users size={20} /> },
+  { href: "/admin/visitors", label: "Visitors", icon: <Eye size={20} /> },
 ];
 
 export default function AdminSidebar({ 
@@ -33,6 +34,7 @@ export default function AdminSidebar({
     { href: "/admin/enquiries", label: "Enquiries", icon: <ClipboardList size={20} />, badge: newEnquiries },
     { href: "/admin/messages", label: "Messages", icon: <MessageSquare size={20} />, badge: unreadMessages },
     { href: "/admin/customers", label: "Customers", icon: <Users size={20} /> },
+    { href: "/admin/visitors", label: "Visitors", icon: <Eye size={20} /> },
   ];
 
   return (

@@ -133,3 +133,11 @@ model ContactMessage {
   status    String   @default("UNREAD") // "UNREAD", "READ"
   createdAt DateTime @default(now())
 }
+
+model VisitorLog {
+  id        String   @id @default(cuid())
+  ipAddress String?
+  userAgent String?
+  path      String?
+  visitedAt DateTime @default(now())
+}

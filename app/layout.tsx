@@ -5,6 +5,7 @@ import { EnquiryCartProvider } from "@/components/EnquiryCartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
+import VisitorTracker from "@/components/VisitorTracker";
 import EnquiryCartDrawer from "@/components/EnquiryCartDrawer";
 import prisma from "@/lib/db";
 import { unstable_cache } from "next/cache";
@@ -35,6 +36,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
+        <VisitorTracker />
         <AuthProvider>
           <EnquiryCartProvider>
             <Navbar categories={categories} />
