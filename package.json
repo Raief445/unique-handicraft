@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/client": "^5.12.0",
     "@types/bcryptjs": "^2.4.6",
+    "@types/ua-parser-js": "^0.7.39",
     "bcryptjs": "^3.0.3",
     "date-fns": "^4.4.0",
     "lucide-react": "^1.37.0",
@@ -19,7 +20,8 @@
     "next-auth": "^4.24.15",
     "nodemailer": "^7.0.13",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
     "@types/node": "^20",

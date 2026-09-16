@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
 import styles from "./page.module.css";
 import { Users, Clock, Globe } from "lucide-react";
-import { format } from "date-fns";
+import { UAParser } from "ua-parser-js";
 
 export const dynamic = 'force-dynamic';
 
@@ -75,21 +75,38 @@ export default async function VisitorsPage() {
                 <td colSpan={4} className={styles.emptyState}>No visitors logged yet.</td>
               </tr>
             ) : (
-              visitors.map((visitor) => (
-                <tr key={visitor.id}>
-                  <td>
-                    <div className={styles.timeCell}>
-                      <Clock size={14} className={styles.clockIcon} />
-                      {format(new Date(visitor.visitedAt), "MMM d, yyyy HH:mm")}
-                    </div>
-                  </td>
-                  <td>
-                    <span className={styles.pathBadge}>{visitor.path || '/'}</span>
-                  </td>
-                  <td>{visitor.ipAddress}</td>
-                  <td className={styles.userAgentCell}>{visitor.userAgent}</td>
-                </tr>
-              ))
+              visitors.map((visitor) => {
+                const parser = new UAParser(visitor.userAgent || '');
+                const browser = parser.getBrowser();
+                const os = parser.getOS();
+                const deviceName = `${browser.name || 'Unknown Browser'} on ${os.name || 'Unknown OS'}`;
+
+                const formattedTime = new Date(visitor.visitedAt).toLocaleString('en-IN', {
+                  timeZone: 'Asia/Kolkata',
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: true
+                });
+
+                return (
+                  <tr key={visitor.id}>
+                    <td>
+                      <div className={styles.timeCell}>
+                        <Clock size={14} className={styles.clockIcon} />
+                        {formattedTime}
+                      </div>
+                    </td>
+                    <td>
+                      <span className={styles.pathBadge}>{visitor.path || '/'}</span>
+                    </td>
+                    <td>{visitor.ipAddress}</td>
+                    <td className={styles.userAgentCell} title={visitor.userAgent || ''}>{deviceName}</td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
