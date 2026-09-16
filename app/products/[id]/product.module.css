@@ -235,6 +235,15 @@
   }
 }
 
+@media (max-width: 480px) {
+  .wrapper {
+    padding: var(--spacing-md) 1rem;
+  }
+  .productName {
+    font-size: 1.5rem;
+  }
+}
+
 /* Lightbox & Zoom */
 .zoomBtn {
   position: absolute;

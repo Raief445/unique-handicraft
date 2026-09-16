@@ -252,6 +252,10 @@
     font-size: 2.2rem;
   }
   
+  .ctaContent h2 {
+    font-size: 1.75rem;
+  }
+  
   .heroSubtext,
   .introContent,
   .sequenceContent p,
