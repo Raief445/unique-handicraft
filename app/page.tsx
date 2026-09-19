@@ -14,32 +14,36 @@ import { ArrowRight } from "lucide-react";
 export const revalidate = 60;
 
 export default async function Home() {
-  // Fetch categories
-  const categories = await prisma.category.findMany({
-    where: { 
-      status: "ACTIVE",
-      showOnHome: true
-    },
-    orderBy: { displayOrder: "asc" },
-  });
-
-  // Fetch featured products
-  const featuredProducts = await prisma.product.findMany({
-    where: {
-      status: "PUBLISHED",
-      featured: true,
-    },
-    include: {
-      images: {
-        where: { imageType: "MAIN" },
-        take: 1,
+  // Fetch categories, featured products, and hero product in parallel
+  const [categories, featuredProducts, heroProductData] = await Promise.all([
+    prisma.category.findMany({
+      where: { 
+        status: "ACTIVE",
+        showOnHome: true
       },
-    },
-    orderBy: {
-      featuredOrder: "asc",
-    },
-    take: 8,
-  });
+      orderBy: { displayOrder: "asc" },
+    }),
+    prisma.product.findMany({
+      where: {
+        status: "PUBLISHED",
+        featured: true,
+      },
+      include: {
+        images: {
+          where: { imageType: "MAIN" },
+          take: 1,
+        },
+      },
+      orderBy: {
+        featuredOrder: "asc",
+      },
+      take: 8,
+    }),
+    prisma.product.findFirst({
+      where: { status: "PUBLISHED", isHero: true },
+      include: { images: { where: { imageType: "MAIN" }, take: 1 } },
+    })
+  ]);
 
   const fallbackSvg = "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%20600%20400%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EEE9%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%233A2F28%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E";
 
@@ -55,11 +59,6 @@ export default async function Home() {
     dimensionUnit: p.dimensionUnit,
     material: p.material,
   }));
-
-  const heroProductData = await prisma.product.findFirst({
-    where: { status: "PUBLISHED", isHero: true },
-    include: { images: { where: { imageType: "MAIN" }, take: 1 } },
-  });
 
   const mainHeroImage = heroProductData?.images[0]?.imageUrl || formattedProducts[0]?.mainImage || fallbackSvg;
 

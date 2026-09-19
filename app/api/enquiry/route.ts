@@ -157,9 +157,11 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
 
     const adminEmail = "uniquetimberhandicraftjodhpur@gmail.com";
 
-    // Notify admin
-    await transporter.sendMail({
-      from: `"Unique Timber Website" <${process.env.SMTP_USER}>`,
+    // Send both emails in parallel
+    await Promise.all([
+      // Notify admin
+      transporter.sendMail({
+        from: `"Unique Timber Website" <${process.env.SMTP_USER}>`,
       to: adminEmail,
       subject: `New Enquiry: ${enquiryNumber} — ${data.companyName}`,
       html: `
@@ -205,30 +207,30 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
           encoding: "base64"
         }
       ] : []
-    });
-
-    // Confirm to customer
-    await transporter.sendMail({
-      from: `"Unique Timber & Handicraft" <${process.env.SMTP_USER}>`,
-      to: data.email,
-      subject: `Enquiry Confirmation — ${enquiryNumber}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
-          <h2 style="background:#3A2F28;color:#C1A27A;padding:20px;margin:0;">Thank You for Your Enquiry</h2>
-          <div style="padding:20px;">
-            <p>Dear ${data.fullName},</p>
-            <p>We have received your enquiry and will review your requirements shortly.</p>
-            <div style="background:#f9f7f3;border:1px solid #e5e0d8;border-radius:6px;padding:16px;margin:20px 0;text-align:center;">
-              <span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">Your Enquiry Number</span><br/>
-              <strong style="font-size:24px;color:#3A2F28;">${enquiryNumber}</strong>
+      }),
+      // Confirm to customer
+      transporter.sendMail({
+        from: `"Unique Timber & Handicraft" <${process.env.SMTP_USER}>`,
+        to: data.email,
+        subject: `Enquiry Confirmation — ${enquiryNumber}`,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+            <h2 style="background:#3A2F28;color:#C1A27A;padding:20px;margin:0;">Thank You for Your Enquiry</h2>
+            <div style="padding:20px;">
+              <p>Dear ${data.fullName},</p>
+              <p>We have received your enquiry and will review your requirements shortly.</p>
+              <div style="background:#f9f7f3;border:1px solid #e5e0d8;border-radius:6px;padding:16px;margin:20px 0;text-align:center;">
+                <span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">Your Enquiry Number</span><br/>
+                <strong style="font-size:24px;color:#3A2F28;">${enquiryNumber}</strong>
+              </div>
+              <p>Our team will contact you at <strong>${data.email}</strong>${data.phone ? ` or <strong>${data.phone}</strong>` : ""} regarding your enquiry.</p>
+              <br/>
+              <p>Regards,<br/>Unique Timber & Handicraft<br/>Jodhpur, Rajasthan, India<br/>uniquetimberhandicraftjodhpur@gmail.com</p>
             </div>
-            <p>Our team will contact you at <strong>${data.email}</strong>${data.phone ? ` or <strong>${data.phone}</strong>` : ""} regarding your enquiry.</p>
-            <br/>
-            <p>Regards,<br/>Unique Timber & Handicraft<br/>Jodhpur, Rajasthan, India<br/>uniquetimberhandicraftjodhpur@gmail.com</p>
           </div>
-        </div>
-      `,
-    });
+        `,
+      })
+    ]);
   } catch (error) {
     console.error("Email sending error:", error);
   }
