@@ -1,8 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
+// Simple in-memory rate limiter (scoped per serverless container)
+const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
+const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes
+const MAX_REQUESTS = 3;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  if (!record) {
+    rateLimitMap.set(ip, { count: 1, timestamp: now });
+    return false;
+  }
+  if (now - record.timestamp > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, timestamp: now });
+    return false;
+  }
+  if (record.count >= MAX_REQUESTS) {
+    return true;
+  }
+  record.count += 1;
+  return false;
+}
+
+// XSS Sanitizer
+function escapeHtml(unsafe: string): string {
+  if (!unsafe) return "";
+  return String(unsafe)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
+    }
+
     const formData = await req.formData();
 
     // Parse fields
@@ -148,9 +187,9 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
       .map(
         (item: any) =>
           `<tr>
-            <td style="padding:8px;border:1px solid #ddd;">${item.name}</td>
-            <td style="padding:8px;border:1px solid #ddd;">${item.productCode}</td>
-            <td style="padding:8px;border:1px solid #ddd;">${item.quantity}</td>
+            <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(item.name)}</td>
+            <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(item.productCode)}</td>
+            <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(String(item.quantity))}</td>
           </tr>`
       )
       .join("");
@@ -163,7 +202,7 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
       transporter.sendMail({
         from: `"Unique Timber Website" <${process.env.SMTP_USER}>`,
       to: adminEmail,
-      subject: `New Enquiry: ${enquiryNumber} — ${data.companyName}`,
+      subject: `New Enquiry: ${enquiryNumber} — ${escapeHtml(data.companyName)}`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;">
           <h2 style="background:#3A2F28;color:#C1A27A;padding:20px;margin:0;">New Enquiry Received</h2>
@@ -171,12 +210,12 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
             <h3>Enquiry Number: ${enquiryNumber}</h3>
             <hr/>
             <h4>Customer Details</h4>
-            <p><strong>Name:</strong> ${data.fullName}</p>
-            <p><strong>Company:</strong> ${data.companyName}</p>
-            <p><strong>Email:</strong> ${data.email}</p>
-            ${data.phone ? `<p><strong>Phone:</strong> ${data.phone}</p>` : ""}
-            <p><strong>Location:</strong> ${data.location}, ${data.country}</p>
-            ${data.designation ? `<p><strong>Designation:</strong> ${data.designation}</p>` : ""}
+            <p><strong>Name:</strong> ${escapeHtml(data.fullName)}</p>
+            <p><strong>Company:</strong> ${escapeHtml(data.companyName)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+            ${data.phone ? `<p><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>` : ""}
+            <p><strong>Location:</strong> ${escapeHtml(data.location)}, ${escapeHtml(data.country)}</p>
+            ${data.designation ? `<p><strong>Designation:</strong> ${escapeHtml(data.designation)}</p>` : ""}
             <hr/>
             <h4>Products Enquired</h4>
             <table style="width:100%;border-collapse:collapse;">
@@ -191,10 +230,10 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
             </table>
             <hr/>
             <h4>Requirements</h4>
-            ${data.expectedQuantity ? `<p><strong>Expected Quantity:</strong> ${data.expectedQuantity}</p>` : ""}
-            ${data.deliveryDate ? `<p><strong>Delivery Date:</strong> ${data.deliveryDate}</p>` : ""}
+            ${data.expectedQuantity ? `<p><strong>Expected Quantity:</strong> ${escapeHtml(String(data.expectedQuantity))}</p>` : ""}
+            ${data.deliveryDate ? `<p><strong>Delivery Date:</strong> ${escapeHtml(data.deliveryDate)}</p>` : ""}
             <p><strong>Customization:</strong> ${data.customizationRequired ? "Yes" : "No"}</p>
-            ${data.message ? `<p><strong>Message:</strong><br/>${data.message}</p>` : ""}
+            ${data.message ? `<p><strong>Message:</strong><br/>${escapeHtml(data.message)}</p>` : ""}
             <hr/>
             <p style="color:#888;font-size:12px;">Submitted on: ${new Date().toLocaleString("en-IN")}</p>
           </div>
@@ -217,7 +256,7 @@ async function sendEmailNotification(enquiryNumber: string, data: any) {
           <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
             <h2 style="background:#3A2F28;color:#C1A27A;padding:20px;margin:0;">Thank You for Your Enquiry</h2>
             <div style="padding:20px;">
-              <p>Dear ${data.fullName},</p>
+              <p>Dear ${escapeHtml(data.fullName)},</p>
               <p>We have received your enquiry and will review your requirements shortly.</p>
               <div style="background:#f9f7f3;border:1px solid #e5e0d8;border-radius:6px;padding:16px;margin:20px 0;text-align:center;">
                 <span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">Your Enquiry Number</span><br/>

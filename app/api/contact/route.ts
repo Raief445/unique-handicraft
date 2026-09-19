@@ -1,8 +1,47 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
-export async function POST(req: Request) {
+// Simple in-memory rate limiter (scoped per serverless container)
+const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
+const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes
+const MAX_REQUESTS = 3;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  if (!record) {
+    rateLimitMap.set(ip, { count: 1, timestamp: now });
+    return false;
+  }
+  if (now - record.timestamp > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, timestamp: now });
+    return false;
+  }
+  if (record.count >= MAX_REQUESTS) {
+    return true;
+  }
+  record.count += 1;
+  return false;
+}
+
+// XSS Sanitizer
+function escapeHtml(unsafe: string): string {
+  if (!unsafe) return "";
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+export async function POST(req: NextRequest) {
   try {
+    const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
+    }
+
     const body = await req.json();
     const { name, company, email, phone, subject, message } = body;
 
@@ -65,21 +104,21 @@ async function sendContactEmailNotification(data: any) {
     await transporter.sendMail({
       from: `"Unique Timber Website" <${process.env.SMTP_USER}>`,
       to: adminEmail,
-      subject: `New Contact Message: ${data.subject} — ${data.name}`,
+      subject: `New Contact Message: ${escapeHtml(data.subject)} — ${escapeHtml(data.name)}`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;">
           <h2 style="background:#3A2F28;color:#C1A27A;padding:20px;margin:0;">New Contact Message Received</h2>
           <div style="padding:20px;">
-            <h3>Subject: ${data.subject}</h3>
+            <h3>Subject: ${escapeHtml(data.subject)}</h3>
             <hr/>
             <h4>Sender Details</h4>
-            <p><strong>Name:</strong> ${data.name}</p>
-            <p><strong>Company:</strong> ${data.company}</p>
-            <p><strong>Email:</strong> ${data.email}</p>
-            ${data.phone ? `<p><strong>Phone:</strong> ${data.phone}</p>` : ""}
+            <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+            <p><strong>Company:</strong> ${escapeHtml(data.company)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+            ${data.phone ? `<p><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>` : ""}
             <hr/>
             <h4>Message</h4>
-            <p style="white-space: pre-wrap;">${data.message}</p>
+            <p style="white-space: pre-wrap;">${escapeHtml(data.message)}</p>
             <hr/>
             <p style="color:#888;font-size:12px;">Submitted on: ${new Date().toLocaleString("en-IN")}</p>
           </div>
