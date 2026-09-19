@@ -6,6 +6,6 @@
 
 .adminMain {
   flex: 1;
-  padding: var(--spacing-xl);
+  padding: 2rem;
   overflow-x: auto;
 }
