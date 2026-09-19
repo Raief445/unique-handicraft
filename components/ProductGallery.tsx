@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ZoomIn, X } from "lucide-react";
-import styles from "../app/products/[id]/product.module.css";
+import styles from "@/app/(storefront)/products/[id]/product.module.css";
 
 type ProductGalleryProps = {
   mainImage: string;
