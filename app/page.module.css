@@ -311,11 +311,11 @@
     font-size: 1rem; 
   }
   
-  /* Premium 1-column layout for Collections on mobile */
+  /* Premium 2-column layout for Collections on mobile */
   .categoriesGrid {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 0.75rem;
   }
   
   .categoryItem, .wideCategoryItem {
@@ -325,30 +325,30 @@
   .categoryItem .catImageWrapper,
   .wideCategoryItem .catImageWrapper {
     height: auto;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 5;
     background-color: var(--color-background);
   }
 
   .catImgFitted {
-    padding: 1.5rem !important;
+    padding: 1rem !important;
   }
 
   .catInfo {
-    padding: 1rem 0 0 0;
-    gap: 0.5rem;
-    align-items: center;
-    text-align: center;
+    padding: 0.75rem 0 0 0;
+    gap: 0.25rem;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .catInfo h3 {
-    font-size: 1.1rem;
-    letter-spacing: 0.15em;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
   }
 
   .exploreLink {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    margin-top: 0.25rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    margin-top: 0;
   }
 
   /* Keep Products 2-column but with better breathing room */
