@@ -60,9 +60,11 @@ export default function Navbar({ categories = [] }: { categories?: { id: string,
             </button>
           )}
           <button onClick={openCart} className={styles.cartIcon} aria-label="Enquiry Cart">
-            <ShoppingBag size={18} strokeWidth={1.5} />
+            <div className={styles.iconWrapper}>
+              <ShoppingBag size={18} strokeWidth={1.5} />
+              {itemCount > 0 && <span className={styles.badgeDot}></span>}
+            </div>
             <span className={styles.cartText}>Enquiry Cart</span>
-            {itemCount > 0 && <span className={styles.badge}>{itemCount}</span>}
           </button>
           <button className={styles.hamburgerBtn} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle Menu">
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
