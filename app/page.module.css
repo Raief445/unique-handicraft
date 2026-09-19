@@ -304,54 +304,61 @@
   }
   
   .aboutSnippetText h2 {
-    font-size: 1.75rem; /* Downscaled from 3rem */
+    font-size: 1.75rem; 
   }
 
   .aboutSnippetText p {
-    font-size: 1rem; /* Downscaled slightly */
+    font-size: 1rem; 
   }
   
-  /* 2-column grid for mobile using flexbox */
+  /* Premium 1-column layout for Collections on mobile */
   .categoriesGrid {
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
   
   .categoryItem, .wideCategoryItem {
-    width: calc(50% - 0.5rem);
+    width: 100%;
   }
   
   .categoryItem .catImageWrapper,
   .wideCategoryItem .catImageWrapper {
     height: auto;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
+    background-color: var(--color-background);
   }
 
   .catImgFitted {
-    padding: 0.5rem !important;
+    padding: 1.5rem !important;
   }
 
+  .catInfo {
+    padding: 1rem 0 0 0;
+    gap: 0.5rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .catInfo h3 {
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+  }
+
+  .exploreLink {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+  }
+
+  /* Keep Products 2-column but with better breathing room */
   .productsGrid {
-    grid-template-columns: repeat(2, 1fr); /* Reverted to proper grid */
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1.5rem 1rem;
   }
 
   .categoryCard {
     padding: 0;
-  }
-
-  .catInfo {
-    padding: 0.75rem 0 0 0;
-    gap: 0.25rem;
-  }
-
-  .catInfo h3 {
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-  }
-
-  .exploreLink {
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
   }
 }
 
@@ -366,12 +373,7 @@
 }
 
 @media (max-width: 400px) {
-  /* Keep it 2-column even on very small screens, just smaller padding */
-  .categoriesGrid, .productsGrid {
-    gap: 0.5rem;
-  }
-
-  .categoryItem, .wideCategoryItem {
-    width: calc(50% - 0.25rem);
+  .productsGrid {
+    gap: 1rem 0.5rem;
   }
 }
