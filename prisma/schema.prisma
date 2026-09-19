@@ -67,6 +67,10 @@ model Product {
   createdAt              DateTime       @default(now())
   updatedAt              DateTime       @updatedAt
   images                 ProductImage[]
+
+  @@index([categoryId])
+  @@index([status])
+  @@index([displayOrder])
 }
 
 model ProductImage {
@@ -76,6 +80,9 @@ model ProductImage {
   imageUrl     String
   imageType    String?  // "MAIN", "GALLERY"
   displayOrder Int      @default(0)
+
+  @@index([productId])
+  @@index([imageType])
 }
 
 model Enquiry {

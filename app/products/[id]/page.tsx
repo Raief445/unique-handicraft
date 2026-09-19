@@ -5,7 +5,18 @@ import styles from "./product.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // Cache for 1 hour
+
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    select: { id: true },
+    where: { status: "PUBLISHED" },
+  });
+  
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
 
 export default async function ProductDetailPage({
   params,
