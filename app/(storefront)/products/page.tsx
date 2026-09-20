@@ -2,9 +2,15 @@ import prisma from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
 import styles from "./products.module.css";
 import Link from "next/link";
+import { Metadata } from "next";
 
-
-
+export const metadata: Metadata = {
+  title: "The Collection | Premium Handcrafted Furniture",
+  description: "Explore our collection of premium handcrafted wooden furniture and handicrafts. Unique Timber & Handicraft is a Jodhpur-based manufacturer and wholesale supplier.",
+  alternates: {
+    canonical: "/products",
+  },
+};
 export default async function ProductsPage({
   searchParams,
 }: {

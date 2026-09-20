@@ -5,8 +5,37 @@ import AuthProvider from "@/components/AuthProvider";
 import VisitorTracker from "@/components/VisitorTracker";
 
 export const metadata: Metadata = {
-  title: "Unique Timber & Handicraft | Furniture & Handicrafts Jodhpur",
-  description: "Jodhpur-based furniture and handicraft manufacturing since 2015, providing premium furniture and handicrafts.",
+  metadataBase: new URL("https://uniquehandicrafts.in"),
+  title: {
+    default: "Unique Timber & Handicraft | Furniture & Handicrafts Jodhpur",
+    template: "%s | Unique Timber & Handicraft",
+  },
+  description: "Jodhpur-based furniture and handicraft manufacturing since 2015. Providing premium handcrafted furniture, wholesale supply, and custom manufacturing.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Unique Timber & Handicraft | Furniture & Handicrafts Jodhpur",
+    description: "Jodhpur-based furniture and handicraft manufacturing since 2015. Premium handcrafted furniture, wholesale supply, and custom manufacturing.",
+    url: "https://uniquehandicrafts.in",
+    siteName: "Unique Timber & Handicraft",
+    images: [
+      {
+        url: "https://i.postimg.cc/Vs46MpNq/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Unique Timber & Handicraft",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Unique Timber & Handicraft",
+    description: "Jodhpur-based premium handcrafted furniture and wholesale supply.",
+    images: ["https://i.postimg.cc/Vs46MpNq/logo.png"],
+  },
 };
 
 const serifFont = Cormorant_Garamond({

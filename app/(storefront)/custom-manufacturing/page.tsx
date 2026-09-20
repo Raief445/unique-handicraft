@@ -1,9 +1,13 @@
 import styles from "./custom.module.css";
 import Link from "next/link";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Custom Manufacturing | Unique Timber & Handicraft",
-  description: "Custom furniture and handicraft manufacturing. Share your design or requirements with Unique Timber & Handicraft, Jodhpur.",
+  description: "Unique Timber & Handicraft provides custom furniture manufacturing and B2B production based on client requirements. Handcrafted in Jodhpur, India.",
+  alternates: {
+    canonical: "/custom-manufacturing",
+  },
 };
 
 const process = [

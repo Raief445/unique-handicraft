@@ -1,9 +1,13 @@
 import styles from "./capabilities.module.css";
 import Link from "next/link";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Our Capabilities | Unique Timber & Handicraft",
-  description: "Explore the manufacturing capabilities of Unique Timber & Handicraft — furniture and handicraft manufacturer in Jodhpur.",
+export const metadata: Metadata = {
+  title: "Manufacturing Capabilities | Unique Timber & Handicraft",
+  description: "Explore the manufacturing capabilities of Unique Timber & Handicraft in Jodhpur. We specialize in solid wood furniture, bespoke metalwork, and premium handcrafted finishes for wholesale supply.",
+  alternates: {
+    canonical: "/capabilities",
+  },
 };
 
 const capabilities = [

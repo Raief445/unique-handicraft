@@ -5,6 +5,7 @@ import { CheckCircle, MapPin, Mail, Clock, ClipboardList } from "lucide-react";
 import Link from "next/link";
 import styles from "./contact.module.css";
 
+
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -36,8 +37,40 @@ export default function ContactPage() {
     }
   };
 
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Unique Timber & Handicraft",
+    "image": "https://i.postimg.cc/Vs46MpNq/logo.png",
+    "email": "uniquetimberhandicraftjodhpur@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Jodhpur",
+      "addressRegion": "Rajasthan",
+      "addressCountry": "IN"
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "10:00",
+      "closes": "18:00"
+    },
+    "url": "https://uniquehandicrafts.in/contact"
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <div className={styles.hero}>
         <div className="container">
           <div className={styles.heroEyebrow}>CONTACT</div>

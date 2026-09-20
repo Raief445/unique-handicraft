@@ -5,7 +5,49 @@ import styles from "./product.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Metadata } from "next";
+
 export const revalidate = 3600; // Cache for 1 hour
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const product = await prisma.product.findUnique({
+    where: { id: params.id, status: "PUBLISHED" },
+    include: { category: true, images: { where: { imageType: "MAIN" } } },
+  });
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
+
+  const mainImage = product.images[0]?.imageUrl || "https://i.postimg.cc/Vs46MpNq/logo.png";
+  const description = product.shortDescription || 
+    `Premium handcrafted ${product.category?.name?.toLowerCase() || 'furniture'} — ${product.name}. Manufactured by Unique Timber & Handicraft in Jodhpur.`;
+
+  return {
+    title: product.name,
+    description: description,
+    alternates: {
+      canonical: `/products/${product.id}`,
+    },
+    openGraph: {
+      title: `${product.name} | Unique Timber & Handicraft`,
+      description: description,
+      url: `https://uniquehandicrafts.in/products/${product.id}`,
+      images: [
+        {
+          url: mainImage,
+          alt: product.name,
+        },
+      ],
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const products = await prisma.product.findMany({
@@ -53,8 +95,28 @@ export default async function ProductDetailPage({
     moq: product.moq,
   };
 
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.description || product.shortDescription || `Handcrafted ${product.name} by Unique Timber & Handicraft.`,
+    "image": mainImage,
+    "sku": product.productCode,
+    "category": product.category?.name,
+    ...(product.material && { "material": product.material }),
+    "brand": {
+      "@type": "Brand",
+      "name": "Unique Timber & Handicraft"
+    },
+    "url": `https://uniquehandicrafts.in/products/${product.id}`
+  };
+
   return (
     <div className={`container ${styles.wrapper}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <nav className={styles.breadcrumb}>
         <Link href="/">Home</Link>
         <span>/</span>

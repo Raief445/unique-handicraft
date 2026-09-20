@@ -1,9 +1,14 @@
 import styles from "./about.module.css";
 import Link from "next/link";
 
-export const metadata = {
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "About Us | Unique Timber & Handicraft",
-  description: "Learn about Unique Timber & Handicraft, a Jodhpur-based handicraft and furniture manufacturer working since 2015.",
+  description: "Learn about Unique Timber & Handicraft, a Jodhpur-based handcrafted furniture manufacturer and wholesale handicraft supplier working since 2015.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {
