@@ -75,7 +75,7 @@ export default function ContactPage() {
         <div className="container">
           <div className={styles.heroEyebrow}>CONTACT</div>
           <h1>Let’s discuss what you’re looking to make.</h1>
-          <p>For product enquiries, custom manufacturing and commercial requirements, get in touch with our team in Jodhpur.</p>
+          <p>For product, wholesale and B2B enquiries, or custom manufacturing requirements, get in touch with our team in Jodhpur.</p>
         </div>
       </div>
 
@@ -106,9 +106,9 @@ export default function ContactPage() {
           <div className={styles.infoDivider}></div>
 
           <div className={styles.infoGroup}>
-            <h2 className={styles.infoMainTitle}><ClipboardList size={20} strokeWidth={1.5} /> FOR PRODUCT ENQUIRIES</h2>
+            <h2 className={styles.infoMainTitle}><ClipboardList size={20} strokeWidth={1.5} /> FOR PRODUCT & WHOLESALE ENQUIRIES</h2>
             <div className={styles.infoBlock}>
-              <p className={styles.subtext}>Use our Enquiry Cart for product-specific enquiries.</p>
+              <p className={styles.subtext}>Use our Enquiry Cart for product-specific and wholesale enquiries.</p>
               <Link href="/products" className={styles.infoLink}>Browse Products →</Link>
             </div>
           </div>

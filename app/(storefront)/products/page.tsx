@@ -71,7 +71,7 @@ export default async function ProductsPage({
     <div className={styles.pageWrapper}>
       <div className={`container ${styles.header}`}>
         <h1>The Collection</h1>
-        <p>Explore our premium handcrafted pieces.</p>
+        <p>Explore our handcrafted furniture and wooden pieces made in Jodhpur. Available for wholesale, B2B, and custom requirements.</p>
       </div>
 
       <div className={`container ${styles.layout}`}>

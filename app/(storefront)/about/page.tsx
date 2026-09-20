@@ -47,8 +47,7 @@ export default function AboutPage() {
                   across India and beyond.
                 </p>
                 <p>
-                  We work directly with skilled craftsmen to produce beautiful furniture and handicraft
-                  items that meet the highest expectations of quality and design.
+                  As a dedicated furniture and handicraft supplier, we partner with wholesale buyers and B2B clients to produce beautiful pieces that meet the highest expectations of quality and design.
                 </p>
               </div>
               <div className={styles.editorialStats}>
@@ -169,7 +168,7 @@ export default function AboutPage() {
         <section className={`${styles.section} ${styles.ctaSection}`}>
           <div className={styles.ctaContent}>
             <h2>Let's build something together.</h2>
-            <p>For collections, custom requirements and commercial projects, tell us what you're looking to create.</p>
+            <p>For wholesale supply, <Link href="/custom-manufacturing" style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}>custom manufacturing</Link> and commercial projects, tell us what you're looking to create.</p>
             <div className={styles.ctaActions}>
               <Link href="/contact" className="btn-primary">DISCUSS YOUR REQUIREMENT</Link>
               <Link href="/products" className="btn-secondary">VIEW THE COLLECTION</Link>

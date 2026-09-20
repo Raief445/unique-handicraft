@@ -102,7 +102,7 @@ export default function CapabilitiesPage() {
             <div className={styles.eyebrow}>OUR APPROACH</div>
             <h2>Built around the details that matter.</h2>
             <p>
-              Whether you are sourcing from our existing collection or developing a specific requirement, we work closely with customers to align product details, quantities, finishes and delivery requirements.
+              Whether you are sourcing from our existing collection or developing a specific <Link href="/custom-manufacturing" style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}>custom manufacturing</Link> requirement, we work closely with customers to align product details, quantities, finishes and delivery requirements.
             </p>
           </div>
         </section>
