@@ -337,6 +337,7 @@ export default function EnquiryPage() {
                   alt={item.name}
                   width={50}
                   height={45}
+                  priority={true}
                   className={styles.summaryImg}
                 />
                 <div className={styles.summaryText}>

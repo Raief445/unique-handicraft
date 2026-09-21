@@ -50,6 +50,7 @@ export default function EnquiryCartDrawer() {
                       alt={item.name}
                       fill
                       sizes="120px"
+                      priority={true}
                       className={styles.itemImage}
                     />
                   </div>
