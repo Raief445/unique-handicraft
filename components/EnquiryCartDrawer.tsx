@@ -45,9 +45,11 @@ export default function EnquiryCartDrawer() {
               {items.map((item) => (
                 <div key={item.productId} className={styles.cartItem}>
                   <div className={styles.itemImageWrapper}>
-                    <img
-                      src={item.image}
+                    <Image
+                      src={item.image || "https://placehold.co/120x120/F0EEE9/3A2F28?text=No+Image"}
                       alt={item.name}
+                      fill
+                      sizes="120px"
                       className={styles.itemImage}
                     />
                   </div>

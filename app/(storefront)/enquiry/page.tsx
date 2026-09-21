@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { Paperclip, Check } from "lucide-react";
+import Image from "next/image";
 
 export default function EnquiryPage() {
   const { items, clearCart } = useEnquiryCart();
@@ -331,9 +332,11 @@ export default function EnquiryPage() {
             <h3>Enquiry Summary</h3>
             {items.map((item) => (
               <div key={item.productId} className={styles.summaryItem}>
-                <img
+                <Image
                   src={item.image || "https://placehold.co/60x50/F0EEE9/3A2F28?text=No+Image"}
                   alt={item.name}
+                  width={50}
+                  height={45}
                   className={styles.summaryImg}
                 />
                 <div className={styles.summaryText}>
