@@ -2,6 +2,15 @@ import prisma from "@/lib/db";
 import Link from "next/link";
 import styles from "./track.module.css";
 import { Search } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Track Your Enquiry | Unique Timber & Handicraft",
+  description: "Check the status of your furniture and handicraft enquiry.",
+  alternates: {
+    canonical: "/track-enquiry",
+  },
+};
 
 export const dynamic = "force-dynamic";
 
