@@ -38,7 +38,7 @@ export default function CustomManufacturingPage() {
           <h2>Custom Manufacturing</h2>
           <div className={styles.introContent}>
             <p>
-              Have a specific design, dimension, drawing or reference that is not covered by our standard collection? We can discuss manufacturing the piece around your requirements.
+              Have a specific design, dimension, drawing or reference that is not covered by our standard collection? As a manufacturer based in Jodhpur, India, we can discuss producing the piece around your exact requirements.
             </p>
             <p>
               Our custom manufacturing process is flexible and collaborative. The stages below describe a typical workflow, while the actual process may vary depending on the nature and complexity of the project.

@@ -99,7 +99,7 @@ export default async function Home() {
           <ScrollReveal direction="up" className={styles.aboutSnippetText}>
             <h2>Your Trusted Partner in Premium Furniture Manufacturing.</h2>
             <p>
-              Unique Timber & Handicraft is a Jodhpur-based furniture manufacturing business operating since 2015. We specialize in providing exceptional, handcrafted solid wood products tailored for commercial spaces and global wholesale distribution. Our master artisans combine traditional Rajasthani craftsmanship with modern durability to build long-lasting partnerships worldwide.
+              Unique Timber & Handicraft is a Jodhpur-based furniture manufacturing business operating since 2015. As a dedicated furniture and handicraft supplier serving wholesale and B2B requirements, we specialize in providing exceptional, handcrafted solid wood products tailored for commercial spaces and global distribution. Our master artisans combine traditional Rajasthani craftsmanship with modern durability to build long-lasting partnerships worldwide.
             </p>
           </ScrollReveal>
         </div>

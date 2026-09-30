@@ -47,7 +47,7 @@ export default function AboutPage() {
                   across India and beyond.
                 </p>
                 <p>
-                  As a dedicated furniture and handicraft supplier, we partner with wholesale buyers and B2B clients to produce beautiful pieces that meet the highest expectations of quality and design.
+                  As a dedicated furniture and handicraft supplier, we partner with <Link href="/products" style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}>wholesale buyers</Link> and <Link href="/custom-manufacturing" style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}>B2B clients</Link> to produce beautiful pieces that meet the highest expectations of quality and design.
                 </p>
               </div>
               <div className={styles.editorialStats}>
