@@ -113,29 +113,53 @@ export default async function Home() {
             <div className={styles.sectionHeader}>
               <h2 className={`${styles.sectionTitle} text-center`}>Collections</h2>
             </div>
-            <div className={styles.categoriesGrid}>
-              {categories.map((cat, index) => {
-                const isWide = cat.name === 'Trunks' || cat.name === 'Sideboards';
-                return (
-                  <ScrollReveal key={cat.id} delay={index * 100} direction="up" className={isWide ? styles.wideCategoryItem : styles.categoryItem}>
-                    <Link href={`/products?category=${cat.id}`} className={styles.categoryCard}>
-                      <div className={styles.catImageWrapper}>
-                        <Image
-                          src={cat.image || fallbackSvg}
-                          alt={cat.name}
-                          fill
-                          sizes={isWide ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"}
-                          className={styles.catImgFitted}
-                        />
-                      </div>
-                      <div className={styles.catInfo}>
-                        <h3>{cat.name}</h3>
-                        <span className={styles.exploreLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>Explore Collection <ArrowRight size={14} /></span>
-                      </div>
-                    </Link>
-                  </ScrollReveal>
-                );
-              })}
+            <div className={styles.masonryGrid}>
+              <div className={styles.masonryColumn}>
+                {categories.filter((_, i) => i % 2 === 0).map((cat, index) => {
+                  const originalIndex = index * 2;
+                  const isWide = cat.name === 'Trunks' || cat.name === 'Sideboards';
+                  return (
+                    <ScrollReveal key={cat.id} delay={originalIndex * 100} direction="up" className={isWide ? styles.wideCategoryItem : styles.categoryItem}>
+                      <Link href={`/products?category=${cat.id}`} className={styles.categoryCard}>
+                        <div className={styles.catImageWrapper}>
+                          <img
+                            src={cat.image || fallbackSvg}
+                            alt={cat.name}
+                            className={styles.catImgFitted}
+                          />
+                        </div>
+                        <div className={styles.catInfo}>
+                          <h3>{cat.name}</h3>
+                          <span className={styles.exploreLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>Explore Collection <ArrowRight size={14} /></span>
+                        </div>
+                      </Link>
+                    </ScrollReveal>
+                  );
+                })}
+              </div>
+              <div className={styles.masonryColumn}>
+                {categories.filter((_, i) => i % 2 === 1).map((cat, index) => {
+                  const originalIndex = index * 2 + 1;
+                  const isWide = cat.name === 'Trunks' || cat.name === 'Sideboards';
+                  return (
+                    <ScrollReveal key={cat.id} delay={originalIndex * 100} direction="up" className={isWide ? styles.wideCategoryItem : styles.categoryItem}>
+                      <Link href={`/products?category=${cat.id}`} className={styles.categoryCard}>
+                        <div className={styles.catImageWrapper}>
+                          <img
+                            src={cat.image || fallbackSvg}
+                            alt={cat.name}
+                            className={styles.catImgFitted}
+                          />
+                        </div>
+                        <div className={styles.catInfo}>
+                          <h3>{cat.name}</h3>
+                          <span className={styles.exploreLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>Explore Collection <ArrowRight size={14} /></span>
+                        </div>
+                      </Link>
+                    </ScrollReveal>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
