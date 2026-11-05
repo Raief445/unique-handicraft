@@ -1,5 +1,5 @@
 .container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
@@ -7,71 +7,83 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: 1.75rem;
 }
 
 .header h1 {
-  font-family: var(--font-serif);
-  font-size: 2rem;
-  color: var(--color-primary);
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-size: 1.65rem;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 .header p {
-  color: var(--color-text-light);
-  font-size: 1rem;
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0;
 }
 
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .statCard {
   background: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
+  padding: 1.25rem 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e1;
 }
 
 .statIcon {
-  background: var(--color-background);
-  color: var(--color-primary);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  background: #fdf8f4;
+  color: #8c6734;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .statInfo h3 {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-light);
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: #64748b;
+  margin: 0 0 0.25rem 0;
+  font-weight: 600;
 }
 
 .statInfo p {
-  font-size: 2rem;
-  font-family: var(--font-serif);
-  color: var(--color-text);
-  font-weight: 500;
+  font-size: 1.85rem;
+  color: #1e293b;
+  font-weight: 700;
   line-height: 1;
+  margin: 0;
+  letter-spacing: -0.5px;
 }
 
 .tableContainer {
   background: white;
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   overflow-x: auto;
 }
 
@@ -82,21 +94,22 @@
 }
 
 .table th {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.85rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-light);
+  letter-spacing: 0.6px;
+  color: #64748b;
   font-weight: 600;
-  background-color: #fafafa;
+  background-color: #f8fafc;
+  white-space: nowrap;
 }
 
 .table td {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.95rem;
-  color: var(--color-text);
+  padding: 0.95rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.875rem;
+  color: #334155;
   vertical-align: middle;
 }
 
@@ -105,36 +118,36 @@
 }
 
 .table tr:hover td {
-  background-color: #fcfcfc;
+  background-color: #faf8f5;
 }
 
 .timeCell {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--color-text-light);
-  font-size: 0.9rem;
+  color: #64748b;
+  font-size: 0.85rem;
 }
 
 .clockIcon {
-  opacity: 0.6;
+  color: #94a3b8;
 }
 
 .pathBadge {
   display: inline-block;
-  background: var(--color-background);
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  background: #f1f5f9;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
   font-family: monospace;
-  color: var(--color-primary);
-  border: 1px solid var(--color-border);
+  color: #334155;
+  border: 1px solid #e2e8f0;
 }
 
 .userAgentCell {
-  color: var(--color-text-light);
-  font-size: 0.85rem;
-  max-width: 300px;
+  color: #64748b;
+  font-size: 0.82rem;
+  max-width: 320px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -143,6 +156,5 @@
 .emptyState {
   text-align: center;
   padding: 3rem !important;
-  color: var(--color-text-light) !important;
-  font-style: italic;
+  color: #94a3b8 !important;
 }

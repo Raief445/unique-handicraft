@@ -33,6 +33,7 @@ yarn-error.log*
 # vercel
 .vercel
 
+deploy.ps1
 scratch/
 *.json
 !package.json
