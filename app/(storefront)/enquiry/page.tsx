@@ -5,8 +5,84 @@ import { useEnquiryCart } from "@/components/EnquiryCartContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
-import { Paperclip, Check } from "lucide-react";
+import { Paperclip, Check, Loader2, X } from "lucide-react";
 import Image from "next/image";
+
+/**
+ * Compresses an image file on the client side using HTML5 Canvas.
+ * Reduces 10MB+ phone camera photos to ~300KB-600KB full-HD JPEGs,
+ * ensuring fast upload times and avoiding Vercel 4.5MB serverless limits.
+ */
+function compressImageFile(file: File): Promise<File> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined" || !window.FileReader) {
+      resolve(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        try {
+          const MAX_DIMENSION = 1920;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+            if (width > height) {
+              height = Math.round((height * MAX_DIMENSION) / width);
+              width = MAX_DIMENSION;
+            } else {
+              width = Math.round((width * MAX_DIMENSION) / height);
+              height = MAX_DIMENSION;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(file);
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                resolve(file);
+                return;
+              }
+              const baseName = file.name.replace(/\.[^/.]+$/, "");
+              try {
+                const compressed = new File([blob], `${baseName}.jpg`, {
+                  type: "image/jpeg",
+                  lastModified: Date.now(),
+                });
+                resolve(compressed);
+              } catch {
+                const fallback = blob as any;
+                fallback.name = `${baseName}.jpg`;
+                resolve(fallback);
+              }
+            },
+            "image/jpeg",
+            0.82
+          );
+        } catch {
+          resolve(file);
+        }
+      };
+      img.onerror = () => resolve(file);
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => resolve(file);
+    reader.readAsDataURL(file);
+  });
+}
 
 export default function EnquiryPage() {
   const { items, clearCart } = useEnquiryCart();
@@ -27,6 +103,7 @@ export default function EnquiryPage() {
   });
 
   const [file, setFile] = useState<File | null>(null);
+  const [optimizing, setOptimizing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -55,23 +132,55 @@ export default function EnquiryPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
-      if (!allowedTypes.includes(selectedFile.type)) {
+    if (!selectedFile) return;
+
+    setErrors((prev) => ({ ...prev, file: "" }));
+
+    const fileName = selectedFile.name.toLowerCase();
+    const isPdf = selectedFile.type === "application/pdf" || fileName.endsWith(".pdf");
+    const isImage =
+      selectedFile.type.startsWith("image/") ||
+      /\.(jpe?g|png|webp|heic|heif|gif|bmp)$/i.test(fileName);
+
+    if (!isPdf && !isImage) {
+      setErrors((prev) => ({
+        ...prev,
+        file: "Only image files (JPG, PNG, WEBP) and PDF documents are allowed.",
+      }));
+      return;
+    }
+
+    if (isPdf) {
+      if (selectedFile.size > 4.5 * 1024 * 1024) {
         setErrors((prev) => ({
           ...prev,
-          file: "Only JPG, PNG, and PDF files are allowed",
+          file: "PDF file size must be less than 4.5MB.",
         }));
         return;
       }
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        setErrors((prev) => ({ ...prev, file: "File size must be less than 10MB" }));
-        return;
-      }
       setFile(selectedFile);
-      setErrors((prev) => ({ ...prev, file: "" }));
+      return;
+    }
+
+    // It's an image: automatically compress for mobile and fast network upload
+    try {
+      setOptimizing(true);
+      const optimized = await compressImageFile(selectedFile);
+      setFile(optimized);
+    } catch {
+      if (selectedFile.size > 4.5 * 1024 * 1024) {
+        setErrors((prev) => ({
+          ...prev,
+          file: "Image is too large. Please select an image smaller than 4.5MB.",
+        }));
+      } else {
+        setFile(selectedFile);
+      }
+    } finally {
+      setOptimizing(false);
     }
   };
 
@@ -91,23 +200,35 @@ export default function EnquiryPage() {
         submitData.append(key, value)
       );
       submitData.append("items", JSON.stringify(items));
-      if (file) submitData.append("file", file);
+      if (file) {
+        submitData.append("file", file, file.name || "reference.jpg");
+      }
 
       const res = await fetch("/api/enquiry", {
         method: "POST",
         body: submitData,
       });
 
-      const data = await res.json();
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch {
+        if (res.status === 413) {
+          setErrors({ submit: "The uploaded file is too large for upload. Please select a smaller photo or document." });
+          return;
+        }
+        setErrors({ submit: "Unable to process enquiry. Please try again or contact us directly." });
+        return;
+      }
 
-      if (res.ok && data.enquiryNumber) {
+      if (res.ok && data?.enquiryNumber) {
         clearCart();
         router.push(`/enquiry/success?number=${data.enquiryNumber}`);
       } else {
-        setErrors({ submit: data.error || "Something went wrong. Please try again." });
+        setErrors({ submit: data?.error || "Something went wrong. Please try again." });
       }
     } catch (err) {
-      setErrors({ submit: "Network error. Please try again." });
+      setErrors({ submit: "Network error. Please try again or check your internet connection." });
     } finally {
       setLoading(false);
     }
@@ -306,14 +427,51 @@ export default function EnquiryPage() {
                   <input
                     id="file"
                     type="file"
-                    accept=".jpg,.jpeg,.png,.pdf"
+                    accept="image/*,application/pdf,.pdf"
                     onChange={handleFileChange}
                     className={styles.fileInput}
                   />
                   <div className={styles.fileLabel}>
-                    <span style={{display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center'}}><Paperclip size={20} /> Click to upload or drag and drop</span>
-                    <small>Maximum 5MB. PDF, JPG, PNG allowed.</small>
-                    {file && <strong className={styles.fileName} style={{display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center'}}><Check size={16} /> {file.name}</strong>}
+                    <span style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+                      <Paperclip size={20} /> Click to upload or drag and drop
+                    </span>
+                    <small>JPG, PNG, WEBP, or PDF (photos automatically optimized for mobile upload)</small>
+                    {optimizing && (
+                      <span style={{ display: "flex", alignItems: "center", gap: "6px", color: "#c1a27a", fontSize: "0.85rem", marginTop: "4px" }}>
+                        <Loader2 size={16} className={styles.spinnerIcon} /> Optimizing photo for fast upload...
+                      </span>
+                    )}
+                    {file && !optimizing && (
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "6px", flexWrap: "wrap", justifyContent: "center" }}>
+                        <strong className={styles.fileName} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                          <Check size={16} /> {file.name} ({(file.size / 1024).toFixed(0)} KB)
+                        </strong>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setFile(null);
+                            const input = document.getElementById("file") as HTMLInputElement;
+                            if (input) input.value = "";
+                          }}
+                          style={{
+                            background: "transparent",
+                            border: "none",
+                            color: "#94a3b8",
+                            cursor: "pointer",
+                            padding: "2px 6px",
+                            fontSize: "0.8rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "2px",
+                            textDecoration: "underline",
+                          }}
+                        >
+                          <X size={14} /> Remove
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {errors.file && <span className={styles.errorText}>{errors.file}</span>}

@@ -159,10 +159,23 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: var(--spacing-xl);
+  padding: 2rem 1.25rem;
   color: var(--color-text-light);
   font-size: 0.9rem;
   text-align: center;
+}
+
+.spinnerIcon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .fileLabel small {

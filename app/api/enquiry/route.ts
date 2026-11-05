@@ -81,19 +81,50 @@ export async function POST(req: NextRequest) {
     let fileRecord = null;
     const file = formData.get("file") as File | null;
     if (file && file.size > 0) {
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
-      if (!allowedTypes.includes(file.type)) {
-        return NextResponse.json({ error: "Invalid file type." }, { status: 400 });
+      let fileType = file.type;
+      const fileNameLower = (file.name || "").toLowerCase();
+      const ext = fileNameLower.split(".").pop();
+
+      // If mime type is missing or generic octet-stream, infer from extension
+      if (!fileType || fileType === "application/octet-stream") {
+        if (ext === "jpg" || ext === "jpeg") fileType = "image/jpeg";
+        else if (ext === "png") fileType = "image/png";
+        else if (ext === "webp") fileType = "image/webp";
+        else if (ext === "pdf") fileType = "application/pdf";
+        else if (ext === "heic") fileType = "image/heic";
+        else if (ext === "heif") fileType = "image/heif";
       }
-      if (file.size > 10 * 1024 * 1024) {
-        return NextResponse.json({ error: "File too large. Max 10MB." }, { status: 400 });
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+        "image/heic",
+        "image/heif",
+        "image/gif",
+        "application/pdf",
+      ];
+
+      if (!allowedTypes.includes(fileType)) {
+        return NextResponse.json(
+          { error: "Invalid file type. Please upload a JPG, PNG, WEBP, or PDF file." },
+          { status: 400 }
+        );
+      }
+
+      if (file.size > 4.5 * 1024 * 1024) {
+        return NextResponse.json(
+          { error: "File too large. Maximum file size is 4.5MB." },
+          { status: 400 }
+        );
       }
 
       const buffer = Buffer.from(await file.arrayBuffer());
       const base64Str = buffer.toString("base64");
-      const fileUrl = `data:${file.type};base64,${base64Str}`;
+      const fileUrl = `data:${fileType};base64,${base64Str}`;
       
-      fileRecord = { fileName: file.name, fileUrl, fileType: file.type };
+      fileRecord = { fileName: file.name || "attachment", fileUrl, fileType };
     }
 
     // Create Enquiry in DB
