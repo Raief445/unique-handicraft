@@ -128,56 +128,6 @@ export default async function ProductDetailPage({
     moq: product.moq,
   };
 
-  const absoluteMainImage = toAbsoluteUrl(mainImage);
-  const allAbsoluteImages = [
-    absoluteMainImage,
-    ...galleryImages.map((img) => toAbsoluteUrl(img.imageUrl)),
-  ];
-
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.name,
-    "description": product.seoDescription || product.description || product.shortDescription || `Handcrafted ${product.name} by Unique Timber & Handicraft.`,
-    "image": allAbsoluteImages.length === 1 ? allAbsoluteImages[0] : allAbsoluteImages,
-    "sku": product.productCode,
-    "category": product.category?.name,
-    ...(product.material && { "material": product.material }),
-    "brand": {
-      "@type": "Brand",
-      "name": "Unique Timber & Handicraft",
-    },
-    "url": `${SITE_ORIGIN}/products/${product.id}`,
-    ...(product.length && {
-      "depth": {
-        "@type": "QuantitativeValue",
-        "value": product.length,
-        "unitText": product.dimensionUnit || "cm",
-      },
-    }),
-    ...(product.width && {
-      "width": {
-        "@type": "QuantitativeValue",
-        "value": product.width,
-        "unitText": product.dimensionUnit || "cm",
-      },
-    }),
-    ...(product.height && {
-      "height": {
-        "@type": "QuantitativeValue",
-        "value": product.height,
-        "unitText": product.dimensionUnit || "cm",
-      },
-    }),
-    ...(product.weight && {
-      "weight": {
-        "@type": "QuantitativeValue",
-        "value": product.weight,
-        "unitText": product.weightUnit || "kg",
-      },
-    }),
-  };
-
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -211,10 +161,6 @@ export default async function ProductDetailPage({
 
   return (
     <div className={`container ${styles.wrapper}`}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
