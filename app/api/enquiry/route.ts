@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import {
+  sendNewEnquiryCustomerEmail,
+  sendNewEnquiryAdminEmail,
+} from "@/lib/email";
 
 // Simple in-memory rate limiter (scoped per serverless container)
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
@@ -22,17 +26,6 @@ function isRateLimited(ip: string): boolean {
   }
   record.count += 1;
   return false;
-}
-
-// XSS Sanitizer
-function escapeHtml(unsafe: string): string {
-  if (!unsafe) return "";
-  return String(unsafe)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 export async function POST(req: NextRequest) {
@@ -135,142 +128,44 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Send email notification (must be awaited in serverless environments)
-    await sendEmailNotification(enquiry.enquiryNumber, {
-      fullName,
-      companyName,
-      email,
-      phone,
-      location,
-      country,
-      designation,
-      expectedQuantity,
-      deliveryDate,
-      customizationRequired,
-      message,
-      items,
-      fileRecord,
-    }).catch(console.error);
+    // Send emails in parallel using the luxury branded template
+    await Promise.allSettled([
+      // 1. Send confirmation email to Customer
+      sendNewEnquiryCustomerEmail({
+        to: email,
+        customerName: fullName,
+        companyName,
+        phone,
+        enquiryNumber: enquiry.enquiryNumber,
+        expectedQuantity,
+        deliveryDate,
+        customizationRequired,
+        message,
+        items,
+      }),
+      // 2. Send notification email to Admin
+      sendNewEnquiryAdminEmail({
+        enquiryNumber: enquiry.enquiryNumber,
+        enquiryId: enquiry.id,
+        fullName,
+        companyName,
+        email,
+        phone,
+        location,
+        country,
+        designation,
+        expectedQuantity,
+        deliveryDate,
+        customizationRequired,
+        message,
+        items,
+        fileRecord,
+      }),
+    ]);
 
     return NextResponse.json({ enquiryNumber: enquiry.enquiryNumber });
   } catch (error) {
     console.error("Enquiry submission error:", error);
     return NextResponse.json({ error: "Internal server error." }, { status: 500 });
-  }
-}
-
-async function sendEmailNotification(enquiryNumber: string, data: any) {
-  try {
-    // Only send if nodemailer and SMTP credentials are configured
-    const nodemailer = (await import("nodemailer")).default;
-
-    const transportConfig = process.env.SMTP_HOST
-      ? {
-          host: process.env.SMTP_HOST,
-          port: parseInt(process.env.SMTP_PORT || "587"),
-          secure: false,
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-          },
-        }
-      : null;
-
-    if (!transportConfig) {
-      console.log("SMTP not configured. Skipping email. Enquiry:", enquiryNumber);
-      return;
-    }
-
-    const transporter = nodemailer.createTransport(transportConfig);
-
-    const itemsHtml = data.items
-      .map(
-        (item: any) =>
-          `<tr>
-            <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(item.name)}</td>
-            <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(item.productCode)}</td>
-            <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(String(item.quantity))}</td>
-          </tr>`
-      )
-      .join("");
-
-    const adminEmail = "uniquetimberhandicraftjodhpur@gmail.com";
-
-    // Send both emails in parallel
-    await Promise.all([
-      // Notify admin
-      transporter.sendMail({
-        from: `"Unique Timber Website" <${process.env.SMTP_USER}>`,
-      to: adminEmail,
-      subject: `New Enquiry: ${enquiryNumber} — ${escapeHtml(data.companyName)}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;">
-          <h2 style="background:#3A2F28;color:#C1A27A;padding:20px;margin:0;">New Enquiry Received</h2>
-          <div style="padding:20px;">
-            <h3>Enquiry Number: ${enquiryNumber}</h3>
-            <hr/>
-            <h4>Customer Details</h4>
-            <p><strong>Name:</strong> ${escapeHtml(data.fullName)}</p>
-            <p><strong>Company:</strong> ${escapeHtml(data.companyName)}</p>
-            <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
-            ${data.phone ? `<p><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>` : ""}
-            <p><strong>Location:</strong> ${escapeHtml(data.location)}, ${escapeHtml(data.country)}</p>
-            ${data.designation ? `<p><strong>Designation:</strong> ${escapeHtml(data.designation)}</p>` : ""}
-            <hr/>
-            <h4>Products Enquired</h4>
-            <table style="width:100%;border-collapse:collapse;">
-              <thead>
-                <tr style="background:#f5f5f5;">
-                  <th style="padding:8px;border:1px solid #ddd;text-align:left;">Product</th>
-                  <th style="padding:8px;border:1px solid #ddd;text-align:left;">Code</th>
-                  <th style="padding:8px;border:1px solid #ddd;text-align:left;">Qty</th>
-                </tr>
-              </thead>
-              <tbody>${itemsHtml}</tbody>
-            </table>
-            <hr/>
-            <h4>Requirements</h4>
-            ${data.expectedQuantity ? `<p><strong>Expected Quantity:</strong> ${escapeHtml(String(data.expectedQuantity))}</p>` : ""}
-            ${data.deliveryDate ? `<p><strong>Delivery Date:</strong> ${escapeHtml(data.deliveryDate)}</p>` : ""}
-            <p><strong>Customization:</strong> ${data.customizationRequired ? "Yes" : "No"}</p>
-            ${data.message ? `<p><strong>Message:</strong><br/>${escapeHtml(data.message)}</p>` : ""}
-            <hr/>
-            <p style="color:#888;font-size:12px;">Submitted on: ${new Date().toLocaleString("en-IN")}</p>
-          </div>
-        </div>
-      `,
-      attachments: data.fileRecord ? [
-        {
-          filename: data.fileRecord.fileName,
-          content: data.fileRecord.fileUrl.split("base64,")[1],
-          encoding: "base64"
-        }
-      ] : []
-      }),
-      // Confirm to customer
-      transporter.sendMail({
-        from: `"Unique Timber & Handicraft" <${process.env.SMTP_USER}>`,
-        to: data.email,
-        subject: `Enquiry Confirmation — ${enquiryNumber}`,
-        html: `
-          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
-            <h2 style="background:#3A2F28;color:#C1A27A;padding:20px;margin:0;">Thank You for Your Enquiry</h2>
-            <div style="padding:20px;">
-              <p>Dear ${escapeHtml(data.fullName)},</p>
-              <p>We have received your enquiry and will review your requirements shortly.</p>
-              <div style="background:#f9f7f3;border:1px solid #e5e0d8;border-radius:6px;padding:16px;margin:20px 0;text-align:center;">
-                <span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">Your Enquiry Number</span><br/>
-                <strong style="font-size:24px;color:#3A2F28;">${enquiryNumber}</strong>
-              </div>
-              <p>Our team will contact you at <strong>${data.email}</strong>${data.phone ? ` or <strong>${data.phone}</strong>` : ""} regarding your enquiry.</p>
-              <br/>
-              <p>Regards,<br/>Unique Timber & Handicraft<br/>Jodhpur, Rajasthan, India<br/>uniquetimberhandicraftjodhpur@gmail.com</p>
-            </div>
-          </div>
-        `,
-      })
-    ]);
-  } catch (error) {
-    console.error("Email sending error:", error);
   }
 }

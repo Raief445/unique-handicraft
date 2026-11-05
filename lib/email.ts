@@ -12,8 +12,8 @@ export function escapeHtml(unsafe: string): string {
 
 export function getMailTransporter() {
   const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const user = process.env.SMTP_USER?.trim();
+  const pass = process.env.SMTP_PASS?.trim();
   const port = parseInt(process.env.SMTP_PORT || "587");
 
   if (!host || !user || !pass) {
@@ -37,7 +37,7 @@ export const ENQUIRY_STATUS_DETAILS: Record<
 > = {
   NEW: {
     label: "New Enquiry",
-    color: "#E53E3E",
+    color: "#C1A27A",
     description:
       "Your enquiry has been received and logged into our system. Our team will review your specifications shortly.",
   },
@@ -85,6 +85,58 @@ export const ENQUIRY_STATUS_DETAILS: Record<
   },
 };
 
+function renderItemsTable(
+  items: Array<{
+    name?: string | null;
+    productNameSnapshot?: string | null;
+    productCode?: string | null;
+    productCodeSnapshot?: string | null;
+    quantity?: number | null;
+  }>
+): string {
+  if (!items || items.length === 0) return "";
+
+  const rows = items
+    .map(
+      (item) => `
+      <tr>
+        <td style="padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; color: #2c2520;">
+          ${escapeHtml(item.productNameSnapshot || item.name || "Item")}
+        </td>
+        <td style="padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; color: #666; font-family: monospace;">
+          ${escapeHtml(item.productCodeSnapshot || item.productCode || "—")}
+        </td>
+        <td style="padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; color: #2c2520; text-align: center;">
+          ${item.quantity || 1}
+        </td>
+      </tr>`
+    )
+    .join("");
+
+  return `
+    <div style="margin: 20px 0;">
+      <div style="font-size: 11px; font-weight: 700; color: #3A2F28; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">
+        Enquired Items
+      </div>
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse; border: 1px solid #eee; border-radius: 4px;">
+        <thead>
+          <tr style="background-color: #f7f5f2;">
+            <th style="padding: 8px 12px; border-bottom: 2px solid #ddd; text-align: left; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Product</th>
+            <th style="padding: 8px 12px; border-bottom: 2px solid #ddd; text-align: left; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Code</th>
+            <th style="padding: 8px 12px; border-bottom: 2px solid #ddd; text-align: center; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+// --------------------------------------------------------------------------
+// 1. Status Update Email (Sent when Admin changes status in Admin Panel)
+// --------------------------------------------------------------------------
 export interface SendStatusUpdateEmailOptions {
   to: string;
   customerName: string;
@@ -143,45 +195,7 @@ export async function sendEnquiryStatusUpdateEmail({
       enquiryNumber
     )}&email=${encodeURIComponent(to)}`;
 
-    let itemsTableHtml = "";
-    if (items && items.length > 0) {
-      const rows = items
-        .map(
-          (item) => `
-          <tr>
-            <td style="padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; color: #2c2520;">
-              ${escapeHtml(item.productNameSnapshot || "Item")}
-            </td>
-            <td style="padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; color: #666; font-family: monospace;">
-              ${escapeHtml(item.productCodeSnapshot || "—")}
-            </td>
-            <td style="padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; color: #2c2520; text-align: center;">
-              ${item.quantity || 1}
-            </td>
-          </tr>`
-        )
-        .join("");
-
-      itemsTableHtml = `
-        <div style="margin: 20px 0;">
-          <div style="font-size: 13px; font-weight: 700; color: #3A2F28; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
-            Enquired Items
-          </div>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse; border: 1px solid #eee; border-radius: 4px;">
-            <thead>
-              <tr style="background-color: #f7f5f2;">
-                <th style="padding: 8px 12px; border-bottom: 2px solid #ddd; text-align: left; font-size: 12px; color: #666; text-transform: uppercase;">Product</th>
-                <th style="padding: 8px 12px; border-bottom: 2px solid #ddd; text-align: left; font-size: 12px; color: #666; text-transform: uppercase;">Code</th>
-                <th style="padding: 8px 12px; border-bottom: 2px solid #ddd; text-align: center; font-size: 12px; color: #666; text-transform: uppercase;">Qty</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
+    const itemsTableHtml = renderItemsTable(items || []);
 
     const html = `
 <!DOCTYPE html>
@@ -284,7 +298,7 @@ export async function sendEnquiryStatusUpdateEmail({
     `;
 
     const info = await transporter.sendMail({
-      from: `"Unique Timber & Handicraft" <${process.env.SMTP_USER}>`,
+      from: `"Unique Timber & Handicraft" <${process.env.SMTP_USER?.trim()}>`,
       to,
       subject: `Enquiry Update: ${enquiryNumber} — Status changed to ${statusInfo.label}`,
       html,
@@ -303,3 +317,329 @@ export async function sendEnquiryStatusUpdateEmail({
   }
 }
 
+// --------------------------------------------------------------------------
+// 2. Initial Enquiry Confirmation Email (Sent to Customer upon submission)
+// --------------------------------------------------------------------------
+export interface SendNewEnquiryCustomerEmailOptions {
+  to: string;
+  customerName: string;
+  companyName: string;
+  phone?: string | null;
+  enquiryNumber: string;
+  expectedQuantity?: number | string | null;
+  deliveryDate?: string | null;
+  customizationRequired?: boolean;
+  message?: string | null;
+  items: Array<{
+    name?: string | null;
+    productNameSnapshot?: string | null;
+    productCode?: string | null;
+    productCodeSnapshot?: string | null;
+    quantity?: number | null;
+  }>;
+}
+
+export async function sendNewEnquiryCustomerEmail({
+  to,
+  customerName,
+  companyName,
+  phone,
+  enquiryNumber,
+  expectedQuantity,
+  deliveryDate,
+  customizationRequired,
+  message,
+  items,
+}: SendNewEnquiryCustomerEmailOptions): Promise<{
+  success: boolean;
+  messageId?: string;
+  reason?: string;
+  error?: string;
+}> {
+  try {
+    const transporter = getMailTransporter();
+
+    if (!transporter) {
+      console.warn(
+        `[Email Notification] SMTP is not configured. Skipped initial enquiry confirmation for ${enquiryNumber}.`
+      );
+      return { success: false, reason: "SMTP_NOT_CONFIGURED" };
+    }
+
+    const baseUrl =
+      process.env.NEXTAUTH_URL ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      "https://uniquehandicrafts.in";
+
+    const trackUrl = `${baseUrl.replace(/\/+$/, "")}/track-enquiry?enquiryNumber=${encodeURIComponent(
+      enquiryNumber
+    )}&email=${encodeURIComponent(to)}`;
+
+    const itemsTableHtml = renderItemsTable(items);
+
+    const hasRequirements =
+      expectedQuantity || deliveryDate || customizationRequired || message;
+
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You for Your Enquiry - Unique Timber &amp; Handicraft</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4efe9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #2c2520;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f4efe9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 620px; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+          <!-- Header -->
+          <tr>
+            <td style="background-color: #2f251e; padding: 28px 32px; text-align: center;">
+              <h1 style="margin: 0; font-size: 20px; letter-spacing: 2px; color: #c1a27a; font-weight: 700; text-transform: uppercase;">UNIQUE TIMBER &amp; HANDICRAFT</h1>
+              <p style="margin: 6px 0 0; font-size: 11px; color: #d6cfc7; letter-spacing: 1px; text-transform: uppercase;">Handcrafted Heritage Furniture &bull; Jodhpur, India</p>
+            </td>
+          </tr>
+          
+          <!-- Body Content -->
+          <tr>
+            <td style="padding: 32px 32px 20px;">
+              <p style="font-size: 15px; margin: 0 0 16px; color: #2c2520;">
+                Dear <strong>${escapeHtml(customerName)}</strong>${companyName ? ` (${escapeHtml(companyName)})` : ""},
+              </p>
+              <p style="font-size: 14px; line-height: 1.6; margin: 0 0 20px; color: #4a3e35;">
+                Thank you for your enquiry. We have successfully received your request and our artisanal design &amp; sales team is reviewing your project requirements.
+              </p>
+
+              <!-- Reference & Status Box -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #fbf9f6; border: 1px solid #ebdcd0; border-radius: 6px; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 18px 20px;">
+                    <div style="font-size: 11px; color: #8a7a6e; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; margin-bottom: 4px;">
+                      Enquiry Reference
+                    </div>
+                    <div style="font-size: 18px; font-weight: 700; color: #2f251e; font-family: monospace; margin-bottom: 12px;">
+                      ${escapeHtml(enquiryNumber)}
+                    </div>
+                    
+                    <div style="display: inline-block; padding: 6px 14px; border-radius: 20px; background-color: #C1A27A; color: #2f251e; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">
+                      Status: New Enquiry Received
+                    </div>
+
+                    <p style="font-size: 14px; line-height: 1.5; color: #4a3e35; margin: 14px 0 0;">
+                      Our team will examine your quantities, dimensions, and wood finish specifications, and get in touch with you at <strong>${escapeHtml(to)}</strong>${phone ? ` or <strong>${escapeHtml(phone)}</strong>` : ""} shortly.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              ${
+                hasRequirements
+                  ? `
+              <!-- Requirements Box -->
+              <div style="background-color: #faf8f5; border: 1px solid #ebdcd0; border-radius: 6px; padding: 14px 18px; margin-bottom: 20px;">
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #8a7a6e; letter-spacing: 0.8px; margin-bottom: 8px;">
+                  Your Requirements Summary
+                </div>
+                ${
+                  expectedQuantity
+                    ? `<p style="margin: 4px 0; font-size: 13px; color: #4a3e35;"><strong>Expected Quantity:</strong> ${escapeHtml(String(expectedQuantity))} units</p>`
+                    : ""
+                }
+                ${
+                  deliveryDate
+                    ? `<p style="margin: 4px 0; font-size: 13px; color: #4a3e35;"><strong>Target Delivery Date:</strong> ${escapeHtml(deliveryDate)}</p>`
+                    : ""
+                }
+                <p style="margin: 4px 0; font-size: 13px; color: #4a3e35;"><strong>Customization Required:</strong> ${customizationRequired ? "Yes" : "No"}</p>
+                ${
+                  message
+                    ? `<p style="margin: 8px 0 0; font-size: 13px; color: #4a3e35; line-height: 1.5; white-space: pre-line;"><strong>Message:</strong><br/>${escapeHtml(message)}</p>`
+                    : ""
+                }
+              </div>
+              `
+                  : ""
+              }
+
+              ${itemsTableHtml}
+
+              <!-- Track Button -->
+              <div style="text-align: center; margin: 28px 0 16px;">
+                <a href="${trackUrl}" target="_blank" style="display: inline-block; background-color: #2f251e; color: #c1a27a; text-decoration: none; padding: 12px 28px; border-radius: 4px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; border: 1px solid #c1a27a;">
+                  Track Your Enquiry Online &rarr;
+                </a>
+              </div>
+              <p style="font-size: 12px; color: #8a7a6e; text-align: center; margin: 0 0 24px;">
+                You can also track your enquiry anytime at <a href="https://uniquehandicrafts.in/track-enquiry" style="color: #8c6734; text-decoration: underline;">uniquehandicrafts.in/track-enquiry</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #f4efe9; border-top: 1px solid #ebdcd0; padding: 22px 32px; text-align: center; font-size: 12px; color: #7a6e65; line-height: 1.6;">
+              <p style="margin: 0 0 4px; font-weight: 600; color: #2f251e;">Unique Timber &amp; Handicraft</p>
+              <p style="margin: 0 0 4px;">Jodhpur, Rajasthan, India</p>
+              <p style="margin: 0 0 4px;">Email: <a href="mailto:uniquetimberhandicraftjodhpur@gmail.com" style="color: #8c6734; text-decoration: none;">uniquetimberhandicraftjodhpur@gmail.com</a></p>
+              <p style="margin: 12px 0 0; font-size: 11px; color: #9c9288;">&copy; ${new Date().getFullYear()} Unique Timber &amp; Handicraft. All rights reserved.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `;
+
+    const info = await transporter.sendMail({
+      from: `"Unique Timber & Handicraft" <${process.env.SMTP_USER?.trim()}>`,
+      to,
+      subject: `Enquiry Confirmation — ${enquiryNumber}`,
+      html,
+    });
+
+    return {
+      success: true,
+      messageId: info.messageId,
+    };
+  } catch (err: any) {
+    console.error("[Email Notification] Failed to send new enquiry confirmation:", err);
+    return {
+      success: false,
+      error: err.message,
+    };
+  }
+}
+
+// --------------------------------------------------------------------------
+// 3. New Enquiry Admin Notification (Sent to Admin inbox)
+// --------------------------------------------------------------------------
+export interface SendNewEnquiryAdminEmailOptions {
+  enquiryNumber: string;
+  enquiryId?: string;
+  fullName: string;
+  companyName: string;
+  email: string;
+  phone?: string | null;
+  location: string;
+  country: string;
+  designation?: string | null;
+  expectedQuantity?: number | string | null;
+  deliveryDate?: string | null;
+  customizationRequired?: boolean;
+  message?: string | null;
+  items: Array<{
+    name?: string | null;
+    productNameSnapshot?: string | null;
+    productCode?: string | null;
+    productCodeSnapshot?: string | null;
+    quantity?: number | null;
+  }>;
+  fileRecord?: {
+    fileName: string;
+    fileUrl: string;
+    fileType: string;
+  } | null;
+}
+
+export async function sendNewEnquiryAdminEmail(data: SendNewEnquiryAdminEmailOptions) {
+  try {
+    const transporter = getMailTransporter();
+    if (!transporter) return;
+
+    const adminEmail = "uniquetimberhandicraftjodhpur@gmail.com";
+    const itemsTableHtml = renderItemsTable(data.items);
+
+    const baseUrl =
+      process.env.NEXTAUTH_URL ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      "https://uniquehandicrafts.in";
+
+    const adminUrl = data.enquiryId
+      ? `${baseUrl.replace(/\/+$/, "")}/admin/enquiries/${data.enquiryId}`
+      : `${baseUrl.replace(/\/+$/, "")}/admin/enquiries`;
+
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>New Enquiry: ${data.enquiryNumber}</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4efe9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #2c2520;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f4efe9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 650px; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+          <tr>
+            <td style="background-color: #2f251e; padding: 24px 32px;">
+              <h2 style="margin: 0; font-size: 18px; color: #c1a27a; letter-spacing: 1px; text-transform: uppercase;">New Customer Enquiry Received</h2>
+              <p style="margin: 4px 0 0; font-size: 13px; color: #d6cfc7; font-family: monospace;">Ref: ${data.enquiryNumber}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 28px 32px;">
+              <div style="background-color: #faf8f5; border: 1px solid #ebdcd0; border-radius: 6px; padding: 16px; margin-bottom: 20px;">
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #8a7a6e; letter-spacing: 0.8px; margin-bottom: 10px;">
+                  Customer Information
+                </div>
+                <table width="100%" style="font-size: 13px; color: #3a2f28;">
+                  <tr><td width="35%" style="padding: 4px 0; color: #7a6e65;"><strong>Company:</strong></td><td>${escapeHtml(data.companyName)}</td></tr>
+                  <tr><td style="padding: 4px 0; color: #7a6e65;"><strong>Contact Name:</strong></td><td>${escapeHtml(data.fullName)}</td></tr>
+                  <tr><td style="padding: 4px 0; color: #7a6e65;"><strong>Email:</strong></td><td><a href="mailto:${escapeHtml(data.email)}" style="color: #8c6734;">${escapeHtml(data.email)}</a></td></tr>
+                  ${data.phone ? `<tr><td style="padding: 4px 0; color: #7a6e65;"><strong>Phone:</strong></td><td><a href="tel:${escapeHtml(data.phone)}" style="color: #8c6734;">${escapeHtml(data.phone)}</a></td></tr>` : ""}
+                  <tr><td style="padding: 4px 0; color: #7a6e65;"><strong>Location:</strong></td><td>${escapeHtml(data.location)}, ${escapeHtml(data.country)}</td></tr>
+                  ${data.designation ? `<tr><td style="padding: 4px 0; color: #7a6e65;"><strong>Designation:</strong></td><td>${escapeHtml(data.designation)}</td></tr>` : ""}
+                </table>
+              </div>
+
+              ${itemsTableHtml}
+
+              <div style="background-color: #faf8f5; border: 1px solid #ebdcd0; border-radius: 6px; padding: 16px; margin-bottom: 20px; font-size: 13px;">
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #8a7a6e; letter-spacing: 0.8px; margin-bottom: 10px;">
+                  Requirements
+                </div>
+                ${data.expectedQuantity ? `<p style="margin: 4px 0;"><strong>Expected Quantity:</strong> ${escapeHtml(String(data.expectedQuantity))} units</p>` : ""}
+                ${data.deliveryDate ? `<p style="margin: 4px 0;"><strong>Delivery Date:</strong> ${escapeHtml(data.deliveryDate)}</p>` : ""}
+                <p style="margin: 4px 0;"><strong>Customization:</strong> ${data.customizationRequired ? "Yes" : "No"}</p>
+                ${data.message ? `<p style="margin: 8px 0 0; line-height: 1.5; white-space: pre-line;"><strong>Message:</strong><br/>${escapeHtml(data.message)}</p>` : ""}
+              </div>
+
+              <div style="text-align: center; margin: 24px 0 8px;">
+                <a href="${adminUrl}" target="_blank" style="display: inline-block; background-color: #2f251e; color: #c1a27a; text-decoration: none; padding: 12px 28px; border-radius: 4px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">
+                  View &amp; Manage in Admin Panel &rarr;
+                </a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `;
+
+    const attachments = data.fileRecord
+      ? [
+          {
+            filename: data.fileRecord.fileName,
+            content: data.fileRecord.fileUrl.split("base64,")[1],
+            encoding: "base64",
+          },
+        ]
+      : [];
+
+    await transporter.sendMail({
+      from: `"Unique Timber Website" <${process.env.SMTP_USER?.trim()}>`,
+      to: adminEmail,
+      subject: `New Enquiry: ${data.enquiryNumber} — ${escapeHtml(data.companyName)}`,
+      html,
+      attachments,
+    });
+  } catch (err) {
+    console.error("[Email Notification] Admin email sending error:", err);
+  }
+}
