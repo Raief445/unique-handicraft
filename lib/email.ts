@@ -186,12 +186,8 @@ export async function sendEnquiryStatusUpdateEmail({
         description: `Your enquiry status has been updated to ${newStatus.replace(/_/g, " ")}.`,
       };
 
-    const baseUrl =
-      process.env.NEXTAUTH_URL ||
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      "https://uniquehandicrafts.in";
-
-    const trackUrl = `${baseUrl.replace(/\/+$/, "")}/track-enquiry?enquiryNumber=${encodeURIComponent(
+    const siteUrl = "https://uniquehandicrafts.in";
+    const trackUrl = `${siteUrl}/track-enquiry?enquiryNumber=${encodeURIComponent(
       enquiryNumber
     )}&email=${encodeURIComponent(to)}`;
 
@@ -366,12 +362,8 @@ export async function sendNewEnquiryCustomerEmail({
       return { success: false, reason: "SMTP_NOT_CONFIGURED" };
     }
 
-    const baseUrl =
-      process.env.NEXTAUTH_URL ||
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      "https://uniquehandicrafts.in";
-
-    const trackUrl = `${baseUrl.replace(/\/+$/, "")}/track-enquiry?enquiryNumber=${encodeURIComponent(
+    const siteUrl = "https://uniquehandicrafts.in";
+    const trackUrl = `${siteUrl}/track-enquiry?enquiryNumber=${encodeURIComponent(
       enquiryNumber
     )}&email=${encodeURIComponent(to)}`;
 
@@ -552,14 +544,10 @@ export async function sendNewEnquiryAdminEmail(data: SendNewEnquiryAdminEmailOpt
     const adminEmail = "uniquetimberhandicraftjodhpur@gmail.com";
     const itemsTableHtml = renderItemsTable(data.items);
 
-    const baseUrl =
-      process.env.NEXTAUTH_URL ||
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      "https://uniquehandicrafts.in";
-
+    const siteUrl = "https://uniquehandicrafts.in";
     const adminUrl = data.enquiryId
-      ? `${baseUrl.replace(/\/+$/, "")}/admin/enquiries/${data.enquiryId}`
-      : `${baseUrl.replace(/\/+$/, "")}/admin/enquiries`;
+      ? `${siteUrl}/admin/enquiries/${data.enquiryId}`
+      : `${siteUrl}/admin/enquiries`;
 
     const html = `
 <!DOCTYPE html>
