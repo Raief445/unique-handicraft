@@ -59,12 +59,12 @@ export default function EnquiryActions({
         if (data.emailSent) {
           setFeedback({
             type: "success",
-            message: `Status updated to ${status.replace(/_/g, " ")} & email notification sent to ${customerEmail || "customer"}!`,
+            message: `Status updated to ${status.replace(/_/g, " ")} & email sent to ${customerEmail || "customer"}!`,
           });
         } else if (notifyCustomer && status !== currentStatus) {
           setFeedback({
             type: "warning",
-            message: `Status updated to ${status.replace(/_/g, " ")}. (Email note: ${data.emailReason || "Email skipped"})`,
+            message: `Status updated to ${status.replace(/_/g, " ")}. (${data.emailReason || "Email skipped"})`,
           });
         } else {
           setFeedback({
@@ -120,16 +120,21 @@ export default function EnquiryActions({
     <div
       style={{
         background: "white",
-        padding: "var(--spacing-xl)",
+        padding: "1.5rem",
         borderRadius: "var(--border-radius-md)",
         border: "1px solid var(--color-border)",
+        textAlign: "left",
+        boxSizing: "border-box",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
       }}
     >
       <h3
         style={{
-          fontSize: "1.1rem",
-          marginBottom: "var(--spacing-md)",
+          fontSize: "1.15rem",
+          fontWeight: 600,
+          marginBottom: "1rem",
           color: "var(--color-primary)",
+          letterSpacing: "0.3px",
         }}
       >
         Manage Enquiry
@@ -142,7 +147,7 @@ export default function EnquiryActions({
             alignItems: "flex-start",
             gap: "0.5rem",
             padding: "0.75rem",
-            borderRadius: "var(--border-radius-sm)",
+            borderRadius: "6px",
             marginBottom: "1rem",
             fontSize: "0.85rem",
             lineHeight: 1.4,
@@ -180,20 +185,27 @@ export default function EnquiryActions({
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "0.5rem",
+          gap: "0.4rem",
           marginBottom: "1rem",
         }}
       >
-        <label style={{ fontSize: "0.875rem", fontWeight: 600 }}>Update Status</label>
+        <label style={{ fontSize: "0.85rem", fontWeight: 600, color: "#3A2F28" }}>
+          Update Status
+        </label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
           style={{
-            padding: "0.75rem",
-            borderRadius: "var(--border-radius-sm)",
+            width: "100%",
+            boxSizing: "border-box",
+            padding: "0.7rem 0.75rem",
+            borderRadius: "6px",
             border: "1px solid var(--color-border)",
             fontSize: "0.9rem",
+            fontWeight: 500,
             backgroundColor: "#fff",
+            color: "#2C2520",
+            cursor: "pointer",
           }}
         >
           {ENQUIRY_STATUSES.map((s) => (
@@ -207,51 +219,76 @@ export default function EnquiryActions({
       <div
         style={{
           background: "#faf8f5",
-          padding: "0.875rem",
-          borderRadius: "var(--border-radius-sm)",
+          padding: "1rem",
+          borderRadius: "6px",
           border: "1px solid #ebdcd0",
           marginBottom: "1.25rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.75rem",
+          boxSizing: "border-box",
         }}
       >
         <label
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "0.5rem",
-            fontSize: "0.875rem",
-            fontWeight: 600,
-            color: "var(--color-primary)",
+            gap: "0.6rem",
             cursor: "pointer",
+            userSelect: "none",
           }}
         >
           <input
             type="checkbox"
             checked={notifyCustomer}
             onChange={(e) => setNotifyCustomer(e.target.checked)}
-            style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#3A2F28" }}
+            style={{
+              width: "17px",
+              height: "17px",
+              cursor: "pointer",
+              accentColor: "#3A2F28",
+              flexShrink: 0,
+            }}
           />
-          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <Mail size={15} />
+          <span
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              color: "#3A2F28",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <Mail size={15} style={{ color: "#C1A27A" }} />
             Notify customer via email
           </span>
         </label>
 
         {customerEmail && (
-          <div style={{ fontSize: "0.78rem", color: "#666", paddingLeft: "1.5rem" }}>
-            Recipient: <strong>{customerEmail}</strong>
+          <div
+            style={{
+              fontSize: "0.78rem",
+              color: "#666",
+              marginTop: "0.35rem",
+              paddingLeft: "1.65rem",
+              wordBreak: "break-all",
+            }}
+          >
+            Recipient: <strong style={{ color: "#3A2F28" }}>{customerEmail}</strong>
           </div>
         )}
 
         {notifyCustomer && (
-          <div style={{ marginTop: "0.25rem" }}>
+          <div
+            style={{
+              marginTop: "0.75rem",
+              paddingTop: "0.75rem",
+              borderTop: "1px dashed #ebdcd0",
+            }}
+          >
             <label
               style={{
                 display: "block",
                 fontSize: "0.8rem",
-                fontWeight: 500,
+                fontWeight: 600,
                 color: "#555",
                 marginBottom: "0.35rem",
               }}
@@ -261,16 +298,20 @@ export default function EnquiryActions({
             <textarea
               value={customNote}
               onChange={(e) => setCustomNote(e.target.value)}
-              placeholder="e.g. Our team has reviewed your specifications and we will call you today..."
+              placeholder="e.g. We have reviewed your specifications and will call you today..."
               rows={3}
               style={{
                 width: "100%",
-                padding: "0.5rem",
-                borderRadius: "var(--border-radius-sm)",
-                border: "1px solid var(--color-border)",
+                boxSizing: "border-box",
+                padding: "0.6rem 0.75rem",
+                borderRadius: "4px",
+                border: "1px solid #d4c5b9",
                 fontSize: "0.85rem",
                 fontFamily: "inherit",
+                lineHeight: 1.4,
                 resize: "vertical",
+                backgroundColor: "#ffffff",
+                color: "#2C2520",
               }}
             />
           </div>
@@ -284,12 +325,19 @@ export default function EnquiryActions({
           className="btn-primary"
           style={{
             width: "100%",
-            padding: "0.75rem",
-            opacity: loading || !hasChanges ? 0.6 : 1,
+            boxSizing: "border-box",
+            padding: "0.8rem 1rem",
+            letterSpacing: "1px",
+            fontSize: "0.85rem",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            borderRadius: "6px",
             cursor: loading || !hasChanges ? "not-allowed" : "pointer",
+            opacity: loading || !hasChanges ? 0.6 : 1,
+            transition: "all 0.2s ease",
           }}
         >
-          {loading ? "Processing..." : "Save Status"}
+          {loading ? "Saving & Sending..." : "Save Status"}
         </button>
 
         <button
@@ -297,14 +345,16 @@ export default function EnquiryActions({
           disabled={loading}
           style={{
             width: "100%",
+            boxSizing: "border-box",
             padding: "0.75rem",
             background: "transparent",
             border: "1px solid #E53E3E",
             color: "#E53E3E",
-            borderRadius: "var(--border-radius-sm)",
+            borderRadius: "6px",
             cursor: loading ? "not-allowed" : "pointer",
-            fontWeight: 500,
-            transition: "all 0.2s",
+            fontSize: "0.85rem",
+            fontWeight: 600,
+            transition: "all 0.2s ease",
             opacity: loading ? 0.6 : 1,
           }}
           onMouseOver={(e) => {
