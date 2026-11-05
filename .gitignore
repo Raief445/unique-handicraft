@@ -33,6 +33,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+scratch/
+*.json
+!package.json
+!tsconfig.json
+!vercel.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

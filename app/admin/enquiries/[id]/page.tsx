@@ -83,6 +83,19 @@ export default async function AdminEnquiryDetailPage({ params }: { params: { id:
                 <p>{enquiry.message}</p>
               </div>
             )}
+
+            {enquiry.adminNotes && (
+              <div
+                className={styles.messageBox}
+                style={{
+                  borderLeft: "4px solid #C1A27A",
+                  backgroundColor: "#faf8f5",
+                }}
+              >
+                <h3>Internal Admin Notes &amp; History</h3>
+                <p style={{ whiteSpace: "pre-line", color: "#3A2F28" }}>{enquiry.adminNotes}</p>
+              </div>
+            )}
             
             {enquiry.files.length > 0 && (
               <div className={styles.filesList}>
@@ -120,7 +133,12 @@ export default async function AdminEnquiryDetailPage({ params }: { params: { id:
         </div>
 
         <div className={styles.sideCol}>
-          <EnquiryActions enquiryId={enquiry.id} currentStatus={enquiry.status} />
+          <EnquiryActions
+            enquiryId={enquiry.id}
+            currentStatus={enquiry.status}
+            customerEmail={enquiry.email}
+            customerName={enquiry.customerName}
+          />
         </div>
       </div>
     </div>
