@@ -26,7 +26,7 @@ export default function ProductDetailActions({ product }: { product: any }) {
   return (
     <div className={styles.actionsContainer}>
       <div className={styles.quantityWrapper}>
-        <label htmlFor="qty">Quantity (Max 1000)</label>
+        <label htmlFor="qty">Quantity</label>
         <div className={styles.qtyControl}>
           <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
           <input
@@ -42,7 +42,7 @@ export default function ProductDetailActions({ product }: { product: any }) {
       </div>
       <div className={styles.buttons}>
         <button onClick={handleAdd} className={styles.primaryBtn}>
-          {added ? "Added to Project Requirements ✓" : "Add to Project Requirements"}
+          {added ? "Added to Enquiry List ✓" : "Enquire About This Piece"}
         </button>
         <Link href="/contact" className={styles.secondaryBtn}>
           Request Customization
@@ -50,9 +50,13 @@ export default function ProductDetailActions({ product }: { product: any }) {
       </div>
       {added && (
         <p className={styles.successMsg}>
-          Product added! <Link href="/enquiry-cart">View Project Requirements</Link>
+          Piece added to enquiry list! <Link href="/enquiry-cart">View Selected Pieces →</Link>
         </p>
       )}
+      <div className={styles.reassurance}>
+        <p>Single-piece and bulk enquiries welcome.</p>
+        <p>Personalised quotation with finish & delivery details shared after enquiry.</p>
+      </div>
     </div>
   );
 }

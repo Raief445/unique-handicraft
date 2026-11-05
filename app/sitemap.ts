@@ -4,8 +4,9 @@ import prisma from '@/lib/db'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://uniquehandicrafts.in'
 
-  // Fetch dynamic products to include in sitemap
+  // Fetch dynamic published products to include in sitemap
   const products = await prisma.product.findMany({
+    where: { status: 'PUBLISHED' },
     select: { id: true, updatedAt: true },
   })
 

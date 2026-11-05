@@ -8,10 +8,11 @@ import styles from "@/app/(storefront)/products/[id]/product.module.css";
 type ProductGalleryProps = {
   mainImage: string;
   productName: string;
+  material?: string | null;
   galleryImages: { id: string; imageUrl: string }[];
 };
 
-export default function ProductGallery({ mainImage, productName, galleryImages }: ProductGalleryProps) {
+export default function ProductGallery({ mainImage, productName, material, galleryImages }: ProductGalleryProps) {
   const allImages = [{ id: "main-thumb", imageUrl: mainImage }, ...galleryImages];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -50,7 +51,7 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
           <Image 
             key={img.id}
             src={img.imageUrl} 
-            alt={`${productName} - Image ${index + 1}`} 
+            alt={`${productName}${material ? ` in ${material}` : ""} - ${index === 0 ? "Featured View" : `Detail View ${index + 1}`}`} 
             fill
             priority={index === 0}
             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -101,7 +102,7 @@ export default function ProductGallery({ mainImage, productName, galleryImages }
             <Image
               key={img.id}
               src={img.imageUrl}
-              alt={productName}
+              alt={`${productName} thumbnail ${index + 1}`}
               width={80}
               height={80}
               className={`${styles.thumb} ${currentIndex === index ? styles.activeThumb : ""}`}

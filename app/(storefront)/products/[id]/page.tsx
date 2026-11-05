@@ -4,10 +4,18 @@ import ProductGallery from "@/components/ProductGallery";
 import styles from "./product.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
 import { Metadata } from "next";
 
 export const revalidate = 3600; // Cache for 1 hour
+
+const SITE_ORIGIN = "https://uniquehandicrafts.in";
+
+function toAbsoluteUrl(url: string | null | undefined): string {
+  if (!url) return `${SITE_ORIGIN}/icon.png`;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  const cleanPath = url.startsWith("/") ? url : `/${url}`;
+  return `${SITE_ORIGIN}${cleanPath}`;
+}
 
 export async function generateMetadata({
   params,
@@ -25,26 +33,51 @@ export async function generateMetadata({
     };
   }
 
-  const mainImage = product.images[0]?.imageUrl || "https://i.postimg.cc/Vs46MpNq/logo.png";
-  const description = product.shortDescription || 
-    `Premium handcrafted ${product.category?.name?.toLowerCase() || 'furniture'} — ${product.name}. Manufactured by Unique Timber & Handicraft in Jodhpur.`;
+  const rawImage = product.images[0]?.imageUrl || "https://i.postimg.cc/Vs46MpNq/logo.png";
+  const mainImage = toAbsoluteUrl(rawImage);
+
+  // Read custom DB seoTitle & seoDescription or use sensible fallbacks
+  const categoryName = product.category?.name || "Handcrafted Furniture";
+  const materialText = product.material ? ` in ${product.material}` : "";
+  
+  const titleText = product.seoTitle?.trim() || `${product.name}${materialText} | ${categoryName}`;
+  const description =
+    product.seoDescription?.trim() ||
+    product.shortDescription?.trim() ||
+    `Premium handcrafted ${categoryName.toLowerCase()} — ${product.name}. Handcrafted from ${product.material || "solid wood"} by Unique Timber & Handicraft in Jodhpur. Request a bespoke quotation.`;
+
+  // If titleText already contains brand suffix or "|", use { absolute: titleText } so Next.js doesn't double-suffix
+  const titleMeta = titleText.includes("|")
+    ? { absolute: titleText }
+    : titleText;
+
+  const fullOgTitle = titleText.includes("|")
+    ? titleText
+    : `${titleText} | Unique Timber & Handicraft`;
 
   return {
-    title: product.name,
+    title: titleMeta,
     description: description,
     alternates: {
       canonical: `/products/${product.id}`,
     },
     openGraph: {
-      title: `${product.name} | Unique Timber & Handicraft`,
+      title: fullOgTitle,
       description: description,
-      url: `https://uniquehandicrafts.in/products/${product.id}`,
+      url: `${SITE_ORIGIN}/products/${product.id}`,
+      siteName: "Unique Timber & Handicraft",
       images: [
         {
           url: mainImage,
           alt: product.name,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullOgTitle,
+      description: description,
+      images: [mainImage],
     },
   };
 }
@@ -95,27 +128,96 @@ export default async function ProductDetailPage({
     moq: product.moq,
   };
 
-  const schema = {
+  const absoluteMainImage = toAbsoluteUrl(mainImage);
+  const allAbsoluteImages = [
+    absoluteMainImage,
+    ...galleryImages.map((img) => toAbsoluteUrl(img.imageUrl)),
+  ];
+
+  const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
-    "description": product.description || product.shortDescription || `Handcrafted ${product.name} by Unique Timber & Handicraft.`,
-    "image": mainImage,
+    "description": product.seoDescription || product.description || product.shortDescription || `Handcrafted ${product.name} by Unique Timber & Handicraft.`,
+    "image": allAbsoluteImages.length === 1 ? allAbsoluteImages[0] : allAbsoluteImages,
     "sku": product.productCode,
     "category": product.category?.name,
     ...(product.material && { "material": product.material }),
     "brand": {
       "@type": "Brand",
-      "name": "Unique Timber & Handicraft"
+      "name": "Unique Timber & Handicraft",
     },
-    "url": `https://uniquehandicrafts.in/products/${product.id}`
+    "url": `${SITE_ORIGIN}/products/${product.id}`,
+    ...(product.length && {
+      "depth": {
+        "@type": "QuantitativeValue",
+        "value": product.length,
+        "unitText": product.dimensionUnit || "cm",
+      },
+    }),
+    ...(product.width && {
+      "width": {
+        "@type": "QuantitativeValue",
+        "value": product.width,
+        "unitText": product.dimensionUnit || "cm",
+      },
+    }),
+    ...(product.height && {
+      "height": {
+        "@type": "QuantitativeValue",
+        "value": product.height,
+        "unitText": product.dimensionUnit || "cm",
+      },
+    }),
+    ...(product.weight && {
+      "weight": {
+        "@type": "QuantitativeValue",
+        "value": product.weight,
+        "unitText": product.weightUnit || "kg",
+      },
+    }),
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `${SITE_ORIGIN}`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Products",
+        "item": `${SITE_ORIGIN}/products`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.category.name,
+        "item": `${SITE_ORIGIN}/products?category=${product.categoryId}`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": product.name,
+        "item": `${SITE_ORIGIN}/products/${product.id}`,
+      },
+    ],
   };
 
   return (
     <div className={`container ${styles.wrapper}`}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <nav className={styles.breadcrumb}>
         <Link href="/">Home</Link>
@@ -132,6 +234,7 @@ export default async function ProductDetailPage({
         <ProductGallery
           mainImage={mainImage}
           productName={product.name}
+          material={product.material}
           galleryImages={galleryImages}
         />
 
@@ -174,10 +277,14 @@ export default async function ProductDetailPage({
                   </tr>
                 )}
 
-                {product.moq && (
+                {product.moq !== null && product.moq !== undefined && (
                   <tr>
-                    <td>Minimum Order Quantity</td>
-                    <td>{product.moq} units</td>
+                    <td>Order Quantity</td>
+                    <td>
+                      {product.moq <= 1
+                        ? "Single piece and bulk orders welcome"
+                        : `Minimum order ${product.moq} units (bulk/trade enquiry)`}
+                    </td>
                   </tr>
                 )}
                 <tr>
