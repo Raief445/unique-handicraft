@@ -1,9 +1,10 @@
 import prisma from "@/lib/db";
-import { Paperclip } from "lucide-react";
+import { Paperclip, Receipt, ExternalLink } from "lucide-react";
 import { notFound } from "next/navigation";
 import EnquiryActions from "@/components/admin/EnquiryActions";
 import styles from "./enquiry.module.css";
 import Link from "next/link";
+import { formatInr } from "@/lib/billing";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,9 @@ export default async function AdminEnquiryDetailPage({ params }: { params: { id:
     include: {
       items: true,
       files: true,
+      invoices: {
+        orderBy: { createdAt: "desc" },
+      },
     },
   });
 
@@ -20,12 +24,34 @@ export default async function AdminEnquiryDetailPage({ params }: { params: { id:
 
   return (
     <div>
-      <div className={styles.header}>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "0.5rem" }}>
-          <Link href="/admin/enquiries" className={styles.backLink}>← Back</Link>
-          <h1 className={styles.title}>Enquiry: {enquiry.enquiryNumber}</h1>
+      <div className={styles.header} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
+        <div>
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "0.5rem" }}>
+            <Link href="/admin/enquiries" className={styles.backLink}>← Back</Link>
+            <h1 className={styles.title}>Enquiry: {enquiry.enquiryNumber}</h1>
+          </div>
+          <p className={styles.subtitle}>Received on {new Date(enquiry.createdAt).toLocaleString("en-IN")}</p>
         </div>
-        <p className={styles.subtitle}>Received on {new Date(enquiry.createdAt).toLocaleString("en-IN")}</p>
+        <div>
+          <Link
+            href={`/admin/invoices/new?enquiryId=${enquiry.id}`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              backgroundColor: "#1A1A1A",
+              color: "#FFFFFF",
+              padding: "0.6rem 1.1rem",
+              borderRadius: "4px",
+              fontWeight: 500,
+              fontSize: "0.875rem",
+              textDecoration: "none",
+            }}
+          >
+            <Receipt size={16} />
+            <span>Create B2C Invoice</span>
+          </Link>
+        </div>
       </div>
 
       <div className={styles.layout}>
@@ -133,6 +159,72 @@ export default async function AdminEnquiryDetailPage({ params }: { params: { id:
         </div>
 
         <div className={styles.sideCol}>
+          {enquiry.invoices && enquiry.invoices.length > 0 && (
+            <div
+              style={{
+                background: "#ffffff",
+                border: "1px solid #e5e0d8",
+                borderRadius: "8px",
+                padding: "1.25rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                  color: "#1a1a1a",
+                  marginBottom: "0.75rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <Receipt size={16} />
+                <span>Issued Invoices ({enquiry.invoices.length})</span>
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                {enquiry.invoices.map((inv) => (
+                  <div
+                    key={inv.id}
+                    style={{
+                      padding: "0.75rem",
+                      background: "#faf8f5",
+                      border: "1px solid #ede8e1",
+                      borderRadius: "6px",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem" }}>
+                      <Link
+                        href={`/admin/invoices/${inv.id}`}
+                        style={{ fontWeight: 600, color: "#1a1a1a", textDecoration: "none" }}
+                      >
+                        {inv.invoiceNumber}
+                      </Link>
+                      <span
+                        style={{
+                          fontSize: "0.75rem",
+                          fontWeight: 600,
+                          padding: "2px 6px",
+                          borderRadius: "4px",
+                          backgroundColor: inv.paymentStatus === "PAID" ? "#E8F5E9" : "#FFF3E0",
+                          color: inv.paymentStatus === "PAID" ? "#2E7D32" : "#E65100",
+                        }}
+                      >
+                        {inv.paymentStatus}
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", color: "#666" }}>
+                      <span>{new Date(inv.issueDate).toLocaleDateString("en-IN")}</span>
+                      <strong style={{ color: "#1a1a1a" }}>{formatInr(inv.grandTotal)}</strong>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <EnquiryActions
             enquiryId={enquiry.id}
             currentStatus={enquiry.status}

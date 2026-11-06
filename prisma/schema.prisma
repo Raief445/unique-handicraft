@@ -107,6 +107,7 @@ model Enquiry {
   updatedAt             DateTime      @updatedAt
   items                 EnquiryItem[]
   files                 EnquiryFile[]
+  invoices              Invoice[]
 }
 
 model EnquiryItem {
@@ -148,3 +149,119 @@ model VisitorLog {
   path      String?
   visitedAt DateTime @default(now())
 }
+
+// =============================================================================
+// B2C BILLING MODULE MODELS
+// =============================================================================
+
+enum DocumentType {
+  TAX_INVOICE       // "Tax Invoice" (Standard B2C retail GST sale)
+  BILL_OF_SUPPLY    // "Bill of Supply" (Exempt / composition)
+  QUOTATION         // "Quotation" (Formal price estimate)
+  PROFORMA_INVOICE  // "Proforma Invoice" (Pre-dispatch bank wire request)
+}
+
+enum InvoicePaymentStatus {
+  UNPAID            // Default: awaiting manual bank wire verification
+  PAID              // Admin verified incoming credit in bank account
+}
+
+model InvoiceSequence {
+  prefix        String   // "UTH" (Tax Inv), "BOS", "QUOT", "PI"
+  financialYear String   // e.g. "2026-27" (April 1 to March 31)
+  lastNumber    Int      @default(0)
+  updatedAt     DateTime @updatedAt
+
+  @@id([prefix, financialYear])
+}
+
+model Invoice {
+  id                  String               @id @default(cuid())
+  invoiceNumber       String               @unique // e.g. "UTH/2026-27/0001" or "QUOT/2026-27/0001"
+  documentType        DocumentType         @default(TAX_INVOICE)
+  financialYear       String               // e.g. "2026-27"
+  sequenceNumber      Int
+
+  // Optional Originating Customer Enquiry Link
+  enquiryId           String?
+  enquiry             Enquiry?             @relation(fields: [enquiryId], references: [id], onDelete: SetNull)
+
+  // Customer Snapshot (Frozen at issuance)
+  customerName        String
+  customerEmail       String
+  customerPhone       String
+  customerAddress     String?              // Street, City, State, Pincode
+  customerGstin       String?              // Optional: consumer GSTIN if available
+
+  // Place of Supply & Tax Treatment
+  placeOfSupply       String?              // e.g. "Rajasthan (08)", "Maharashtra (27)"
+  isInterState        Boolean              @default(false) // false = CGST + SGST, true = IGST
+
+  // Business Snapshot (Frozen at issuance; confirmed with CA)
+  businessName        String
+  businessAddress     String
+  businessGstin       String?
+  businessPan         String?
+  businessPhone       String
+  businessEmail       String
+
+  // Bank Transfer Instructions Snapshot (For direct customer RTGS/NEFT/IMPS)
+  bankName            String
+  bankAccountName     String
+  bankAccountNumber   String
+  bankIfsc            String
+  bankBranch          String
+
+  // Key Dates
+  issueDate           DateTime             @default(now())
+  dueDate             DateTime?
+
+  // Financial Totals (Prisma Decimal 12, 2)
+  subtotal            Decimal              @db.Decimal(12, 2) @default(0.00)
+  cgstAmount          Decimal              @db.Decimal(12, 2) @default(0.00)
+  sgstAmount          Decimal              @db.Decimal(12, 2) @default(0.00)
+  igstAmount          Decimal              @db.Decimal(12, 2) @default(0.00)
+  totalTaxAmount      Decimal              @db.Decimal(12, 2) @default(0.00)
+
+  // Configurable Shipping / Crating Charges
+  shippingCharges     Decimal              @db.Decimal(12, 2) @default(0.00)
+  shippingGstRate     Decimal?             @db.Decimal(5, 2)  @default(0.00)
+  shippingTaxAmount   Decimal              @db.Decimal(12, 2) @default(0.00)
+
+  roundOffAmount      Decimal              @db.Decimal(12, 2) @default(0.00)
+  grandTotal          Decimal              @db.Decimal(12, 2) @default(0.00)
+
+  // Manual Bank Payment Verification
+  paymentStatus       InvoicePaymentStatus @default(UNPAID)
+  paidAt              DateTime?
+  notes               String?              // Finishing specs, timber care, or wire notes
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  items               InvoiceItem[]
+
+  @@index([customerEmail])
+  @@index([paymentStatus])
+  @@index([documentType])
+  @@index([financialYear])
+  @@index([createdAt])
+}
+
+model InvoiceItem {
+  id            String   @id @default(cuid())
+  invoiceId     String
+  invoice       Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  itemIndex     Int      @default(0)
+
+  description   String   // Product title, wood species, dimensions, finish
+  hsnCode       String?  // Configurable HSN (e.g. 9403)
+  quantity      Int      @default(1)
+  unitPrice     Decimal  @db.Decimal(12, 2) // Stored as taxable unit price
+  taxableAmount Decimal  @db.Decimal(12, 2) // quantity * unitPrice
+
+  gstRate       Decimal  @db.Decimal(5, 2) @default(0.00) // Configurable % (e.g. 18.00, 12.00, 5.00, 0.00)
+  taxAmount     Decimal  @db.Decimal(12, 2) @default(0.00) // taxableAmount * (gstRate / 100)
+  totalAmount   Decimal  @db.Decimal(12, 2) // taxableAmount + taxAmount
+}
+

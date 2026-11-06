@@ -12,6 +12,7 @@ import {
   Users,
   MessageSquare,
   Eye,
+  Receipt,
   ExternalLink,
   LogOut,
 } from "lucide-react";
@@ -37,6 +38,7 @@ export default function AdminSidebar({
       icon: <ClipboardList size={18} />,
       badge: newEnquiries,
     },
+    { href: "/admin/invoices", label: "Invoices", icon: <Receipt size={18} /> },
     {
       href: "/admin/messages",
       label: "Messages",

@@ -244,3 +244,15 @@ img {
     padding: 0 var(--spacing-sm);
   }
 }
+
+@media print {
+  header,
+  aside,
+  nav {
+    display: none !important;
+  }
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+}
