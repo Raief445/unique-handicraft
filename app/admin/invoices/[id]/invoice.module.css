@@ -228,15 +228,11 @@
     display: none !important;
   }
 
-  body {
-    background: #ffffff !important;
-    color: #000000 !important;
-  }
-
   .container {
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
+    background: #ffffff !important;
   }
 
   .invoiceSheet {
@@ -244,6 +240,7 @@
     border: none !important;
     padding: 0 !important;
     width: 100% !important;
+    background: #ffffff !important;
   }
 
   .tallyBox {
@@ -263,11 +260,14 @@
     print-color-adjust: exact !important;
   }
 
-  table {
+  .gridTable,
+  .hsnTable {
     page-break-inside: auto;
   }
 
-  tr {
+  .itemRow,
+  .taxSubRow,
+  .itemTotalRow {
     page-break-inside: avoid;
     page-break-after: auto;
   }
