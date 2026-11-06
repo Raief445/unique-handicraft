@@ -264,34 +264,26 @@ export default async function InvoiceDetailPage({
             </tbody>
           </table>
 
-          {/* 3. Consignee (Ship to), Buyer (Bill to) & Dispatch Details */}
+          {/* 3. Consignee (Ship to) & Dispatch Details */}
           <table className={styles.gridTable} style={{ borderTop: "1px solid #000" }}>
             <tbody>
               <tr>
-                {/* Consignee & Buyer (Left 50%) */}
+                {/* Consignee (Ship to) (Left 50%) */}
                 <td style={{ width: "50%", padding: 0, verticalAlign: "top", borderRight: "1px solid #000" }}>
-                  {/* Consignee */}
                   <div className={styles.cellHeaderYellow}>Consignee (Ship to)</div>
-                  <div style={{ padding: "4px 6px", fontSize: "8.5pt", minHeight: "58px", borderBottom: "1px solid #000" }}>
-                    <div className={styles.valBold}>{invoice.customerName}</div>
-                    <div style={{ color: "#333", margin: "1px 0" }}>
+                  <div style={{ padding: "6px 8px", fontSize: "8.5pt", lineHeight: 1.45 }}>
+                    <div className={styles.valBold} style={{ fontSize: "9.5pt", marginBottom: "2px" }}>
+                      {invoice.customerName}
+                    </div>
+                    <div style={{ color: "#333", margin: "2px 0 4px 0" }}>
                       {invoice.customerAddress || "B2C Customer Doorstep Delivery / Counter Handover"}
                     </div>
-                    <div><strong>GSTIN/UIN:</strong> {invoice.customerGstin || "Unregistered / Consumer"}</div>
                     <div>
-                      <strong>State Name:</strong> {placeOfSupplyState}, <strong>Code:</strong> {placeOfSupplyCode}
+                      <strong>Contact:</strong> {invoice.customerPhone} &bull; <strong>Email:</strong> {invoice.customerEmail}
                     </div>
-                  </div>
-
-                  {/* Buyer */}
-                  <div className={styles.cellHeaderYellow}>Buyer (Bill to)</div>
-                  <div style={{ padding: "4px 6px", fontSize: "8.5pt", minHeight: "58px" }}>
-                    <div className={styles.valBold}>{invoice.customerName}</div>
-                    <div style={{ color: "#333", margin: "1px 0" }}>
-                      {invoice.customerAddress || "B2C Customer"}
+                    <div>
+                      <strong>GSTIN/UIN:</strong> {invoice.customerGstin || "Unregistered / Consumer"}
                     </div>
-                    <div><strong>Phone:</strong> {invoice.customerPhone} &bull; <strong>Email:</strong> {invoice.customerEmail}</div>
-                    <div><strong>GSTIN/UIN:</strong> {invoice.customerGstin || "Unregistered / Consumer"}</div>
                     <div>
                       <strong>State Name:</strong> {placeOfSupplyState}, <strong>Code:</strong> {placeOfSupplyCode}
                     </div>
