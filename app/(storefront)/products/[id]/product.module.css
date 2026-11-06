@@ -318,3 +318,84 @@
   width: 90vw;
   height: 90vh;
 }
+
+/* Complete the Look Section */
+.completeTheLook {
+  margin-top: clamp(4rem, 7vw, 6rem);
+  padding-top: clamp(3rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--color-border);
+}
+
+.completeHeader {
+  margin-bottom: 2.5rem;
+  max-width: 680px;
+}
+
+.completeEyebrow {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.completeTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 2.5vw, 2.15rem);
+  font-weight: 400;
+  color: var(--color-primary);
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+.completeSubtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.completeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+}
+
+/* Dynamic adaptation when fewer than 3 companions exist */
+.completeGrid[data-count="1"] {
+  grid-template-columns: minmax(280px, 420px);
+}
+
+.completeGrid[data-count="2"] {
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  max-width: 900px;
+}
+
+.completeGrid[data-count="3"] {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .completeGrid,
+  .completeGrid[data-count="3"],
+  .completeGrid[data-count="2"] {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 640px) {
+  .completeGrid,
+  .completeGrid[data-count="3"],
+  .completeGrid[data-count="2"],
+  .completeGrid[data-count="1"] {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .completeHeader {
+    margin-bottom: 2rem;
+  }
+}

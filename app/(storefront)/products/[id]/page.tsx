@@ -1,6 +1,8 @@
 import prisma from "@/lib/db";
 import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductGallery from "@/components/ProductGallery";
+import ProductCard from "@/components/ProductCard";
+import { getCompleteTheLookRecommendations } from "@/lib/recommendations";
 import styles from "./product.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -128,6 +130,9 @@ export default async function ProductDetailPage({
     moq: product.moq,
   };
 
+  // Fetch curated and attribute-matched architectural companions
+  const completeTheLookItems = await getCompleteTheLookRecommendations(product, 3);
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -251,6 +256,24 @@ export default async function ProductDetailPage({
           <ProductDetailActions product={productForActions} />
         </div>
       </div>
+
+      {/* Complete the Look / Complementary Ensemble */}
+      {completeTheLookItems.length > 0 && (
+        <section className={styles.completeTheLook} aria-label="Complete the Look">
+          <div className={styles.completeHeader}>
+            <p className={styles.completeEyebrow}>ATELIER CURATION</p>
+            <h2 className={styles.completeTitle}>Complete the Look</h2>
+            <p className={styles.completeSubtitle}>
+              Harmonious companion designs handcrafted to complement this piece in material, proportion, and finish.
+            </p>
+          </div>
+          <div className={styles.completeGrid} data-count={completeTheLookItems.length}>
+            {completeTheLookItems.map((item) => (
+              <ProductCard key={item.id} product={item} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
