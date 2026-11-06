@@ -63,8 +63,8 @@ export default function InvoiceCreateForm({
   const [businessPhone, setBusinessPhone] = useState(DEFAULT_BUSINESS_DETAILS.businessPhone);
   const [businessEmail, setBusinessEmail] = useState(DEFAULT_BUSINESS_DETAILS.businessEmail);
 
-  // Bank state
-  const [includeBankDetails, setIncludeBankDetails] = useState(true);
+  // Bank state (Optional - default to false so invoices do not include bank wire details unless explicitly enabled)
+  const [includeBankDetails, setIncludeBankDetails] = useState(false);
   const [bankName, setBankName] = useState(DEFAULT_BANK_DETAILS.bankName);
   const [bankAccountName, setBankAccountName] = useState(DEFAULT_BANK_DETAILS.bankAccountName);
   const [bankAccountNumber, setBankAccountNumber] = useState(DEFAULT_BANK_DETAILS.bankAccountNumber);
@@ -637,11 +637,89 @@ export default function InvoiceCreateForm({
         </div>
       </div>
 
-      {/* 5. VERIFIED SELLER & BANK WIRE INSTRUCTIONS (SNAPSHOT) */}
+      {/* 5. COMPANY BANK DETAILS (OPTIONAL) */}
+      <div style={{ background: "#ffffff", border: "1px solid #e5e0d8", borderRadius: "8px", padding: "1.5rem", marginBottom: "1.5rem" }}>
+        <h2 style={{ fontSize: "1.05rem", fontWeight: 600, color: "#1a1a1a", marginBottom: "0.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Building2 size={18} />
+          <span>5. Company Bank Details (Optional)</span>
+        </h2>
+        <p style={{ fontSize: "0.85rem", color: "#666", marginBottom: "1rem" }}>
+          Direct bank wire / NEFT / RTGS payment instructions for customer transfer.
+        </p>
+
+        <div style={{ padding: "0.85rem", background: includeBankDetails ? "#fcfbfa" : "#faf8f5", border: "1px solid #e2ddd5", borderRadius: "6px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "0.6rem", cursor: "pointer", fontWeight: 600, color: "#1a1a1a", fontSize: "0.925rem" }}>
+            <input
+              type="checkbox"
+              checked={includeBankDetails}
+              onChange={(e) => setIncludeBankDetails(e.target.checked)}
+              style={{ width: "18px", height: "18px", cursor: "pointer" }}
+            />
+            <span>Include Company Bank Details on this Invoice (Optional)</span>
+          </label>
+
+          {!includeBankDetails ? (
+            <p style={{ fontSize: "0.8rem", color: "#777", margin: "0.35rem 0 0 1.8rem" }}>
+              Bank account and wire transfer details will be omitted from the invoice.
+            </p>
+          ) : (
+            <div style={{ marginTop: "1rem", borderTop: "1px solid #e5e0d8", paddingTop: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#444" }}>Bank Account Coordinates:</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBankName(DEFAULT_BANK_DETAILS.bankName);
+                    setBankAccountName(DEFAULT_BANK_DETAILS.bankAccountName);
+                    setBankAccountNumber(DEFAULT_BANK_DETAILS.bankAccountNumber);
+                    setBankIfsc(DEFAULT_BANK_DETAILS.bankIfsc);
+                    setBankBranch(DEFAULT_BANK_DETAILS.bankBranch);
+                  }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#8B5A2B",
+                    fontSize: "0.8rem",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                    padding: 0,
+                  }}
+                >
+                  Reset to Standard SBI Account
+                </button>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>Bank Name</label>
+                  <input type="text" value={bankName} onChange={(e) => setBankName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>Account Holder Name</label>
+                  <input type="text" value={bankAccountName} onChange={(e) => setBankAccountName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>Account Number</label>
+                  <input type="text" value={bankAccountNumber} onChange={(e) => setBankAccountNumber(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>IFSC Code</label>
+                  <input type="text" value={bankIfsc} onChange={(e) => setBankIfsc(e.target.value.toUpperCase())} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>Branch</label>
+                  <input type="text" value={bankBranch} onChange={(e) => setBankBranch(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 6. VERIFIED SELLER SNAPSHOT (OPTIONAL CUSTOMIZATION) */}
       <details style={{ background: "#ffffff", border: "1px solid #e5e0d8", borderRadius: "8px", padding: "1.25rem", marginBottom: "1.5rem" }}>
-        <summary style={{ cursor: "pointer", fontWeight: 600, fontSize: "0.95rem", color: "#1a1a1a", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <Building2 size={16} />
-          <span>Seller & Bank Transfer Details (Click to view / customize snapshot)</span>
+        <summary style={{ cursor: "pointer", fontWeight: 600, fontSize: "0.95rem", color: "#1a1a1a" }}>
+          Seller Profile Snapshot (Click to view / customize legal business details)
         </summary>
         <div style={{ marginTop: "1rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
           <div>
@@ -656,52 +734,10 @@ export default function InvoiceCreateForm({
             <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Registered Workshop Address</label>
             <input type="text" value={businessAddress} onChange={(e) => setBusinessAddress(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
           </div>
-
-          <div style={{ gridColumn: "1 / -1", borderBottom: "1px solid #eee", paddingBottom: "0.75rem", marginBottom: "0.5rem" }}>
-            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: 600, color: "#1a1a1a" }}>
-              <input
-                type="checkbox"
-                checked={includeBankDetails}
-                onChange={(e) => setIncludeBankDetails(e.target.checked)}
-                style={{ width: "18px", height: "18px", cursor: "pointer" }}
-              />
-              <span>Include Direct Bank Wire Instructions on Document (Optional)</span>
-            </label>
-            {!includeBankDetails && (
-              <p style={{ fontSize: "0.8rem", color: "#888", margin: "0.25rem 0 0 1.6rem" }}>
-                Bank transfer instructions will be omitted from the invoice.
-              </p>
-            )}
-          </div>
-
-          {includeBankDetails && (
-            <>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Bank Name</label>
-                <input type="text" value={bankName} onChange={(e) => setBankName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-              </div>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Account Holder Name</label>
-                <input type="text" value={bankAccountName} onChange={(e) => setBankAccountName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-              </div>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Account Number</label>
-                <input type="text" value={bankAccountNumber} onChange={(e) => setBankAccountNumber(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-              </div>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>IFSC Code</label>
-                <input type="text" value={bankIfsc} onChange={(e) => setBankIfsc(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-              </div>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Branch</label>
-                <input type="text" value={bankBranch} onChange={(e) => setBankBranch(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-              </div>
-            </>
-          )}
         </div>
       </details>
 
-      {/* 6. LIVE SUMMARY & TOTALS */}
+      {/* 7. LIVE SUMMARY & TOTALS */}
       <div style={{ background: "#ffffff", border: "2px solid #1a1a1a", borderRadius: "8px", padding: "1.5rem", marginBottom: "2rem" }}>
         <h2 style={{ fontSize: "1.1rem", fontWeight: 600, color: "#1a1a1a", marginBottom: "1rem" }}>
           Summary Preview
