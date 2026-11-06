@@ -264,13 +264,13 @@ export default async function InvoiceDetailPage({
             </tbody>
           </table>
 
-          {/* 3. Consignee (Ship to) & Dispatch Details */}
+          {/* 3. Buyer (Bill to) & Dispatch Details */}
           <table className={styles.gridTable} style={{ borderTop: "1px solid #000" }}>
             <tbody>
               <tr>
-                {/* Consignee (Ship to) (Left 50%) */}
+                {/* Buyer (Bill to) (Left 50%) */}
                 <td style={{ width: "50%", padding: 0, verticalAlign: "top", borderRight: "1px solid #000" }}>
-                  <div className={styles.cellHeaderYellow}>Consignee (Ship to)</div>
+                  <div className={styles.cellHeaderYellow}>Buyer (Bill to)</div>
                   <div style={{ padding: "6px 8px", fontSize: "8.5pt", lineHeight: 1.45 }}>
                     <div className={styles.valBold} style={{ fontSize: "9.5pt", marginBottom: "2px" }}>
                       {invoice.customerName}
