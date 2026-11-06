@@ -182,7 +182,6 @@ export default async function InvoiceDetailPage({
                       <div style={{ fontSize: "8pt", lineHeight: 1.35 }}>
                         <div>
                           <strong>GSTIN/UIN:</strong> {invoice.businessGstin || "—"}
-                          {invoice.businessPan && <span> &bull; <strong>PAN:</strong> {invoice.businessPan}</span>}
                         </div>
                         <div>
                           <strong>State Name:</strong> Rajasthan, <strong>Code:</strong> 08

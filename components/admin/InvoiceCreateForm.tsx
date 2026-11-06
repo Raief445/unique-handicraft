@@ -60,7 +60,6 @@ export default function InvoiceCreateForm({
   const [businessName, setBusinessName] = useState(DEFAULT_BUSINESS_DETAILS.businessName);
   const [businessAddress, setBusinessAddress] = useState(DEFAULT_BUSINESS_DETAILS.businessAddress);
   const [businessGstin, setBusinessGstin] = useState(DEFAULT_BUSINESS_DETAILS.businessGstin);
-  const [businessPan, setBusinessPan] = useState(DEFAULT_BUSINESS_DETAILS.businessPan);
   const [businessPhone, setBusinessPhone] = useState(DEFAULT_BUSINESS_DETAILS.businessPhone);
   const [businessEmail, setBusinessEmail] = useState(DEFAULT_BUSINESS_DETAILS.businessEmail);
 
@@ -197,7 +196,7 @@ export default function InvoiceCreateForm({
         businessName: businessName.trim(),
         businessAddress: businessAddress.trim(),
         businessGstin: businessGstin.trim(),
-        businessPan: businessPan.trim(),
+        businessPan: null,
         businessPhone: businessPhone.trim(),
         businessEmail: businessEmail.trim(),
         bankName: includeBankDetails && bankName.trim() ? bankName.trim() : null,
@@ -652,10 +651,6 @@ export default function InvoiceCreateForm({
           <div>
             <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>GSTIN</label>
             <input type="text" value={businessGstin} onChange={(e) => setBusinessGstin(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-          </div>
-          <div>
-            <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>PAN</label>
-            <input type="text" value={businessPan} onChange={(e) => setBusinessPan(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
           </div>
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Registered Workshop Address</label>
