@@ -186,11 +186,6 @@ export default async function InvoiceDetailPage({
                         <div>
                           <strong>State Name:</strong> Rajasthan, <strong>Code:</strong> 08
                         </div>
-                        {invoice.businessEmail && (
-                          <div>
-                            <strong>E-Mail:</strong> {invoice.businessEmail}
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
