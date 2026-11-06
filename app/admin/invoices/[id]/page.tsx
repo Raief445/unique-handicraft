@@ -159,34 +159,46 @@ export default async function InvoiceDetailPage({
         </table>
 
         {/* Totals & Bank Details Grid */}
-        <div className={styles.totalsGrid}>
-          {/* Bank Coordinates Box */}
-          <div className={styles.bankBox}>
-            <div className={styles.bankBoxTitle}>Direct Bank Wire Instructions</div>
-            <div className={styles.bankDetailRow}>
-              <span>Bank Name:</span>
-              <strong>{invoice.bankName}</strong>
+        <div className={invoice.bankAccountNumber || invoice.bankName ? styles.totalsGrid : styles.totalsGridSingle}>
+          {/* Bank Coordinates Box (Optional) */}
+          {(invoice.bankAccountNumber || invoice.bankName) && (
+            <div className={styles.bankBox}>
+              <div className={styles.bankBoxTitle}>Direct Bank Wire Instructions</div>
+              {invoice.bankName && (
+                <div className={styles.bankDetailRow}>
+                  <span>Bank Name:</span>
+                  <strong>{invoice.bankName}</strong>
+                </div>
+              )}
+              {invoice.bankAccountName && (
+                <div className={styles.bankDetailRow}>
+                  <span>Account Name:</span>
+                  <strong>{invoice.bankAccountName}</strong>
+                </div>
+              )}
+              {invoice.bankAccountNumber && (
+                <div className={styles.bankDetailRow}>
+                  <span>Account Number:</span>
+                  <strong style={{ fontFamily: "monospace", letterSpacing: "1px" }}>{invoice.bankAccountNumber}</strong>
+                </div>
+              )}
+              {invoice.bankIfsc && (
+                <div className={styles.bankDetailRow}>
+                  <span>IFSC Code:</span>
+                  <strong style={{ fontFamily: "monospace" }}>{invoice.bankIfsc}</strong>
+                </div>
+              )}
+              {invoice.bankBranch && (
+                <div className={styles.bankDetailRow}>
+                  <span>Branch:</span>
+                  <span>{invoice.bankBranch}</span>
+                </div>
+              )}
+              <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#666" }}>
+                * Please share your bank transfer UTR / Transaction Reference number with us after wire completion.
+              </div>
             </div>
-            <div className={styles.bankDetailRow}>
-              <span>Account Name:</span>
-              <strong>{invoice.bankAccountName}</strong>
-            </div>
-            <div className={styles.bankDetailRow}>
-              <span>Account Number:</span>
-              <strong style={{ fontFamily: "monospace", letterSpacing: "1px" }}>{invoice.bankAccountNumber}</strong>
-            </div>
-            <div className={styles.bankDetailRow}>
-              <span>IFSC Code:</span>
-              <strong style={{ fontFamily: "monospace" }}>{invoice.bankIfsc}</strong>
-            </div>
-            <div className={styles.bankDetailRow}>
-              <span>Branch:</span>
-              <span>{invoice.bankBranch}</span>
-            </div>
-            <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#666" }}>
-              * Please share your bank transfer UTR / Transaction Reference number with us after wire completion.
-            </div>
-          </div>
+          )}
 
           {/* Financial Breakdown Table */}
           <div>

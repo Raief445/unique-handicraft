@@ -65,6 +65,7 @@ export default function InvoiceCreateForm({
   const [businessEmail, setBusinessEmail] = useState(DEFAULT_BUSINESS_DETAILS.businessEmail);
 
   // Bank state
+  const [includeBankDetails, setIncludeBankDetails] = useState(true);
   const [bankName, setBankName] = useState(DEFAULT_BANK_DETAILS.bankName);
   const [bankAccountName, setBankAccountName] = useState(DEFAULT_BANK_DETAILS.bankAccountName);
   const [bankAccountNumber, setBankAccountNumber] = useState(DEFAULT_BANK_DETAILS.bankAccountNumber);
@@ -199,11 +200,11 @@ export default function InvoiceCreateForm({
         businessPan: businessPan.trim(),
         businessPhone: businessPhone.trim(),
         businessEmail: businessEmail.trim(),
-        bankName: bankName.trim(),
-        bankAccountName: bankAccountName.trim(),
-        bankAccountNumber: bankAccountNumber.trim(),
-        bankIfsc: bankIfsc.trim(),
-        bankBranch: bankBranch.trim(),
+        bankName: includeBankDetails && bankName.trim() ? bankName.trim() : null,
+        bankAccountName: includeBankDetails && bankAccountName.trim() ? bankAccountName.trim() : null,
+        bankAccountNumber: includeBankDetails && bankAccountNumber.trim() ? bankAccountNumber.trim() : null,
+        bankIfsc: includeBankDetails && bankIfsc.trim() ? bankIfsc.trim().toUpperCase() : null,
+        bankBranch: includeBankDetails && bankBranch.trim() ? bankBranch.trim() : null,
         items: items.map((it) => ({
           description: it.description,
           hsnCode: it.hsnCode || null,
@@ -661,26 +662,47 @@ export default function InvoiceCreateForm({
             <input type="text" value={businessAddress} onChange={(e) => setBusinessAddress(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
           </div>
 
-          <div>
-            <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Bank Name</label>
-            <input type="text" value={bankName} onChange={(e) => setBankName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
+          <div style={{ gridColumn: "1 / -1", borderBottom: "1px solid #eee", paddingBottom: "0.75rem", marginBottom: "0.5rem" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: 600, color: "#1a1a1a" }}>
+              <input
+                type="checkbox"
+                checked={includeBankDetails}
+                onChange={(e) => setIncludeBankDetails(e.target.checked)}
+                style={{ width: "18px", height: "18px", cursor: "pointer" }}
+              />
+              <span>Include Direct Bank Wire Instructions on Document (Optional)</span>
+            </label>
+            {!includeBankDetails && (
+              <p style={{ fontSize: "0.8rem", color: "#888", margin: "0.25rem 0 0 1.6rem" }}>
+                Bank transfer instructions will be omitted from the invoice.
+              </p>
+            )}
           </div>
-          <div>
-            <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Account Holder Name</label>
-            <input type="text" value={bankAccountName} onChange={(e) => setBankAccountName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-          </div>
-          <div>
-            <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Account Number</label>
-            <input type="text" value={bankAccountNumber} onChange={(e) => setBankAccountNumber(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-          </div>
-          <div>
-            <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>IFSC Code</label>
-            <input type="text" value={bankIfsc} onChange={(e) => setBankIfsc(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-          </div>
-          <div>
-            <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Branch</label>
-            <input type="text" value={bankBranch} onChange={(e) => setBankBranch(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
-          </div>
+
+          {includeBankDetails && (
+            <>
+              <div>
+                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Bank Name</label>
+                <input type="text" value={bankName} onChange={(e) => setBankName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Account Holder Name</label>
+                <input type="text" value={bankAccountName} onChange={(e) => setBankAccountName(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Account Number</label>
+                <input type="text" value={bankAccountNumber} onChange={(e) => setBankAccountNumber(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>IFSC Code</label>
+                <input type="text" value={bankIfsc} onChange={(e) => setBankIfsc(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555" }}>Branch</label>
+                <input type="text" value={bankBranch} onChange={(e) => setBankBranch(e.target.value)} style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px" }} />
+              </div>
+            </>
+          )}
         </div>
       </details>
 

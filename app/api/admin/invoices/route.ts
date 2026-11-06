@@ -55,9 +55,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!businessName || !businessAddress || !bankName || !bankAccountName || !bankAccountNumber || !bankIfsc) {
+    if (!businessName || !businessAddress) {
       return NextResponse.json(
-        { error: "Verified business and bank details are required. Placeholders are not allowed." },
+        { error: "Verified business name and address are required." },
         { status: 400 }
       );
     }
@@ -126,12 +126,12 @@ export async function POST(req: NextRequest) {
           businessPhone: businessPhone.trim(),
           businessEmail: businessEmail.trim().toLowerCase(),
 
-          // Bank transfer snapshot
-          bankName: bankName.trim(),
-          bankAccountName: bankAccountName.trim(),
-          bankAccountNumber: bankAccountNumber.trim(),
-          bankIfsc: bankIfsc.trim().toUpperCase(),
-          bankBranch: bankBranch.trim(),
+          // Bank transfer snapshot (Optional)
+          bankName: bankName && bankName.trim() ? bankName.trim() : null,
+          bankAccountName: bankAccountName && bankAccountName.trim() ? bankAccountName.trim() : null,
+          bankAccountNumber: bankAccountNumber && bankAccountNumber.trim() ? bankAccountNumber.trim() : null,
+          bankIfsc: bankIfsc && bankIfsc.trim() ? bankIfsc.trim().toUpperCase() : null,
+          bankBranch: bankBranch && bankBranch.trim() ? bankBranch.trim() : null,
 
           // Dates
           dueDate: dueDate ? new Date(dueDate) : null,

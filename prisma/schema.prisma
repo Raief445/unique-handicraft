@@ -205,12 +205,12 @@ model Invoice {
   businessPhone       String
   businessEmail       String
 
-  // Bank Transfer Instructions Snapshot (For direct customer RTGS/NEFT/IMPS)
-  bankName            String
-  bankAccountName     String
-  bankAccountNumber   String
-  bankIfsc            String
-  bankBranch          String
+  // Bank Transfer Instructions Snapshot (Optional - for direct customer RTGS/NEFT/IMPS)
+  bankName            String?
+  bankAccountName     String?
+  bankAccountNumber   String?
+  bankIfsc            String?
+  bankBranch          String?
 
   // Key Dates
   issueDate           DateTime             @default(now())

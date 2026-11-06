@@ -198,6 +198,17 @@
   margin-bottom: 2rem;
 }
 
+.totalsGridSingle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+.totalsGridSingle > div {
+  width: 100%;
+  max-width: 380px;
+}
+
 .bankBox {
   background: #faf9f6;
   border: 1px solid #e6e0d5;
