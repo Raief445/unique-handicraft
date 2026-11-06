@@ -70,214 +70,149 @@
   cursor: pointer;
 }
 
-/* THE PRINTABLE A4 INVOICE SHEET */
+/* =============================================================================
+   TALLY-STYLE GOODS INVOICE SHEET
+   Exact visual match for invoice-template-in-word.docx
+   ============================================================================= */
 .invoiceSheet {
   background: #ffffff;
-  border: 1px solid #e0dbd1;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  padding: 2.5rem 3rem;
-  color: #1a1a1a;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 1.8rem;
+  color: #000000;
+  font-family: Calibri, Arial, "Segoe UI", sans-serif;
+  font-size: 9pt;
+  line-height: 1.3;
 }
 
-.sheetHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 2px solid #1a1a1a;
-  padding-bottom: 1.5rem;
-  margin-bottom: 1.5rem;
+.tallyBox {
+  border: 1.5px solid #000000;
+  background: #ffffff;
 }
 
-.brandName {
-  font-size: 1.6rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: #1a1a1a;
-  margin: 0 0 0.25rem 0;
-  text-transform: uppercase;
-}
-
-.brandTagline {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-}
-
-.sellerDetails {
-  font-size: 0.85rem;
-  color: #444;
-  line-height: 1.4;
-}
-
-.docMeta {
-  text-align: right;
-}
-
-.docTitle {
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #1a1a1a;
-  text-transform: uppercase;
-  margin: 0 0 0.5rem 0;
-}
-
-.metaRow {
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
-}
-
-.metaLabel {
-  color: #666;
-  margin-right: 0.5rem;
-}
-
-.metaValue {
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.billingSection {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  font-size: 0.85rem;
-}
-
-.sectionHeading {
-  font-size: 0.8rem;
+.titleBar {
+  background-color: #5B9BD5;
+  color: #000000;
   font-weight: 700;
+  font-size: 13pt;
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #888;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 0.25rem;
+  padding: 4px 8px;
+  border-bottom: 1.5px solid #000000;
 }
 
-.customerName {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 0.25rem;
-}
-
-.itemsTable {
+.gridTable {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 2rem;
-  font-size: 0.85rem;
+  table-layout: fixed;
 }
 
-.itemsTable th {
-  background: #faf8f5;
-  color: #3A2F28;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.5px;
-  padding: 0.75rem 0.6rem;
-  border-top: 1px solid #1a1a1a;
-  border-bottom: 1px solid #1a1a1a;
-}
-
-.itemsTable td {
-  padding: 0.75rem 0.6rem;
-  border-bottom: 1px solid #eee;
+.cell {
+  border: 1px solid #000000;
+  padding: 3px 5px;
   vertical-align: top;
+  font-size: 8.5pt;
+  color: #000000;
 }
 
-.totalsGrid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.totalsGridSingle {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 2rem;
-}
-
-.totalsGridSingle > div {
-  width: 100%;
-  max-width: 380px;
-}
-
-.bankBox {
-  background: #faf9f6;
-  border: 1px solid #e6e0d5;
-  border-radius: 4px;
-  padding: 1.25rem;
-  font-size: 0.85rem;
-}
-
-.bankBoxTitle {
-  font-size: 0.85rem;
+.cellHeaderYellow {
+  background-color: #FFF2CC;
   font-weight: 700;
-  color: #1a1a1a;
+  font-size: 8.5pt;
   text-transform: uppercase;
-  margin-bottom: 0.75rem;
-  letter-spacing: 0.5px;
+  padding: 3px 5px;
+  border: 1px solid #000000;
+  letter-spacing: 0.3px;
+  color: #000000;
 }
 
-.bankDetailRow {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.35rem;
-  font-size: 0.85rem;
+.thYellow {
+  background-color: #FFF2CC;
+  font-weight: 700;
+  font-size: 8.5pt;
+  text-align: center;
+  border: 1px solid #000000;
+  padding: 4px 4px;
+  color: #000000;
 }
 
-.summaryTable {
+.companyTitle {
+  font-size: 12pt;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 2px;
+}
+
+.labelMuted {
+  color: #333333;
+  font-size: 8pt;
+}
+
+.valBold {
+  font-weight: 700;
+  color: #000000;
+}
+
+.itemRow td {
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-top: none;
+  border-bottom: none;
+  padding: 3px 5px;
+  vertical-align: top;
+  font-size: 8.5pt;
+}
+
+.taxSubRow td {
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-top: none;
+  border-bottom: none;
+  padding: 2px 5px;
+  vertical-align: top;
+  font-size: 8.5pt;
+}
+
+.itemTotalRow td {
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  padding: 4px 5px;
+  font-weight: 700;
+  font-size: 9pt;
+}
+
+.hsnTable {
   width: 100%;
-  font-size: 0.85rem;
   border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 8.5pt;
 }
 
-.summaryTable td {
-  padding: 0.4rem 0;
+.hsnTable th {
+  background-color: #FFF2CC;
+  border: 1px solid #000000;
+  font-weight: 700;
+  font-size: 8pt;
+  padding: 3px 4px;
+  text-align: center;
+  color: #000000;
 }
 
-.grandTotalRow {
-  border-top: 2px solid #1a1a1a;
-  border-bottom: 2px solid #1a1a1a;
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #1a1a1a;
+.hsnTable td {
+  border: 1px solid #000000;
+  padding: 3px 4px;
+  font-size: 8pt;
+  color: #000000;
 }
 
-.grandTotalRow td {
-  padding: 0.6rem 0;
-}
-
-.sheetFooter {
-  border-top: 1px solid #e0e0e0;
-  padding-top: 1.5rem;
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-.signatureBox {
-  text-align: right;
-}
-
-.signatureLine {
-  width: 180px;
-  border-top: 1px solid #1a1a1a;
-  margin-top: 3rem;
-  padding-top: 0.35rem;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: #1a1a1a;
+.jurisdictionNotice {
+  text-align: center;
+  font-size: 7.5pt;
+  color: #333333;
+  padding-top: 4px;
+  letter-spacing: 0.5px;
 }
 
 /* =============================================================================
@@ -286,11 +221,16 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 12mm;
+    margin: 8mm 8mm 8mm 8mm;
   }
 
   .noPrint {
     display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
   }
 
   .container {
@@ -306,11 +246,29 @@
     width: 100% !important;
   }
 
-  .itemsTable tr,
-  .totalsGrid,
-  .bankBox,
-  .sheetFooter {
+  .tallyBox {
+    border: 1.5px solid #000000 !important;
     page-break-inside: avoid;
   }
-}
 
+  .titleBar {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .thYellow,
+  .cellHeaderYellow,
+  .hsnTable th {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+}

@@ -108,6 +108,81 @@ export function formatInr(amount: number | string | Prisma.Decimal | null | unde
 }
 
 /**
+ * Converts a numeric amount to Indian Rupee Words following standard Indian accounting rules
+ * (Crores, Lakhs, Thousands, Hundreds, Units, and Paise).
+ * e.g., 25370 -> "INR Twenty Five Thousand Three Hundred Seventy Only"
+ */
+export function numberToIndianRupeesWords(amount: number | string | Prisma.Decimal | null | undefined): string {
+  if (amount === null || amount === undefined) return "INR Zero Only";
+  const num = typeof amount === "number" ? amount : Number(amount);
+  if (isNaN(num)) return "INR Zero Only";
+
+  const ones = [
+    "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+    "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
+    "Seventeen", "Eighteen", "Nineteen"
+  ];
+  const tens = [
+    "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"
+  ];
+
+  function convertTwoDigits(n: number): string {
+    if (n < 20) return ones[n];
+    const t = tens[Math.floor(n / 10)];
+    const o = ones[n % 10];
+    return o ? `${t} ${o}` : t;
+  }
+
+  function convertThreeDigits(n: number): string {
+    const h = Math.floor(n / 100);
+    const r = n % 100;
+    const hStr = h > 0 ? `${ones[h]} Hundred` : "";
+    const rStr = r > 0 ? convertTwoDigits(r) : "";
+    if (hStr && rStr) return `${hStr} ${rStr}`;
+    return hStr || rStr || "";
+  }
+
+  function convertNumberHelper(n: number): string {
+    if (n < 100) return convertTwoDigits(n);
+    return convertThreeDigits(n);
+  }
+
+  const rounded = Math.round(num * 100) / 100;
+  const integerPart = Math.floor(Math.abs(rounded));
+  const decimalPart = Math.round((Math.abs(rounded) - integerPart) * 100);
+
+  if (integerPart === 0 && decimalPart === 0) {
+    return "INR Zero Only";
+  }
+
+  let words = "";
+
+  if (integerPart > 0) {
+    const crore = Math.floor(integerPart / 10000000);
+    const lakh = Math.floor((integerPart % 10000000) / 100000);
+    const thousand = Math.floor((integerPart % 100000) / 1000);
+    const remainder = integerPart % 1000;
+
+    const parts: string[] = [];
+    if (crore > 0) parts.push(`${convertNumberHelper(crore)} Crore`);
+    if (lakh > 0) parts.push(`${convertTwoDigits(lakh)} Lakh`);
+    if (thousand > 0) parts.push(`${convertTwoDigits(thousand)} Thousand`);
+    if (remainder > 0) parts.push(convertThreeDigits(remainder));
+
+    words = parts.join(" ");
+  }
+
+  let result = words ? `INR ${words.trim()}` : "INR";
+
+  if (decimalPart > 0) {
+    const paiseWords = convertTwoDigits(decimalPart);
+    result += words ? ` and Paise ${paiseWords}` : ` Paise ${paiseWords}`;
+  }
+
+  return `${result} Only`;
+}
+
+/**
  * Round a number to 2 decimal places with banker/paise precision.
  */
 function round2(val: number): number {
