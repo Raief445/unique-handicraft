@@ -273,7 +273,7 @@ export default async function InvoiceDetailPage({
                       <tr>
                         <td className={styles.cell} colSpan={2} style={{ padding: "3px 6px", background: "#fafafa" }}>
                           <span className={styles.labelMuted}>Whether tax is payable on reverse charge basis: </span>
-                          <span className={styles.valBold}>NO</span>
+                          <span className={styles.valBold}>{invoice.isReverseCharge ? "YES" : "NO"}</span>
                         </td>
                       </tr>
                     </tbody>
@@ -697,7 +697,7 @@ export default async function InvoiceDetailPage({
 
                     <div style={{ textAlign: "right", marginTop: "35px" }}>
                       <div style={{ fontSize: "7pt", color: "#555", marginBottom: "3px" }}>
-                        [Digitally Generated & Verified]
+                        Computer Generated Document
                       </div>
                       <div className={styles.valBold} style={{ fontSize: "8pt", borderTop: "1px solid #000", display: "inline-block", paddingTop: "2px", minWidth: "140px", textAlign: "center" }}>
                         Authorised Signatory
@@ -712,7 +712,7 @@ export default async function InvoiceDetailPage({
 
         {/* 9. Bottom Notice */}
         <div className={styles.jurisdictionNotice}>
-          SUBJECT TO JODHPUR JURISDICTION &bull; This is an Electronically Generated Tax Invoice under Rule 48 of CGST Rules, 2017
+          SUBJECT TO JODHPUR JURISDICTION &bull; Computer Generated Tax Invoice issued under Rule 46 of CGST Rules, 2017
         </div>
       </div>
     </div>

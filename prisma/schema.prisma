@@ -196,6 +196,7 @@ model Invoice {
   // Place of Supply & Tax Treatment
   placeOfSupply       String?              // e.g. "Rajasthan (08)", "Maharashtra (27)"
   isInterState        Boolean              @default(false) // false = CGST + SGST, true = IGST
+  isReverseCharge     Boolean              @default(false) // false = Forward Charge (standard), true = RCM (Reverse Charge)
 
   // Business Snapshot (Frozen at issuance; confirmed with CA)
   businessName        String

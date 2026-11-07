@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       customerGstin,
       placeOfSupply,
       isInterState = false,
+      isReverseCharge = false,
       businessName,
       businessAddress,
       businessGstin,
@@ -142,6 +143,7 @@ export async function POST(req: NextRequest) {
           // Tax & Place of Supply
           placeOfSupply: placeOfSupply ? placeOfSupply.trim() : "Rajasthan (08)",
           isInterState: Boolean(isInterState),
+          isReverseCharge: Boolean(isReverseCharge),
 
           // Business snapshot
           businessName: businessName.trim(),

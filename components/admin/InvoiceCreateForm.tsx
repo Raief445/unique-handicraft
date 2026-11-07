@@ -46,6 +46,7 @@ export default function InvoiceCreateForm({
   // Document metadata
   const [documentType, setDocumentType] = useState<DocumentTypeEnum>("TAX_INVOICE");
   const [isInterState, setIsInterState] = useState(false);
+  const [isReverseCharge, setIsReverseCharge] = useState(false);
   const [placeOfSupply, setPlaceOfSupply] = useState("Rajasthan (08)");
   const [priceMode, setPriceMode] = useState<"EXCLUSIVE" | "INCLUSIVE">("EXCLUSIVE");
 
@@ -77,13 +78,13 @@ export default function InvoiceCreateForm({
   const [bankIfsc, setBankIfsc] = useState(DEFAULT_BANK_DETAILS.bankIfsc);
   const [bankBranch, setBankBranch] = useState(DEFAULT_BANK_DETAILS.bankBranch);
 
-  // Items
+  // Items (HSN left blank until admin enters CA-confirmed classification)
   const [items, setItems] = useState<FormItem[]>(() => {
     if (initialEnquiry && initialEnquiry.items.length > 0) {
       return initialEnquiry.items.map((it, idx) => ({
         id: `item-${idx}-${Date.now()}`,
         description: it.productNameSnapshot || "Solid Wood Furniture",
-        hsnCode: "9403",
+        hsnCode: "",
         quantity: it.quantity || 1,
         unitPrice: 0,
         gstRate: 18,
@@ -93,7 +94,7 @@ export default function InvoiceCreateForm({
       {
         id: `item-0-${Date.now()}`,
         description: "Bespoke Handcrafted Solid Sheesham Wood Furniture",
-        hsnCode: "9403",
+        hsnCode: "",
         quantity: 1,
         unitPrice: 0,
         gstRate: 18,
@@ -118,7 +119,7 @@ export default function InvoiceCreateForm({
       {
         id: `item-${prev.length}-${Date.now()}`,
         description: "",
-        hsnCode: "9403",
+        hsnCode: "",
         quantity: 1,
         unitPrice: 0,
         gstRate: 18,
@@ -227,6 +228,7 @@ export default function InvoiceCreateForm({
         customerGstin: customerGstin.trim() || null,
         placeOfSupply: placeOfSupply.trim(),
         isInterState,
+        isReverseCharge: Boolean(isReverseCharge),
         businessName: businessName.trim(),
         businessAddress: businessAddress.trim(),
         businessGstin: businessGstin.trim(),
@@ -358,6 +360,19 @@ export default function InvoiceCreateForm({
             />
             <label htmlFor="isInterState" style={{ fontSize: "0.9rem", color: "#333", cursor: "pointer" }}>
               Inter-State Supply (Apply IGST instead of CGST+SGST)
+            </label>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "1.5rem" }}>
+            <input
+              type="checkbox"
+              id="isReverseCharge"
+              checked={isReverseCharge}
+              onChange={(e) => setIsReverseCharge(e.target.checked)}
+              style={{ width: "18px", height: "18px", cursor: "pointer" }}
+            />
+            <label htmlFor="isReverseCharge" style={{ fontSize: "0.9rem", color: "#333", cursor: "pointer" }}>
+              Tax Payable on Reverse Charge Basis (RCM)
             </label>
           </div>
         </div>
@@ -553,7 +568,7 @@ export default function InvoiceCreateForm({
                     type="text"
                     value={item.hsnCode}
                     onChange={(e) => updateItem(item.id, "hsnCode", e.target.value)}
-                    placeholder="9403"
+                    placeholder="e.g. 9403, 4420"
                     style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.85rem" }}
                   />
                 </div>
@@ -686,8 +701,9 @@ export default function InvoiceCreateForm({
               style={{ width: "100%", padding: "0.55rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.9rem" }}
             >
               <option value={0}>0% (Exempt / Nil Rated)</option>
-              <option value={5}>5% (Goods Transport Agency)</option>
-              <option value={18}>18% (Standard Transport / SAC 9965)</option>
+              <option value={5}>5% (Goods Transport Agency without ITC)</option>
+              <option value={12}>12% (Goods Transport Agency with ITC)</option>
+              <option value={18}>18% (Composite Supply / Standard Freight & Crating)</option>
             </select>
           </div>
 
