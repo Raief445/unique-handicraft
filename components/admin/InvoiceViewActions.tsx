@@ -18,9 +18,23 @@ export default function InvoiceViewActions({
   const router = useRouter();
   const [status, setStatus] = useState<"UNPAID" | "PAID">(initialStatus);
   const [updating, setUpdating] = useState(false);
+  const [includeShipTo, setIncludeShipTo] = useState(true);
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleToggleShipTo = (checked: boolean) => {
+    setIncludeShipTo(checked);
+    const consigneeEl = document.getElementById("consigneeCard");
+    const buyerPadding = document.getElementById("buyerCardContent");
+    if (consigneeEl) {
+      consigneeEl.style.display = checked ? "block" : "none";
+    }
+    if (buyerPadding) {
+      buyerPadding.style.padding = checked ? "4px 8px" : "8px 8px";
+      buyerPadding.style.minHeight = checked ? "64px" : "130px";
+    }
   };
 
   const handleToggleStatus = async () => {
@@ -89,6 +103,33 @@ export default function InvoiceViewActions({
         >
           {updating ? "Updating..." : isPaid ? "Mark as Unpaid" : "Verify & Mark as Paid"}
         </button>
+
+        {/* Optional Consignee (Ship to) Print Toggle */}
+        <label
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.45rem",
+            fontSize: "0.85rem",
+            fontWeight: 600,
+            cursor: "pointer",
+            padding: "5px 12px",
+            borderRadius: "6px",
+            border: "1px solid #dcd7ce",
+            background: includeShipTo ? "#f7f5f0" : "#ffffff",
+            color: "#3A2F28",
+            userSelect: "none",
+          }}
+          title="Toggle Consignee (Ship to) section on invoice"
+        >
+          <input
+            type="checkbox"
+            checked={includeShipTo}
+            onChange={(e) => handleToggleShipTo(e.target.checked)}
+            style={{ width: "16px", height: "16px", cursor: "pointer" }}
+          />
+          <span>Show Consignee (Ship to)</span>
+        </label>
 
         {/* Print / Save as PDF Button */}
         <button type="button" onClick={handlePrint} className={styles.printBtn}>

@@ -138,6 +138,22 @@ export default async function InvoiceDetailPage({
   const totalIgst = hsnRows.reduce((sum, r) => sum + r.igstAmount, 0);
   const totalTaxCalculated = hsnRows.reduce((sum, r) => sum + r.totalTax, 0);
 
+  // Consignee (Ship to) & Buyer (Bill to) parsing
+  let shipToAddress = invoice.customerAddress || "B2C Customer Doorstep Delivery / Counter Handover";
+  let billToAddress = invoice.customerAddress || "B2C Customer Doorstep Delivery / Counter Handover";
+  let consigneeName = invoice.customerName;
+
+  if (invoice.customerAddress && invoice.customerAddress.includes("Shipping Address:")) {
+    const parts = invoice.customerAddress.split("Shipping Address:");
+    billToAddress = parts[0].replace(/^Billing Address:\s*/i, "").replace(/^Billing:\s*/i, "").trim() || billToAddress;
+    shipToAddress = parts[1].trim() || shipToAddress;
+    const attnMatch = shipToAddress.match(/\(Attn:\s*([^)]+)\)/i);
+    if (attnMatch) {
+      consigneeName = attnMatch[1].trim();
+      shipToAddress = shipToAddress.replace(/\(Attn:\s*[^)]+\)/i, "").trim();
+    }
+  }
+
   const hasBankDetails = Boolean(invoice.bankAccountNumber || invoice.bankName);
 
   return (
@@ -258,28 +274,50 @@ export default async function InvoiceDetailPage({
             </tbody>
           </table>
 
-          {/* 3. Buyer (Bill to) & Dispatch Details */}
+          {/* 3. Consignee (Ship to), Buyer (Bill to) & Dispatch Details */}
           <table className={styles.gridTable} style={{ borderTop: "1px solid #000" }}>
             <tbody>
               <tr>
-                {/* Buyer (Bill to) (Left 50%) */}
+                {/* Consignee & Buyer (Left 50%) */}
                 <td style={{ width: "50%", padding: 0, verticalAlign: "top", borderRight: "1px solid #000" }}>
-                  <div className={styles.cellHeaderYellow}>Buyer (Bill to)</div>
-                  <div style={{ padding: "6px 8px", fontSize: "8.5pt", lineHeight: 1.45 }}>
-                    <div className={styles.valBold} style={{ fontSize: "9.5pt", marginBottom: "2px" }}>
-                      {invoice.customerName}
+                  {/* Consignee (Ship to) - Optional toggle */}
+                  <div id="consigneeCard" style={{ display: "block" }}>
+                    <div className={styles.cellHeaderYellow}>Consignee (Ship to)</div>
+                    <div style={{ padding: "4px 8px", fontSize: "8.5pt", minHeight: "64px", borderBottom: "1px solid #000", lineHeight: 1.4 }}>
+                      <div className={styles.valBold} style={{ fontSize: "9pt", marginBottom: "1px" }}>
+                        {consigneeName}
+                      </div>
+                      <div style={{ color: "#333", margin: "1px 0 2px 0" }}>
+                        {shipToAddress}
+                      </div>
+                      <div>
+                        <strong>GSTIN/UIN:</strong> {invoice.customerGstin || "Unregistered / Consumer"}
+                      </div>
+                      <div>
+                        <strong>State Name:</strong> {placeOfSupplyState}, <strong>Code:</strong> {placeOfSupplyCode}
+                      </div>
                     </div>
-                    <div style={{ color: "#333", margin: "2px 0 4px 0" }}>
-                      {invoice.customerAddress || "B2C Customer Doorstep Delivery / Counter Handover"}
-                    </div>
-                    <div>
-                      <strong>Contact:</strong> {invoice.customerPhone} &bull; <strong>Email:</strong> {invoice.customerEmail}
-                    </div>
-                    <div>
-                      <strong>GSTIN/UIN:</strong> {invoice.customerGstin || "Unregistered / Consumer"}
-                    </div>
-                    <div>
-                      <strong>State Name:</strong> {placeOfSupplyState}, <strong>Code:</strong> {placeOfSupplyCode}
+                  </div>
+
+                  {/* Buyer (Bill to) */}
+                  <div id="buyerCard">
+                    <div className={styles.cellHeaderYellow}>Buyer (Bill to)</div>
+                    <div id="buyerCardContent" style={{ padding: "4px 8px", fontSize: "8.5pt", minHeight: "64px", lineHeight: 1.4 }}>
+                      <div className={styles.valBold} style={{ fontSize: "9pt", marginBottom: "1px" }}>
+                        {invoice.customerName}
+                      </div>
+                      <div style={{ color: "#333", margin: "1px 0 2px 0" }}>
+                        {billToAddress}
+                      </div>
+                      <div>
+                        <strong>Contact:</strong> {invoice.customerPhone} &bull; <strong>Email:</strong> {invoice.customerEmail}
+                      </div>
+                      <div>
+                        <strong>GSTIN/UIN:</strong> {invoice.customerGstin || "Unregistered / Consumer"}
+                      </div>
+                      <div>
+                        <strong>State Name:</strong> {placeOfSupplyState}, <strong>Code:</strong> {placeOfSupplyCode}
+                      </div>
                     </div>
                   </div>
                 </td>

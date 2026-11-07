@@ -56,6 +56,12 @@ export default function InvoiceCreateForm({
   const [customerAddress, setCustomerAddress] = useState(initialEnquiry?.location || "");
   const [customerGstin, setCustomerGstin] = useState("");
 
+  // Optional Consignee (Ship to) state
+  const [hasSeparateShipTo, setHasSeparateShipTo] = useState(false);
+  const [consigneeName, setConsigneeName] = useState("");
+  const [consigneePhone, setConsigneePhone] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
+
   // Business state (Pre-filled with verified Unique Timber & Handicraft coordinates)
   const [businessName, setBusinessName] = useState(DEFAULT_BUSINESS_DETAILS.businessName);
   const [businessAddress, setBusinessAddress] = useState(DEFAULT_BUSINESS_DETAILS.businessAddress);
@@ -183,13 +189,18 @@ export default function InvoiceCreateForm({
     setSubmitting(true);
 
     try {
+      const finalAddress =
+        hasSeparateShipTo && shippingAddress.trim()
+          ? `Billing Address: ${customerAddress.trim()}\nShipping Address: ${shippingAddress.trim()}${consigneeName.trim() ? ` (Attn: ${consigneeName.trim()})` : ""}${consigneePhone.trim() ? ` [Ph: ${consigneePhone.trim()}]` : ""}`
+          : customerAddress.trim();
+
       const payload = {
         documentType,
         enquiryId: initialEnquiry?.enquiryId || null,
         customerName: customerName.trim(),
         customerEmail: customerEmail.trim(),
         customerPhone: customerPhone.trim(),
-        customerAddress: customerAddress.trim(),
+        customerAddress: finalAddress,
         customerGstin: customerGstin.trim() || null,
         placeOfSupply: placeOfSupply.trim(),
         isInterState,
@@ -390,15 +401,49 @@ export default function InvoiceCreateForm({
 
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, marginBottom: "0.35rem", color: "#444" }}>
-              Delivery / Billing Address
+              Buyer Billing Address *
             </label>
             <textarea
               rows={2}
+              required
               value={customerAddress}
               onChange={(e) => setCustomerAddress(e.target.value)}
-              placeholder="Full delivery street address, city, state, pincode"
+              placeholder="Full customer billing street address, city, state, pincode"
               style={{ width: "100%", padding: "0.55rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.9rem" }}
             />
+          </div>
+
+          {/* Optional Separate Consignee (Ship to) */}
+          <div style={{ gridColumn: "1 / -1", borderTop: "1px solid #f0ede8", paddingTop: "0.75rem", marginTop: "0.25rem" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontSize: "0.9rem", fontWeight: 600, color: "#1a1a1a" }}>
+              <input
+                type="checkbox"
+                checked={hasSeparateShipTo}
+                onChange={(e) => setHasSeparateShipTo(e.target.checked)}
+                style={{ width: "16px", height: "16px", cursor: "pointer" }}
+              />
+              <span>Ship to a different address / consignee (Optional)</span>
+            </label>
+            {!hasSeparateShipTo ? (
+              <p style={{ fontSize: "0.8rem", color: "#777", margin: "0.25rem 0 0 1.6rem" }}>
+                Consignee (Ship to) details will match the Buyer (Bill to) above.
+              </p>
+            ) : (
+              <div style={{ marginTop: "0.75rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.75rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>Consignee Name</label>
+                  <input type="text" value={consigneeName} onChange={(e) => setConsigneeName(e.target.value)} placeholder="Recipient / Contact name at delivery site" style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>Consignee Contact / Phone</label>
+                  <input type="text" value={consigneePhone} onChange={(e) => setConsigneePhone(e.target.value)} placeholder="Delivery site phone number" style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#555", marginBottom: "0.25rem" }}>Consignee Delivery / Shipping Address</label>
+                  <textarea rows={2} value={shippingAddress} onChange={(e) => setShippingAddress(e.target.value)} placeholder="Separate delivery address, street, city, state, pincode" style={{ width: "100%", padding: "0.45rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem" }} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
