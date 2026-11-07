@@ -72,14 +72,14 @@ export default async function InvoiceDetailPage({
     0
   );
 
-  // Group HSN/SAC summary
+  // Group HSN/SAC summary (Preserve exact entered HSN without inventing codes)
   const hsnMap = new Map<string, HsnSummaryRow>();
 
   for (const item of invoice.items) {
     const hsn =
       item.hsnCode && item.hsnCode.trim() && item.hsnCode !== "-"
         ? item.hsnCode.trim()
-        : "9403";
+        : "—";
     const rate = Number(item.gstRate) || 0;
     const key = `${hsn}_${rate}`;
     const taxable = Number(item.taxableAmount) || 0;
@@ -168,9 +168,12 @@ export default async function InvoiceDetailPage({
       {/* The Printable A4 Sheet - Tally Prime Goods Format */}
       <div className={styles.invoiceSheet}>
         <div className={styles.tallyBox}>
-          {/* 1. Blue Header Bar */}
+          {/* 1. Blue Header Bar with Rule 48 Statutory Marking */}
           <div className={styles.titleBar}>
-            {docTitle}
+            <div style={{ fontSize: "12pt", fontWeight: 700 }}>{docTitle}</div>
+            <div style={{ fontSize: "7.5pt", fontWeight: 600, letterSpacing: "0.5px" }}>
+              (ORIGINAL FOR RECIPIENT)
+            </div>
           </div>
 
           {/* 2. Top Section: Company Coordinates (Left 50%) & Invoice Metadata (Right 50%) */}
@@ -267,6 +270,12 @@ export default async function InvoiceDetailPage({
                           <div>{formattedDueDate}</div>
                         </td>
                       </tr>
+                      <tr>
+                        <td className={styles.cell} colSpan={2} style={{ padding: "3px 6px", background: "#fafafa" }}>
+                          <span className={styles.labelMuted}>Whether tax is payable on reverse charge basis: </span>
+                          <span className={styles.valBold}>NO</span>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </td>
@@ -296,6 +305,14 @@ export default async function InvoiceDetailPage({
                       <div>
                         <strong>State Name:</strong> {placeOfSupplyState}, <strong>Code:</strong> {placeOfSupplyCode}
                       </div>
+                      <div>
+                        <strong>Place of Supply:</strong> {placeOfSupplyState} ({placeOfSupplyCode})
+                        {isInterState && (
+                          <span style={{ marginLeft: "4px", fontWeight: 700, color: "#003366" }}>
+                            [Inter-State Supply / IGST]
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -317,6 +334,14 @@ export default async function InvoiceDetailPage({
                       </div>
                       <div>
                         <strong>State Name:</strong> {placeOfSupplyState}, <strong>Code:</strong> {placeOfSupplyCode}
+                      </div>
+                      <div>
+                        <strong>Place of Supply:</strong> {placeOfSupplyState} ({placeOfSupplyCode})
+                        {isInterState && (
+                          <span style={{ marginLeft: "4px", fontWeight: 700, color: "#003366" }}>
+                            [Inter-State Supply / IGST]
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -342,8 +367,10 @@ export default async function InvoiceDetailPage({
                           <div>Road Transport / Cargo</div>
                         </td>
                         <td className={styles.cell}>
-                          <span className={styles.labelMuted}>Destination</span>
-                          <div className={styles.valBold}>{invoice.placeOfSupply || "Rajasthan (08)"}</div>
+                          <span className={styles.labelMuted}>Place of Supply (State & Code)</span>
+                          <div className={styles.valBold} style={{ color: isInterState ? "#003366" : "#000" }}>
+                            {placeOfSupplyState} ({placeOfSupplyCode})
+                          </div>
                         </td>
                       </tr>
                       <tr>
@@ -471,7 +498,7 @@ export default async function InvoiceDetailPage({
                   <td></td>
                   <td></td>
                   <td style={{ textAlign: "right" }}>
-                    {formatInr(Number(invoice.shippingCharges) + Number(invoice.shippingTaxAmount)).replace("₹", "").trim()}
+                    {formatInr(Number(invoice.shippingCharges)).replace("₹", "").trim()}
                   </td>
                 </tr>
               )}
@@ -539,8 +566,8 @@ export default async function InvoiceDetailPage({
                   <tr>
                     <th rowSpan={2} style={{ width: "18%" }}>HSN/SAC</th>
                     <th rowSpan={2} style={{ width: "18%" }}>Taxable Value (₹)</th>
-                    <th colSpan={2} style={{ width: "24%" }}>Central Tax</th>
-                    <th colSpan={2} style={{ width: "24%" }}>State Tax</th>
+                    <th colSpan={2} style={{ width: "24%" }}>CGST</th>
+                    <th colSpan={2} style={{ width: "24%" }}>SGST</th>
                     <th rowSpan={2} style={{ width: "16%" }}>Total Tax Amount (₹)</th>
                   </tr>
                   <tr>
@@ -555,7 +582,7 @@ export default async function InvoiceDetailPage({
                   <tr>
                     <th rowSpan={2} style={{ width: "25%" }}>HSN/SAC</th>
                     <th rowSpan={2} style={{ width: "25%" }}>Taxable Value (₹)</th>
-                    <th colSpan={2} style={{ width: "30%" }}>Integrated Tax</th>
+                    <th colSpan={2} style={{ width: "30%" }}>IGST</th>
                     <th rowSpan={2} style={{ width: "20%" }}>Total Tax Amount (₹)</th>
                   </tr>
                   <tr>
@@ -668,7 +695,10 @@ export default async function InvoiceDetailPage({
                       <div style={{ fontSize: "8pt" }}>for <strong>{invoice.businessName}</strong></div>
                     </div>
 
-                    <div style={{ textAlign: "right", marginTop: "50px" }}>
+                    <div style={{ textAlign: "right", marginTop: "35px" }}>
+                      <div style={{ fontSize: "7pt", color: "#555", marginBottom: "3px" }}>
+                        [Digitally Generated & Verified]
+                      </div>
                       <div className={styles.valBold} style={{ fontSize: "8pt", borderTop: "1px solid #000", display: "inline-block", paddingTop: "2px", minWidth: "140px", textAlign: "center" }}>
                         Authorised Signatory
                       </div>
@@ -682,7 +712,7 @@ export default async function InvoiceDetailPage({
 
         {/* 9. Bottom Notice */}
         <div className={styles.jurisdictionNotice}>
-          SUBJECT TO JODHPUR JURISDICTION &bull; This is a Computer Generated Document
+          SUBJECT TO JODHPUR JURISDICTION &bull; This is an Electronically Generated Tax Invoice under Rule 48 of CGST Rules, 2017
         </div>
       </div>
     </div>

@@ -186,6 +186,29 @@ export default function InvoiceCreateForm({
       return;
     }
 
+    // Rule 46 Proviso validation: Unregistered customer with taxable supply >= ₹50,000
+    const isUnregistered = !customerGstin.trim();
+    if (isUnregistered && runningSubtotal >= 50000) {
+      if (!customerAddress.trim() || customerAddress.trim().length < 5) {
+        setErrorMessage(
+          "Under GST Rule 46 proviso, for supplies of ₹50,000 or more to an unregistered recipient, the complete billing address is mandatory."
+        );
+        return;
+      }
+      if (hasSeparateShipTo && (!shippingAddress.trim() || shippingAddress.trim().length < 5)) {
+        setErrorMessage(
+          "Under GST Rule 46 proviso, when shipping to a separate location for sales of ₹50,000 or more, the delivery address is mandatory."
+        );
+        return;
+      }
+      if (!placeOfSupply.trim()) {
+        setErrorMessage(
+          "Under GST Rule 46 proviso, for supplies of ₹50,000 or more to an unregistered recipient, Destination State Name and 2-digit State Code are mandatory."
+        );
+        return;
+      }
+    }
+
     setSubmitting(true);
 
     try {

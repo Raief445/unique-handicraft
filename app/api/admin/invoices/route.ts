@@ -92,6 +92,31 @@ export async function POST(req: NextRequest) {
       parseFloat(shippingGstRate) || 0
     );
 
+    // 2b. Rule 46 Proviso Validation: Unregistered recipient with taxable supply value >= ₹50,000
+    const isUnregistered = !customerGstin || !customerGstin.trim();
+    const isOverFiftyThousand = Number(calculated.subtotal) >= 50000;
+
+    if (isUnregistered && isOverFiftyThousand) {
+      if (!customerName || customerName.trim().length < 2) {
+        return NextResponse.json(
+          { error: "Under GST Rule 46 proviso, supplies of ₹50,000 or more to an unregistered recipient require the recipient's full legal name." },
+          { status: 400 }
+        );
+      }
+      if (!customerAddress || customerAddress.trim().length < 5) {
+        return NextResponse.json(
+          { error: "Under GST Rule 46 proviso, supplies of ₹50,000 or more to an unregistered recipient require the complete billing address and delivery address." },
+          { status: 400 }
+        );
+      }
+      if (!placeOfSupply || !placeOfSupply.trim()) {
+        return NextResponse.json(
+          { error: "Under GST Rule 46 proviso, supplies of ₹50,000 or more to an unregistered recipient require the destination State Name and 2-digit State Code." },
+          { status: 400 }
+        );
+      }
+    }
+
     // 3. Concurrency-Safe Transaction: Sequence Allocation + Persistence
     const invoice = await prisma.$transaction(async (tx) => {
       const { financialYear, sequenceNumber, invoiceNumber } = await getNextInvoiceNumber(
