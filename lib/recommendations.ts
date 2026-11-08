@@ -25,6 +25,8 @@ export const CURATED_PAIRING_REGISTRY: Record<string, string[]> = {
   "ST-BLK-SLD-001": ["CT-MRB-FLT-001", "SB-WD-001", "TRK-MIN-DRK-002"],
   // ST-OAK-002 (Modern Offset Oak Side Table)
   "ST-OAK-002": ["CT-MRB-FLT-001", "SB-WD-001", "ST-BLK-SLD-001"],
+  // ST-RND-003 (Two-Tier Round Solid Wood Side Table)
+  "ST-RND-003": ["CT-MRB-FLT-001", "SB-WD-001", "RT-WD-002"],
   // TRK-MIN-DRK-002 (Minimalist Dark Wood Storage Trunk)
   "TRK-MIN-DRK-002": ["UT-NEW-94", "UT-STL-001", "ST-BLK-SLD-001"],
   // TRK-WD-001 (Rustic Arched Panel Wooden Trunk)
