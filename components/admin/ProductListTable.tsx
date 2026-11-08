@@ -13,6 +13,7 @@ export type AdminProductItem = {
   name: string;
   status: string;
   featured: boolean;
+  featuredOrder: number;
   displayOrder: number;
   createdAt: string | Date;
   category: {
@@ -491,19 +492,24 @@ export default function ProductListTable({
                     {/* Featured */}
                     <td>
                       {product.featured ? (
-                        <span
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "4px",
-                            color: "#b45309",
-                            fontSize: "0.82rem",
-                            fontWeight: 600,
-                          }}
-                        >
-                          <Star size={15} fill="#f59e0b" color="#f59e0b" />
-                          <span>Featured</span>
-                        </span>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "4px",
+                              color: "#b45309",
+                              fontSize: "0.82rem",
+                              fontWeight: 600,
+                            }}
+                          >
+                            <Star size={14} fill="#f59e0b" color="#f59e0b" />
+                            <span>Featured</span>
+                          </span>
+                          <span style={{ fontSize: "0.72rem", color: "#854d0e", fontWeight: 500 }}>
+                            Home Rank #{product.featuredOrder || "—"}
+                          </span>
+                        </div>
                       ) : (
                         <span style={{ color: "#94a3b8" }}>—</span>
                       )}
@@ -547,3 +553,4 @@ export default function ProductListTable({
     </div>
   );
 }
+

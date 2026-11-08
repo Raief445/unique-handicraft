@@ -34,9 +34,11 @@ export default async function Home() {
           take: 1,
         },
       },
-      orderBy: {
-        featuredOrder: "asc",
-      },
+      orderBy: [
+        { featuredOrder: "asc" },
+        { displayOrder: "asc" },
+        { createdAt: "desc" },
+      ],
       take: 8,
     }),
     prisma.product.findFirst({
