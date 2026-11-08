@@ -480,9 +480,8 @@ export default function ProductListTable({
                         style={{
                           background: isPublished ? "#ecfdf5" : isDraft ? "#fffbeb" : "#f1f5f9",
                           color: isPublished ? "#059669" : isDraft ? "#d97706" : "#475569",
-                          border: `1px solid ${
-                            isPublished ? "#a7f3d0" : isDraft ? "#fde68a" : "#e2e8f0"
-                          }`,
+                          border: `1px solid ${isPublished ? "#a7f3d0" : isDraft ? "#fde68a" : "#e2e8f0"
+                            }`,
                         }}
                       >
                         {product.status}

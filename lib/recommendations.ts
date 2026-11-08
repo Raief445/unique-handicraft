@@ -17,6 +17,8 @@ export const CURATED_PAIRING_REGISTRY: Record<string, string[]> = {
   "SB-WD-001": ["CT-MRB-FLT-001", "ST-BLK-SLD-001", "RT-WLN-001"],
   // CT-MRB-FLT-001 (Round Fluted Base Marble Top Coffee Table)
   "CT-MRB-FLT-001": ["SB-WD-001", "ST-BLK-SLD-001", "ST-OAK-002"],
+  // CT-WLN-002 (Dark Walnut Lounge Coffee Table)
+  "CT-WLN-002": ["SB-WD-001", "RT-WLN-001", "ST-BLK-SLD-001"],
   // RT-WLN-001 (Fluted Base Walnut Round Table)
   "RT-WLN-001": ["SB-WD-001", "UT-STL-001", "RT-WD-002"],
   // RT-WD-002 (Elegant Dark Wood Pedestal Round Table)

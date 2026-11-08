@@ -17,7 +17,7 @@ export default async function Home() {
   // Fetch categories, featured products, and hero product in parallel
   const [categories, featuredProducts, heroProductData] = await Promise.all([
     prisma.category.findMany({
-      where: { 
+      where: {
         status: "ACTIVE",
         showOnHome: true
       },
