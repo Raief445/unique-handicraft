@@ -284,12 +284,12 @@ export default function ProductForm({
             <label>Main Product Image URL</label>
             <input
               type="text"
-              placeholder="https://example.com/image.jpg or /uploads/products/image.jpg"
+              placeholder="https://example.com/image.jpg"
               value={mainImageUrl}
               onChange={(e) => setMainImageUrl(e.target.value)}
             />
             <p style={{ fontSize: '0.75rem', color: '#666', marginTop: 4 }}>
-              Direct URL to primary image (e.g. from PostImages, myimgs, or local /uploads/...).
+              Direct URL to hosted primary image (e.g. from PostImages, myimgs, Cloudinary, etc.).
             </p>
             {mainImageUrl.trim() !== "" && (
               <div style={{ marginTop: 10 }}>

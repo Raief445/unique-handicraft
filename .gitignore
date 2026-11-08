@@ -33,6 +33,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# uploads - only store hosted storage URLs, never local media assets
+/public/uploads/*
+!/public/uploads/**/.gitkeep
+
 deploy.ps1
 scratch/
 *.json
