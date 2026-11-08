@@ -43,9 +43,10 @@ export default async function ProductsPage({
           take: 1,
         },
       },
-      orderBy: {
-        displayOrder: "asc",
-      },
+      orderBy: [
+        { displayOrder: "asc" },
+        { createdAt: "desc" },
+      ],
     }),
     prisma.category.findMany({
       where: { status: "ACTIVE" },
