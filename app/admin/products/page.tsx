@@ -15,7 +15,7 @@ export default async function AdminProductsPage() {
     },
     include: {
       category: true,
-      images: { where: { imageType: "MAIN" }, take: 1 },
+      images: { orderBy: { displayOrder: "asc" } },
     },
     orderBy: { displayOrder: "asc" },
   });
@@ -82,6 +82,7 @@ export default async function AdminProductsPage() {
                         >
                           <img
                             src={
+                              product.images.find((i) => i.imageType === "MAIN")?.imageUrl ||
                               product.images[0]?.imageUrl ||
                               "https://placehold.co/80x60/F0EEE9/3A2F28?text=No+Image"
                             }

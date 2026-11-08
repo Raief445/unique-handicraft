@@ -2,8 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
-import fs from "fs";
-import path from "path";
+import { revalidatePath } from "next/cache";
+
+function normalizeImageUrl(url: string): string {
+  const trimmed = url.trim();
+  if (trimmed.startsWith("https://myimgs.org/storage/images/")) {
+    return trimmed.replace("https://myimgs.org/storage/images/", "https://cdn.myimgs.org/images/");
+  }
+  return trimmed;
+}
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -50,8 +57,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       where: { productId: id, imageType: "MAIN" }
     });
     if (mainImageUrl && mainImageUrl.trim() !== "") {
+      const normalizedMain = normalizeImageUrl(mainImageUrl);
       await prisma.productImage.create({
-        data: { productId: id, imageUrl: mainImageUrl.trim(), imageType: "MAIN", displayOrder: 0 }
+        data: { productId: id, imageUrl: normalizedMain, imageType: "MAIN", displayOrder: 0 }
       });
     }
 
@@ -60,7 +68,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       where: { productId: id, imageType: "GALLERY" }
     });
     if (galleryImageUrlsStr && galleryImageUrlsStr.trim() !== "") {
-      const urls = galleryImageUrlsStr.split(",").map(u => u.trim()).filter(u => u !== "");
+      const urls = galleryImageUrlsStr
+        .split(/[\r\n,]+/)
+        .map((u) => normalizeImageUrl(u))
+        .filter((u) => u !== "");
       for (let i = 0; i < urls.length; i++) {
         await prisma.productImage.create({
           data: { productId: id, imageUrl: urls[i], imageType: "GALLERY", displayOrder: i + 1 }
@@ -107,6 +118,13 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       },
     });
 
+    // Invalidate ISR cache so edits are immediately visible on live storefront
+    revalidatePath(`/products/${id}`);
+    revalidatePath("/products");
+    revalidatePath("/");
+    revalidatePath("/admin/products");
+    revalidatePath(`/admin/products/${id}`);
+
     return NextResponse.json({ success: true, product });
   } catch (error) {
     console.error("Update product error:", error);
@@ -125,6 +143,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       where: { id: params.id },
       data: { status: "ARCHIVED" },
     });
+
+    revalidatePath(`/products/${params.id}`);
+    revalidatePath("/products");
+    revalidatePath("/");
+    revalidatePath("/admin/products");
 
     return NextResponse.json({ success: true });
   } catch (error) {

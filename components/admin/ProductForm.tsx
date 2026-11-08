@@ -1,8 +1,68 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./ProductForm.module.css";
+
+function ImagePreviewBox({
+  url,
+  label,
+  size = { width: 120, height: 90 },
+}: {
+  url: string;
+  label?: string;
+  size?: { width: number; height: number };
+}) {
+  const [hasError, setHasError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+    setLoaded(false);
+  }, [url]);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+      {label && <span style={{ fontSize: "0.75rem", color: "#666" }}>{label}</span>}
+      <div
+        style={{
+          width: size.width,
+          height: size.height,
+          borderRadius: 6,
+          border: hasError ? "1.5px solid #ef4444" : "1px solid #cbd5e1",
+          background: "#faf8f5",
+          overflow: "hidden",
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {hasError ? (
+          <div style={{ padding: 6, textAlign: "center", fontSize: "0.7rem", color: "#ef4444" }}>
+            Failed to load
+          </div>
+        ) : (
+          <img
+            src={url}
+            alt="Preview"
+            onLoad={() => setLoaded(true)}
+            onError={() => setHasError(true)}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: hasError ? "none" : "block",
+            }}
+          />
+        )}
+      </div>
+      {!hasError && loaded && (
+        <span style={{ fontSize: "0.7rem", color: "#16a34a", fontWeight: 500 }}>✓ Valid preview</span>
+      )}
+    </div>
+  );
+}
 
 type Category = { id: string; name: string };
 type ProductImage = { id: string; imageUrl: string; imageType: string | null };
@@ -71,10 +131,10 @@ export default function ProductForm({
   });
 
   const [mainImageUrl, setMainImageUrl] = useState<string>(
-    product?.images?.find(i => i.imageType === "MAIN")?.imageUrl || ""
+    product?.images?.find(i => i.imageType === "MAIN")?.imageUrl || product?.images?.[0]?.imageUrl || ""
   );
   const [galleryImageUrls, setGalleryImageUrls] = useState<string>(
-    product?.images?.filter(i => i.imageType !== "MAIN").map(i => i.imageUrl).join(",\n") || ""
+    product?.images?.filter(i => i.imageType !== "MAIN").map(i => i.imageUrl).join("\n") || ""
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -224,43 +284,44 @@ export default function ProductForm({
             <label>Main Product Image URL</label>
             <input
               type="text"
-              placeholder="https://example.com/image.jpg"
+              placeholder="https://example.com/image.jpg or /uploads/products/image.jpg"
               value={mainImageUrl}
               onChange={(e) => setMainImageUrl(e.target.value)}
             />
+            <p style={{ fontSize: '0.75rem', color: '#666', marginTop: 4 }}>
+              Direct URL to primary image (e.g. from PostImages, myimgs, or local /uploads/...).
+            </p>
             {mainImageUrl.trim() !== "" && (
-              <div style={{ marginTop: 8 }}>
-                <p style={{ fontSize: '0.8rem', color: '#666', marginBottom: 4 }}>Main image preview:</p>
-                <img
-                  src={mainImageUrl.trim()}
-                  alt="Main preview"
-                  style={{ width: 120, height: 90, objectFit: "cover", borderRadius: 6 }}
-                />
+              <div style={{ marginTop: 10 }}>
+                <ImagePreviewBox url={mainImageUrl.trim()} label="Main Image Preview" size={{ width: 140, height: 105 }} />
               </div>
             )}
           </div>
           <div className={styles.field}>
-            <label>Gallery Image URLs (Comma-separated)</label>
+            <label>Gallery Image URLs (Newlines or Comma-separated)</label>
             <textarea
-              rows={3}
-              placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
+              rows={4}
+              placeholder="https://example.com/img1.jpg&#10;https://example.com/img2.jpg"
               value={galleryImageUrls}
               onChange={(e) => setGalleryImageUrls(e.target.value)}
             />
+            <p style={{ fontSize: '0.75rem', color: '#666', marginTop: 4 }}>
+              Enter one image URL per line or separated by commas.
+            </p>
           </div>
           {galleryImageUrls.trim() !== "" && (
             <div style={{ marginTop: 8 }}>
-              <p style={{ fontSize: '0.8rem', color: '#666', marginBottom: 4 }}>Gallery previews:</p>
+              <p style={{ fontSize: '0.8rem', color: '#555', marginBottom: 8, fontWeight: 500 }}>
+                Gallery Previews:
+              </p>
               <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-                {galleryImageUrls.split(",").map(u => u.trim()).filter(u => u !== "").map((url, idx) => (
-                  <div key={idx} style={{ display: "flex", flexDirection: "column", maxWidth: 150 }}>
-                    <img
-                      src={url}
-                      alt="Gallery preview"
-                      style={{ width: 80, height: 60, objectFit: "cover", borderRadius: 4, border: "1px solid #eee" }}
-                    />
-                  </div>
-                ))}
+                {galleryImageUrls
+                  .split(/[\r\n,]+/)
+                  .map((u) => u.trim())
+                  .filter((u) => u !== "")
+                  .map((url, idx) => (
+                    <ImagePreviewBox key={idx} url={url} label={`Gallery #${idx + 1}`} size={{ width: 100, height: 75 }} />
+                  ))}
               </div>
             </div>
           )}

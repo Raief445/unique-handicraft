@@ -2,8 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
-import fs from "fs";
-import path from "path";
+import { revalidatePath } from "next/cache";
+
+function normalizeImageUrl(url: string): string {
+  const trimmed = url.trim();
+  if (trimmed.startsWith("https://myimgs.org/storage/images/")) {
+    return trimmed.replace("https://myimgs.org/storage/images/", "https://cdn.myimgs.org/images/");
+  }
+  return trimmed;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,11 +54,18 @@ export async function POST(req: NextRequest) {
     const imagesToCreate = [];
 
     if (mainImageUrl && mainImageUrl.trim() !== "") {
-      imagesToCreate.push({ imageUrl: mainImageUrl.trim(), imageType: "MAIN", displayOrder: 0 });
+      imagesToCreate.push({
+        imageUrl: normalizeImageUrl(mainImageUrl),
+        imageType: "MAIN",
+        displayOrder: 0
+      });
     }
 
     if (galleryImageUrlsStr && galleryImageUrlsStr.trim() !== "") {
-      const urls = galleryImageUrlsStr.split(",").map(u => u.trim()).filter(u => u !== "");
+      const urls = galleryImageUrlsStr
+        .split(/[\r\n,]+/)
+        .map((u) => normalizeImageUrl(u))
+        .filter((u) => u !== "");
       urls.forEach((url, i) => {
         imagesToCreate.push({ imageUrl: url, imageType: "GALLERY", displayOrder: i + 1 });
       });
@@ -94,6 +108,10 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+
+    revalidatePath("/products");
+    revalidatePath("/");
+    revalidatePath("/admin/products");
 
     return NextResponse.json({ success: true, product });
   } catch (error) {

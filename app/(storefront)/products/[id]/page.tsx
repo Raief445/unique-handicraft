@@ -115,7 +115,9 @@ export default async function ProductDetailPage({
     product.images[0]?.imageUrl ||
     "https://placehold.co/800x600/F0EEE9/3A2F28?text=No+Image";
 
-  const galleryImages = product.images.filter((i) => i.imageType !== "MAIN");
+  const galleryImages = product.images.filter(
+    (i) => i.imageType !== "MAIN" && i.imageUrl !== mainImage
+  );
 
   const dimensions =
     product.length && product.width && product.height
