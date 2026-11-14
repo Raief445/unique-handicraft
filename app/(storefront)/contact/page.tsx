@@ -166,6 +166,11 @@ export default function ContactPage() {
                 />
               </div>
 
+              <div className={styles.privacyNotice}>
+                We collect and use your contact details and enquiry information to respond to your request and provide information about our products and services. Please read our{" "}
+                <Link href="/privacy-policy">Privacy Policy</Link> to understand how your personal data is handled and how you can exercise your rights.
+              </div>
+
               <button type="submit" className="btn-primary" disabled={loading}>
                 {loading ? "Sending..." : "Send Message"}
               </button>

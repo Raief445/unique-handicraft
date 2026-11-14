@@ -1381,3 +1381,37 @@
     grid-template-columns: 1fr 1fr !important;
   }
 }
+
+.redactedNotice {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8C7355;
+  background: rgba(193, 162, 122, 0.12);
+  border: 1px solid rgba(193, 162, 122, 0.3);
+  padding: 0.1rem 0.45rem;
+  border-radius: 2px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.trackingPrivacyNotice {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ECE7DE;
+  font-size: 0.8rem;
+  color: #736C65;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.trackingPrivacyNotice a {
+  color: #8C6734;
+  text-decoration: underline;
+}
+
+.trackingPrivacyNotice a:hover {
+  color: #2C2825;
+}

@@ -1,6 +1,8 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
 import styles from "./track.module.css";
+import { headers } from "next/headers";
+import { checkRateLimit } from "@/lib/rateLimit";
 import {
   Search,
   CheckCircle2,
@@ -32,6 +34,23 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
+
+// Helper functions to redact sensitive client personal information on the public tracking view
+function maskEmail(email: string): string {
+  if (!email || !email.includes("@")) return "••••••••";
+  const [local, domain] = email.split("@");
+  if (local.length <= 2) {
+    return `${local[0]}***@${domain}`;
+  }
+  return `${local[0]}${"*".repeat(Math.min(local.length - 2, 4))}${local[local.length - 1]}@${domain}`;
+}
+
+function maskPhone(phone: string): string {
+  if (!phone) return "••••••••";
+  const cleaned = phone.trim();
+  if (cleaned.length <= 4) return "•••• " + cleaned;
+  return `•••••• ${cleaned.slice(-4)}`;
+}
 
 // Primary enquiry milestone pipeline
 const MILESTONE_STAGES = [
@@ -121,24 +140,41 @@ export default async function TrackEnquiryPage({
   let error = null;
 
   if (enquiryNumber && email) {
-    try {
-      enquiry = await prisma.enquiry.findFirst({
-        where: {
-          enquiryNumber: enquiryNumber.trim().toUpperCase(),
-          email: { equals: email.trim(), mode: "insensitive" },
-        },
-        include: {
-          items: true,
-        },
-      });
+    // 1. Extract client IP for persistent rate limiting
+    const headerList = headers();
+    const forwardedFor = headerList.get("x-forwarded-for");
+    const realIp = headerList.get("x-real-ip");
+    const clientIp = forwardedFor
+      ? forwardedFor.split(",")[0].trim()
+      : realIp || "127.0.0.1";
 
-      if (!enquiry) {
-        error =
-          "No enquiry was found matching this reference number and email address. Please double-check your entries.";
-      }
-    } catch (err) {
+    // 2. Persistent atomic rate limit: 5 tracking attempts per 15 minutes per IP
+    const rateLimit = await checkRateLimit(`track:${clientIp}`, 5, 15 * 60 * 1000);
+
+    if (!rateLimit.allowed) {
       error =
-        "A temporary error occurred while retrieving your enquiry. Please refresh or try again in a few moments.";
+        "Too many tracking attempts from this network. For security and privacy protection, please wait 15 minutes before trying again.";
+    } else {
+      try {
+        enquiry = await prisma.enquiry.findFirst({
+          where: {
+            enquiryNumber: enquiryNumber.trim().toUpperCase(),
+            email: { equals: email.trim(), mode: "insensitive" },
+          },
+          include: {
+            items: true,
+          },
+        });
+
+        if (!enquiry) {
+          // Generic error message: does not reveal whether enquiry reference or email individually exists
+          error =
+            "No enquiry was found matching the provided reference number and email address. Please verify your entries or contact our concierge if you require assistance.";
+        }
+      } catch (err) {
+        error =
+          "A temporary error occurred while retrieving your enquiry. Please refresh or try again in a few moments.";
+      }
     }
   }
 
@@ -253,6 +289,11 @@ export default async function TrackEnquiryPage({
                   <Search size={18} />
                   <span>Track Enquiry Status</span>
                 </button>
+
+                <p className={styles.trackingPrivacyNotice}>
+                  We use your enquiry reference and email solely to authenticate your request and display manufacturing progress. Read our{" "}
+                  <Link href="/privacy-policy">Privacy Policy</Link> to learn how your personal data is protected.
+                </p>
               </form>
 
               {/* Guidance / FAQ box */}
@@ -498,12 +539,18 @@ export default async function TrackEnquiryPage({
 
                     <div className={styles.infoRow}>
                       <span className={styles.infoLabel}>Email</span>
-                      <span className={styles.infoValue}>{enquiry.email}</span>
+                      <span className={styles.infoValue}>
+                        {maskEmail(enquiry.email)}
+                        <span className={styles.redactedNotice}>Redacted</span>
+                      </span>
                     </div>
 
                     <div className={styles.infoRow}>
                       <span className={styles.infoLabel}>Phone / WhatsApp</span>
-                      <span className={styles.infoValue}>{enquiry.phone}</span>
+                      <span className={styles.infoValue}>
+                        {maskPhone(enquiry.phone)}
+                        <span className={styles.redactedNotice}>Redacted</span>
+                      </span>
                     </div>
 
                     <div className={styles.infoRow}>

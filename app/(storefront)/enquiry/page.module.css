@@ -188,6 +188,23 @@
   font-size: 0.9rem;
 }
 
+.privacyNotice {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background-color: #FAF8F5;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-light);
+}
+
+.privacyNotice a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
 .submitBtn {
   display: block;
   width: 100%;

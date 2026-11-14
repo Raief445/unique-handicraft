@@ -479,6 +479,11 @@ export default function EnquiryPage() {
             </div>
           </section>
 
+          <div className={styles.privacyNotice}>
+            We collect and use your contact details and enquiry information to respond to your request and provide information about our products and services. Please read our{" "}
+            <Link href="/privacy-policy">Privacy Policy</Link> to understand how your personal data is handled and how you can exercise your rights.
+          </div>
+
           <button type="submit" className={`btn-primary ${styles.submitBtn}`} disabled={loading}>
             {loading ? "Submitting Enquiry..." : "Submit Enquiry"}
           </button>
