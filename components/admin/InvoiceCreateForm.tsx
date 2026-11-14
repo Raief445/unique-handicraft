@@ -36,19 +36,33 @@ interface FormItem {
 
 export default function InvoiceCreateForm({
   initialEnquiry,
+  initialIsTest = false,
 }: {
   initialEnquiry?: InitialEnquiryData | null;
+  initialIsTest?: boolean;
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Document metadata
-  const [documentType, setDocumentType] = useState<DocumentTypeEnum>("TAX_INVOICE");
+  const [isTestBill, setIsTestBill] = useState(initialIsTest);
+  const [documentType, setDocumentType] = useState<DocumentTypeEnum>(
+    initialIsTest ? "TEST_INVOICE" : "TAX_INVOICE"
+  );
   const [isInterState, setIsInterState] = useState(false);
   const [isReverseCharge, setIsReverseCharge] = useState(false);
   const [placeOfSupply, setPlaceOfSupply] = useState("Rajasthan (08)");
   const [priceMode, setPriceMode] = useState<"EXCLUSIVE" | "INCLUSIVE">("EXCLUSIVE");
+
+  const handleToggleTestBill = (checked: boolean) => {
+    setIsTestBill(checked);
+    if (checked) {
+      setDocumentType("TEST_INVOICE");
+    } else {
+      setDocumentType("TAX_INVOICE");
+    }
+  };
 
   // Customer state
   const [customerName, setCustomerName] = useState(initialEnquiry?.customerName || "");
@@ -218,8 +232,10 @@ export default function InvoiceCreateForm({
           ? `Billing Address: ${customerAddress.trim()}\nShipping Address: ${shippingAddress.trim()}${consigneeName.trim() ? ` (Attn: ${consigneeName.trim()})` : ""}${consigneePhone.trim() ? ` [Ph: ${consigneePhone.trim()}]` : ""}`
           : customerAddress.trim();
 
+      const finalDocumentType = isTestBill ? "TEST_INVOICE" : documentType;
+
       const payload = {
-        documentType,
+        documentType: finalDocumentType,
         enquiryId: initialEnquiry?.enquiryId || null,
         customerName: customerName.trim(),
         customerEmail: customerEmail.trim(),
@@ -320,6 +336,56 @@ export default function InvoiceCreateForm({
         <h2 style={{ fontSize: "1.05rem", fontWeight: 600, color: "#1a1a1a", marginBottom: "1rem" }}>
           1. Document Type & Place of Supply
         </h2>
+
+        {/* TEST BILL SANDBOX TOGGLE */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            background: isTestBill ? "#FEF3C7" : "#F9FAFB",
+            border: `1.5px solid ${isTestBill ? "#F59E0B" : "#E5E7EB"}`,
+            padding: "0.85rem 1.15rem",
+            borderRadius: "8px",
+            marginBottom: "1.25rem",
+            transition: "all 0.15s ease",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <input
+              type="checkbox"
+              id="isTestBillToggle"
+              checked={isTestBill}
+              onChange={(e) => handleToggleTestBill(e.target.checked)}
+              style={{ width: "20px", height: "20px", cursor: "pointer", accentColor: "#D97706" }}
+            />
+            <label htmlFor="isTestBillToggle" style={{ cursor: "pointer" }}>
+              <strong style={{ display: "block", color: isTestBill ? "#92400E" : "#1F2937", fontSize: "0.95rem" }}>
+                🧪 Save as Test Bill (Sandbox Mode)
+              </strong>
+              <span style={{ fontSize: "0.8rem", color: isTestBill ? "#B45309" : "#6B7280" }}>
+                Puts this bill into the Test Invoices section and uses the TEST/... counter. Real UTH tax invoice sequence will NOT be affected.
+              </span>
+            </label>
+          </div>
+          {isTestBill && (
+            <span
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                backgroundColor: "#FDE68A",
+                color: "#92400E",
+                padding: "3px 8px",
+                borderRadius: "4px",
+                border: "1px solid #F59E0B",
+                whiteSpace: "nowrap",
+              }}
+            >
+              TEST MODE ON
+            </span>
+          )}
+        </div>
+
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
           <div>
             <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, marginBottom: "0.35rem", color: "#444" }}>
@@ -327,7 +393,11 @@ export default function InvoiceCreateForm({
             </label>
             <select
               value={documentType}
-              onChange={(e) => setDocumentType(e.target.value as DocumentTypeEnum)}
+              onChange={(e) => {
+                const val = e.target.value as DocumentTypeEnum;
+                setDocumentType(val);
+                setIsTestBill(val === "TEST_INVOICE");
+              }}
               style={{ width: "100%", padding: "0.55rem", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.9rem" }}
             >
               <option value="TAX_INVOICE">Tax Invoice (Standard GST B2C Sale)</option>
@@ -336,9 +406,9 @@ export default function InvoiceCreateForm({
               <option value="PROFORMA_INVOICE">Proforma Invoice (Pre-dispatch Wire Request)</option>
               <option value="TEST_INVOICE">🧪 Test Invoice (Sandbox / Testing Only)</option>
             </select>
-            {documentType === "TEST_INVOICE" && (
+            {isTestBill && (
               <p style={{ margin: "0.4rem 0 0 0", fontSize: "0.78rem", color: "#B45309", fontWeight: 600 }}>
-                ⚠️ Sandbox Test Mode: Allocates a TEST/2026-27/xxxx number. Real UTH tax invoice sequence will NOT be affected.
+                ⚠️ Sandbox Test Mode Active: Allocates a TEST/2026-27/xxxx number. Real UTH tax invoice sequence will NOT be affected.
               </p>
             )}
           </div>
@@ -892,16 +962,26 @@ export default function InvoiceCreateForm({
           disabled={submitting}
           style={{
             padding: "0.75rem 2rem",
-            background: submitting ? "#666" : "#1A1A1A",
+            background: submitting
+              ? "#666"
+              : isTestBill
+              ? "#D97706"
+              : "#1A1A1A",
             color: "#ffffff",
             border: "none",
             borderRadius: "6px",
             fontWeight: 600,
             fontSize: "0.95rem",
             cursor: submitting ? "not-allowed" : "pointer",
+            boxShadow: isTestBill ? "0 2px 8px rgba(217, 119, 6, 0.35)" : "none",
+            transition: "all 0.15s ease",
           }}
         >
-          {submitting ? "Issuing Invoice..." : "Issue & View Document →"}
+          {submitting
+            ? "Issuing..."
+            : isTestBill
+            ? "🧪 Create Test Bill (Sandbox) →"
+            : "Issue & View Document →"}
         </button>
       </div>
     </form>

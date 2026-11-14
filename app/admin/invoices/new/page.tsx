@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export default async function NewInvoicePage({
   searchParams,
 }: {
-  searchParams?: { enquiryId?: string };
+  searchParams?: { enquiryId?: string; test?: string };
 }) {
   let initialEnquiry = null;
 
@@ -33,18 +33,25 @@ export default async function NewInvoicePage({
     }
   }
 
+  const isTestQuery = searchParams?.test === "true";
+
   return (
     <div>
       <div style={{ marginBottom: "1.5rem" }}>
         <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#1A1A1A", marginBottom: "0.25rem" }}>
-          Create New B2C Bill / Invoice
+          {isTestQuery ? "🧪 Create Test Bill (Sandbox)" : "Create New B2C Bill / Invoice"}
         </h1>
         <p style={{ color: "#666", fontSize: "0.9rem" }}>
-          Generate a legal Tax Invoice, Bill of Supply, Quotation, or Proforma Invoice for retail customers.
+          {isTestQuery
+            ? "Create a sandbox test bill to test print formatting and calculations without affecting official GST sequence."
+            : "Generate a legal Tax Invoice, Bill of Supply, Quotation, or Proforma Invoice for retail customers."}
         </p>
       </div>
 
-      <InvoiceCreateForm initialEnquiry={initialEnquiry} />
+      <InvoiceCreateForm
+        initialEnquiry={initialEnquiry}
+        initialIsTest={isTestQuery}
+      />
     </div>
   );
 }

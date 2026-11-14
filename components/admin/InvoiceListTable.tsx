@@ -238,29 +238,50 @@ export default function InvoiceListTable({
           All Records ({invoices.length})
         </button>
 
-        {sectionTab === "TEST" && testInvoices.length > 0 && (
-          <button
-            type="button"
-            disabled={clearingAll}
-            onClick={handleClearAllTests}
-            style={{
-              marginLeft: "auto",
-              padding: "0.45rem 1rem",
-              fontSize: "0.82rem",
-              fontWeight: 600,
-              borderRadius: "6px",
-              border: "1px solid #f87171",
-              background: "#fef2f2",
-              color: "#b91c1c",
-              cursor: clearingAll ? "not-allowed" : "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.35rem",
-            }}
-          >
-            <Trash2 size={14} />
-            {clearingAll ? "Clearing..." : "Clear All Test Invoices"}
-          </button>
+        {sectionTab === "TEST" && (
+          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Link
+              href="/admin/invoices/new?test=true"
+              style={{
+                padding: "0.45rem 0.95rem",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                borderRadius: "6px",
+                border: "1px solid #d97706",
+                background: "#fef3c7",
+                color: "#92400e",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.35rem",
+              }}
+            >
+              + New Test Bill
+            </Link>
+            {testInvoices.length > 0 && (
+              <button
+                type="button"
+                disabled={clearingAll}
+                onClick={handleClearAllTests}
+                style={{
+                  padding: "0.45rem 1rem",
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  borderRadius: "6px",
+                  border: "1px solid #f87171",
+                  background: "#fef2f2",
+                  color: "#b91c1c",
+                  cursor: clearingAll ? "not-allowed" : "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.35rem",
+                }}
+              >
+                <Trash2 size={14} />
+                {clearingAll ? "Clearing..." : "Clear All Test Invoices"}
+              </button>
+            )}
+          </div>
         )}
       </div>
 
