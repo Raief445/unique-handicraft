@@ -1,3 +1,4 @@
+
 # Standard Operating Procedure (SOP): DPDP Compliance & Data Protection Management
 **Unique Timber & Handicraft**  
 **Document Code:** SOP-DPDP-2026-V1  
@@ -120,7 +121,7 @@ Unique Timber & Handicraft engages reputable service providers as Data Processor
 | **Vercel Inc.** | Application Hosting & Edge Routing | Global Edge / AWS US/EU CDN | HTTPS/TLS 1.3, DDoS protection, edge security isolation. |
 | **Supabase Inc.** | PostgreSQL Relational Database | AWS `ap-south-1` (Mumbai, India) | Row-Level Security, TLS encryption in transit, AES-256 at rest, restricted IP pools. |
 | **Google LLC (Gmail SMTP)** | Transactional Confirmation Emails | Google Cloud Infrastructure | TLS transmission, OAuth2/App password authentication, enterprise mail security. |
-| **Google LLC (GTM)** | Basic Aggregate Website Measurement | Google Cloud Infrastructure | IP anonymization, client-side aggregate analytics. |
+| **Google LLC (GTM & GA4)** | Aggregate Website & Traffic Measurement (Stream: G-R4K0ECPV70) | Google Cloud Infrastructure | Deploys tags to evaluate traffic patterns, device attributes, and approximate region via pseudonymous identifiers. |
 
 Data Processors process data solely under instructions from Unique Timber & Handicraft to fulfill customer requests.
 

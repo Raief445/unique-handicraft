@@ -25,7 +25,9 @@ import { Metadata } from "next";
 import { CopyEnquiryButton, PrintButton } from "./TrackClientActions";
 
 export const metadata: Metadata = {
-  title: "Track Your Enquiry | Unique Timber & Handicraft",
+  title: {
+    absolute: "Track Your Enquiry | Unique Timber & Handicraft",
+  },
   description:
     "Check real-time manufacturing and review status of your bespoke furniture and handicraft enquiry.",
   alternates: {

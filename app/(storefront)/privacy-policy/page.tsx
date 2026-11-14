@@ -4,7 +4,9 @@ import styles from "./privacy.module.css";
 import { ShieldCheck, Mail, MapPin, Phone, Clock, FileText, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Unique Timber & Handicraft",
+  title: {
+    absolute: "Privacy Policy | Unique Timber & Handicraft",
+  },
   description:
     "Information regarding personal data collection, processing purposes, statutory retention, and data principal rights under India's Digital Personal Data Protection Act, 2023.",
   alternates: {
@@ -150,7 +152,7 @@ export default function PrivacyPolicyPage() {
               <strong>Transactional Email (Google Workspace / Gmail SMTP):</strong> Delivers automated enquiry receipt confirmations and workshop notification emails via encrypted SMTP (`smtp.gmail.com`).
             </li>
             <li>
-              <strong>Aggregated Analytics (Google Tag Manager):</strong> Deploys client-side tags to measure overall site traffic in the aggregate. This data does not identify individual customers.
+              <strong>Website Analytics (Google Tag Manager &amp; Google Analytics 4):</strong> We deploy Google Tag Manager (container `GTM-NHKSZNVD`) configured with a Google Analytics 4 measurement stream (`G-R4K0ECPV70`) to evaluate aggregate site traffic, popular product categories, and general navigation patterns. When you visit our website, Google processes technical browsing telemetry, including browser and device attributes, approximate geographical location derived from IP address, and pseudonymous client identifiers (`_ga` cookies). This telemetry is processed by Google LLC in accordance with Google&apos;s Privacy Policy. We do not use this data to personally identify individual visitors.
             </li>
             <li>
               <strong>Authoritative DNS (GoDaddy):</strong> Translates `uniquehandicrafts.in` domain queries; does not process customer personal information.
@@ -264,3 +266,4 @@ export default function PrivacyPolicyPage() {
     </div>
   );
 }
+
