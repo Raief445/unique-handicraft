@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-export type DocumentTypeEnum = "TAX_INVOICE" | "BILL_OF_SUPPLY" | "QUOTATION" | "PROFORMA_INVOICE";
+export type DocumentTypeEnum = "TAX_INVOICE" | "BILL_OF_SUPPLY" | "QUOTATION" | "PROFORMA_INVOICE" | "TEST_INVOICE";
 
 export interface ItemCalculationInput {
   description: string;
@@ -69,6 +69,8 @@ export function getDocumentPrefix(type: DocumentTypeEnum): string {
       return "QUOT";
     case "PROFORMA_INVOICE":
       return "PI";
+    case "TEST_INVOICE":
+      return "TEST";
     default:
       return "UTH";
   }
@@ -87,6 +89,8 @@ export function getDocumentTitle(type: DocumentTypeEnum): string {
       return "Quotation";
     case "PROFORMA_INVOICE":
       return "Proforma Invoice";
+    case "TEST_INVOICE":
+      return "Test Invoice";
     default:
       return "Tax Invoice";
   }

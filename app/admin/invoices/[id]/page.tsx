@@ -165,6 +165,26 @@ export default async function InvoiceDetailPage({
         invoiceNumber={invoice.invoiceNumber}
       />
 
+      {invoice.documentType === "TEST_INVOICE" && (
+        <div
+          style={{
+            maxWidth: "210mm",
+            margin: "0 auto 1rem auto",
+            backgroundColor: "#FEF3C7",
+            color: "#92400E",
+            border: "2px dashed #F59E0B",
+            padding: "0.75rem 1rem",
+            textAlign: "center",
+            fontWeight: 700,
+            fontSize: "0.95rem",
+            letterSpacing: "0.05em",
+            borderRadius: "6px",
+          }}
+        >
+          ⚠️ TEST INVOICE — FOR SOFTWARE TESTING ONLY (NOT A LEGAL TAX INVOICE)
+        </div>
+      )}
+
       {/* The Printable A4 Sheet - Tally Prime Goods Format */}
       <div className={styles.invoiceSheet}>
         <div className={styles.tallyBox}>
@@ -681,9 +701,6 @@ export default async function InvoiceDetailPage({
                     <div className={styles.valBold} style={{ fontSize: "8pt", textTransform: "uppercase" }}>Declaration</div>
                     <div style={{ fontSize: "7.5pt", color: "#333", lineHeight: 1.35, marginTop: "2px" }}>
                       We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
-                    </div>
-                    <div style={{ marginTop: "24px", fontSize: "8pt", color: "#333" }}>
-                      Customer&apos;s Seal and Signature
                     </div>
                   </div>
                 </td>

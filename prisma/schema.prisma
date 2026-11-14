@@ -159,6 +159,7 @@ enum DocumentType {
   BILL_OF_SUPPLY    // "Bill of Supply" (Exempt / composition)
   QUOTATION         // "Quotation" (Formal price estimate)
   PROFORMA_INVOICE  // "Proforma Invoice" (Pre-dispatch bank wire request)
+  TEST_INVOICE      // "Test Invoice" (Sandbox / Testing)
 }
 
 enum InvoicePaymentStatus {

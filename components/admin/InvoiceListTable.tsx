@@ -28,6 +28,7 @@ export default function InvoiceListTable({
   initialInvoices: SerializedInvoice[];
 }) {
   const [invoices, setInvoices] = useState<SerializedInvoice[]>(initialInvoices);
+  const [sectionTab, setSectionTab] = useState<"OFFICIAL" | "TEST" | "ALL">("OFFICIAL");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | "UNPAID" | "PAID">("ALL");
   const [typeFilter, setTypeFilter] = useState<string>("ALL");
@@ -66,6 +67,10 @@ export default function InvoiceListTable({
 
   // Filtered invoices
   const filtered = invoices.filter((inv) => {
+    const isTest = inv.documentType === "TEST_INVOICE";
+    if (sectionTab === "OFFICIAL" && isTest) return false;
+    if (sectionTab === "TEST" && !isTest) return false;
+
     const matchesStatus = statusFilter === "ALL" || inv.paymentStatus === statusFilter;
     const matchesType = typeFilter === "ALL" || inv.documentType === typeFilter;
     const q = search.trim().toLowerCase();
@@ -79,14 +84,17 @@ export default function InvoiceListTable({
     return matchesStatus && matchesType && matchesSearch;
   });
 
-  // Calculate quick metrics
-  const totalInvoices = invoices.length;
-  const unpaidCount = invoices.filter((i) => i.paymentStatus === "UNPAID").length;
-  const paidCount = invoices.filter((i) => i.paymentStatus === "PAID").length;
-  const unpaidAmount = invoices
+  // Calculate quick metrics (distinguishing official ledger from sandbox tests)
+  const officialInvoices = invoices.filter((i) => i.documentType !== "TEST_INVOICE");
+  const testInvoices = invoices.filter((i) => i.documentType === "TEST_INVOICE");
+
+  const totalInvoices = officialInvoices.length;
+  const unpaidCount = officialInvoices.filter((i) => i.paymentStatus === "UNPAID").length;
+  const paidCount = officialInvoices.filter((i) => i.paymentStatus === "PAID").length;
+  const unpaidAmount = officialInvoices
     .filter((i) => i.paymentStatus === "UNPAID")
     .reduce((sum, i) => sum + i.grandTotal, 0);
-  const paidAmount = invoices
+  const paidAmount = officialInvoices
     .filter((i) => i.paymentStatus === "PAID")
     .reduce((sum, i) => sum + i.grandTotal, 0);
 
@@ -123,7 +131,62 @@ export default function InvoiceListTable({
         </div>
       </div>
 
-      {/* 2. SEARCH & FILTER CONTROLS */}
+      {/* 2. SECTION TABS (Official vs Test Sandbox) */}
+      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem", borderBottom: "2px solid #e5e0d8", paddingBottom: "0.5rem" }}>
+        <button
+          type="button"
+          onClick={() => setSectionTab("OFFICIAL")}
+          style={{
+            padding: "0.5rem 1.15rem",
+            fontSize: "0.88rem",
+            fontWeight: 700,
+            borderRadius: "6px",
+            border: "none",
+            cursor: "pointer",
+            background: sectionTab === "OFFICIAL" ? "#1A1A1A" : "#f5f3ef",
+            color: sectionTab === "OFFICIAL" ? "#FFFFFF" : "#555",
+            transition: "all 0.15s ease",
+          }}
+        >
+          Official Invoices ({officialInvoices.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setSectionTab("TEST")}
+          style={{
+            padding: "0.5rem 1.15rem",
+            fontSize: "0.88rem",
+            fontWeight: 700,
+            borderRadius: "6px",
+            border: "none",
+            cursor: "pointer",
+            background: sectionTab === "TEST" ? "#D97706" : "#fef3c7",
+            color: sectionTab === "TEST" ? "#FFFFFF" : "#92400e",
+            transition: "all 0.15s ease",
+          }}
+        >
+          🧪 Test Invoices ({testInvoices.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setSectionTab("ALL")}
+          style={{
+            padding: "0.5rem 1.15rem",
+            fontSize: "0.88rem",
+            fontWeight: 600,
+            borderRadius: "6px",
+            border: "none",
+            cursor: "pointer",
+            background: sectionTab === "ALL" ? "#3A2F28" : "#f5f3ef",
+            color: sectionTab === "ALL" ? "#FFFFFF" : "#555",
+            transition: "all 0.15s ease",
+          }}
+        >
+          All Records ({invoices.length})
+        </button>
+      </div>
+
+      {/* 3. SEARCH & FILTER CONTROLS */}
       <div
         style={{
           background: "#ffffff",
@@ -194,6 +257,7 @@ export default function InvoiceListTable({
             <option value="BILL_OF_SUPPLY">Bills of Supply</option>
             <option value="QUOTATION">Quotations</option>
             <option value="PROFORMA_INVOICE">Proforma Invoices</option>
+            <option value="TEST_INVOICE">Test Invoices</option>
           </select>
         </div>
       </div>
@@ -245,11 +309,12 @@ export default function InvoiceListTable({
                           fontWeight: 600,
                           padding: "2px 8px",
                           borderRadius: "4px",
-                          background: "#f0ede6",
-                          color: "#3A2F28",
+                          background: inv.documentType === "TEST_INVOICE" ? "#FEF3C7" : "#f0ede6",
+                          color: inv.documentType === "TEST_INVOICE" ? "#92400E" : "#3A2F28",
+                          border: inv.documentType === "TEST_INVOICE" ? "1px solid #F59E0B" : "none",
                         }}
                       >
-                        {getDocumentTitle(inv.documentType)}
+                        {inv.documentType === "TEST_INVOICE" ? "🧪 Test Invoice" : getDocumentTitle(inv.documentType)}
                       </span>
                     </td>
 

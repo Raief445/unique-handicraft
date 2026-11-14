@@ -334,7 +334,13 @@ export default function InvoiceCreateForm({
               <option value="BILL_OF_SUPPLY">Bill of Supply (Exempt / Nil Rated)</option>
               <option value="QUOTATION">Quotation (Price Estimate)</option>
               <option value="PROFORMA_INVOICE">Proforma Invoice (Pre-dispatch Wire Request)</option>
+              <option value="TEST_INVOICE">🧪 Test Invoice (Sandbox / Testing Only)</option>
             </select>
+            {documentType === "TEST_INVOICE" && (
+              <p style={{ margin: "0.4rem 0 0 0", fontSize: "0.78rem", color: "#B45309", fontWeight: 600 }}>
+                ⚠️ Sandbox Test Mode: Allocates a TEST/2026-27/xxxx number. Real UTH tax invoice sequence will NOT be affected.
+              </p>
+            )}
           </div>
 
           <div>
