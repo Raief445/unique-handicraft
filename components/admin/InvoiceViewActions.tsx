@@ -3,25 +3,53 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Printer, ArrowLeft, CheckCircle, Clock } from "lucide-react";
+import { Printer, ArrowLeft, CheckCircle, Clock, Trash2 } from "lucide-react";
 import styles from "@/app/admin/invoices/[id]/invoice.module.css";
+import { DocumentTypeEnum } from "@/lib/billing";
 
 export default function InvoiceViewActions({
   invoiceId,
   initialStatus,
   invoiceNumber,
+  documentType,
 }: {
   invoiceId: string;
   initialStatus: "UNPAID" | "PAID";
   invoiceNumber: string;
+  documentType?: DocumentTypeEnum;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState<"UNPAID" | "PAID">(initialStatus);
   const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [includeShipTo, setIncludeShipTo] = useState(true);
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleDeleteTest = async () => {
+    if (!window.confirm(`Are you sure you want to delete test invoice ${invoiceNumber}? This action cannot be undone.`)) {
+      return;
+    }
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/invoices/${invoiceId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert("Test invoice deleted successfully.");
+        router.push("/admin/invoices");
+        router.refresh();
+      } else {
+        alert(data.error || "Failed to delete test invoice.");
+      }
+    } catch (err: any) {
+      alert("Error: " + err.message);
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const handleToggleShipTo = (checked: boolean) => {
@@ -135,6 +163,31 @@ export default function InvoiceViewActions({
         <button type="button" onClick={handlePrint} className={styles.printBtn}>
           <Printer size={16} /> Print / Save as PDF
         </button>
+
+        {/* Optional Delete for Test Invoices */}
+        {documentType === "TEST_INVOICE" && (
+          <button
+            type="button"
+            disabled={deleting}
+            onClick={handleDeleteTest}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              padding: "7px 12px",
+              borderRadius: "6px",
+              border: "1px solid #f87171",
+              background: "#fef2f2",
+              color: "#b91c1c",
+              cursor: "pointer",
+            }}
+          >
+            <Trash2 size={15} />
+            {deleting ? "Deleting..." : "Delete Test Invoice"}
+          </button>
+        )}
       </div>
     </div>
   );

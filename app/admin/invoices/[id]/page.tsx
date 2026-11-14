@@ -163,6 +163,7 @@ export default async function InvoiceDetailPage({
         invoiceId={invoice.id}
         initialStatus={invoice.paymentStatus as any}
         invoiceNumber={invoice.invoiceNumber}
+        documentType={invoice.documentType as any}
       />
 
       {invoice.documentType === "TEST_INVOICE" && (

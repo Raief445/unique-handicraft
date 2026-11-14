@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { formatInr, getDocumentTitle, DocumentTypeEnum } from "@/lib/billing";
-import { Eye, Printer, CheckCircle, Clock, Search, Filter, Receipt } from "lucide-react";
+import { Eye, Printer, CheckCircle, Clock, Search, Filter, Receipt, Trash2 } from "lucide-react";
 
 export interface SerializedInvoice {
   id: string;
@@ -62,6 +62,59 @@ export default function InvoiceListTable({
       alert("Error updating payment status: " + err.message);
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [clearingAll, setClearingAll] = useState(false);
+
+  // Delete single test invoice
+  const handleDeleteTestInvoice = async (invoiceId: string, invoiceNumber: string) => {
+    if (!window.confirm(`Are you sure you want to delete test invoice ${invoiceNumber}? This action cannot be undone.`)) {
+      return;
+    }
+    setDeletingId(invoiceId);
+    try {
+      const res = await fetch(`/api/admin/invoices/${invoiceId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setInvoices((prev) => prev.filter((inv) => inv.id !== invoiceId));
+      } else {
+        alert(data.error || "Failed to delete test invoice.");
+      }
+    } catch (err: any) {
+      alert("Error deleting test invoice: " + err.message);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  // Clear all test invoices
+  const handleClearAllTests = async () => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete ALL ${testInvoices.length} test invoice(s)? This will also reset the test sequence counter back to 0.`
+      )
+    ) {
+      return;
+    }
+    setClearingAll(true);
+    try {
+      const res = await fetch("/api/admin/invoices/test", {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setInvoices((prev) => prev.filter((inv) => inv.documentType !== "TEST_INVOICE"));
+      } else {
+        alert(data.error || "Failed to clear test invoices.");
+      }
+    } catch (err: any) {
+      alert("Error clearing test invoices: " + err.message);
+    } finally {
+      setClearingAll(false);
     }
   };
 
@@ -184,6 +237,31 @@ export default function InvoiceListTable({
         >
           All Records ({invoices.length})
         </button>
+
+        {sectionTab === "TEST" && testInvoices.length > 0 && (
+          <button
+            type="button"
+            disabled={clearingAll}
+            onClick={handleClearAllTests}
+            style={{
+              marginLeft: "auto",
+              padding: "0.45rem 1rem",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              borderRadius: "6px",
+              border: "1px solid #f87171",
+              background: "#fef2f2",
+              color: "#b91c1c",
+              cursor: clearingAll ? "not-allowed" : "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.35rem",
+            }}
+          >
+            <Trash2 size={14} />
+            {clearingAll ? "Clearing..." : "Clear All Test Invoices"}
+          </button>
+        )}
       </div>
 
       {/* 3. SEARCH & FILTER CONTROLS */}
@@ -401,6 +479,31 @@ export default function InvoiceListTable({
                         >
                           {updatingId === inv.id ? "..." : isPaid ? "Mark Unpaid" : "Mark Paid"}
                         </button>
+
+                        {inv.documentType === "TEST_INVOICE" && (
+                          <button
+                            type="button"
+                            disabled={deletingId === inv.id}
+                            onClick={() => handleDeleteTestInvoice(inv.id, inv.invoiceNumber)}
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "0.2rem",
+                              padding: "0.35rem 0.55rem",
+                              fontSize: "0.8rem",
+                              fontWeight: 600,
+                              borderRadius: "4px",
+                              border: "1px solid #f87171",
+                              background: "#fef2f2",
+                              color: "#b91c1c",
+                              cursor: deletingId === inv.id ? "not-allowed" : "pointer",
+                            }}
+                            title="Delete Test Invoice"
+                          >
+                            <Trash2 size={13} />
+                            {deletingId === inv.id ? "..." : "Delete"}
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
